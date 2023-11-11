@@ -12,7 +12,7 @@ import file.FileManager;
 public class ProblemDBManager {
 	// Key = 문제 ID, Value = Problem 객체
 	private static HashMap<Integer, Problem> ProblemDBMap = new HashMap<>();
-	
+
 	public static void PrintProblemDBMap() { // 디버깅용
 		for (Map.Entry<Integer, Problem> entry : ProblemDBMap.entrySet()) {
             Integer key = entry.getKey();
@@ -41,7 +41,7 @@ public class ProblemDBManager {
 		else {
 			String filename = Integer.toString(problem.getProblemID());
 			String filepath = String.format("\\problems\\ProblemDB\\%s.txt", filename);
-			FileManager.createUpdateObjectFile(ProblemDBMap, filepath);
+			FileManager.createUpdateObjectFile(problem, filepath);
 			ProblemDBMap.put(problem.getProblemID(), problem);
 			
 			return true;
@@ -59,7 +59,7 @@ public class ProblemDBManager {
 				ProblemDBMap.put(ID, problem);
 				String filename = Integer.toString(ID);
 				String filepath = String.format("\\problems\\ProblemDB\\%s.txt", filename);
-				FileManager.createUpdateObjectFile(ProblemDBMap, filepath);
+				FileManager.createUpdateObjectFile(problem, filepath);
 				return true;
 			}
 			else {
@@ -108,7 +108,6 @@ public class ProblemDBManager {
 		
 		return ProblemSortID;
 	}
-	
 	
 	// 문제 이름을 기준으로 오름차순, 내림차순으로 정렬해서 반환하는 함수
 	public static ArrayList<Problem> FindProblemToName(boolean sort) {
@@ -195,10 +194,10 @@ public class ProblemDBManager {
 	public static void init() {
 		String dirpath = String.format("\\problems\\ProblemDB"); // 경로 지정
 		// 해당 폴더에 저장된 모든 파일을 Object로 변환하여 ArrayList<Object>로 변환 
-		ArrayList<Object> objList = FileManager.readAllObjectFileInDirectory(dirpath); 
+		ArrayList<Object> objList = FileManager.readAllObjectFileInDirectory(dirpath);
 		try {
-			// 각 Object 들을 User로 형변환
-			for (Object obj : objList) {			 
+			// 각 Object 들을 Problem로 형변환
+			for (Object obj : objList) {	
 				if(obj instanceof Problem) {
 					Problem plbm = (Problem)obj;
 					AddProblem(plbm.getProblemID(), plbm);				 
@@ -209,6 +208,5 @@ public class ProblemDBManager {
 		} catch (ClassCastException e) {
 			e.printStackTrace();			
 		}
-	}
-	
+	}	
 }
