@@ -92,10 +92,12 @@ public class ProblemRankManager {
 		ArrayList<Object> objList = FileManager.readAllObjectFileInDirectory(dirpath);
 		try {
 			for (Object obj : objList) {    
-	            if (obj instanceof ProblemRankManager) {
-	                ProblemRankManager prm = (ProblemRankManager) obj;
-	                // 공사 중 prm를 ProblemRankMap에 저장 (11.13)
-	            } else {
+				if (obj instanceof List<?>) {
+					@SuppressWarnings("unchecked")
+				    List<ProblemRank> prm = (List<ProblemRank>) obj;
+					ProblemRankMap.put(prm.get(0).getID(), prm);
+				} 
+				else {
 	                throw new ClassCastException("ProblemRankManager 인스턴스로 변환할 수 없습니다.");
 	            }
 	        }
