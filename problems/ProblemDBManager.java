@@ -22,8 +22,8 @@ public class ProblemDBManager {
 	}
 	
 	// 문제를 해시맵 ProblemDBMap에 추가하는 함수
-	public static boolean AddProblem(int ID, Problem problem) {
-		if (!problem.isVaild()) {
+	public static boolean addProblem(int ID, Problem problem) {
+		if (!problem.isValid()) {
 			return false;
 		}
 		else {
@@ -33,9 +33,9 @@ public class ProblemDBManager {
 	}
 	
 	// 문제를 .txt 파일에 저장 후 해시맵 ProblemDBMap에 추가하는 함수
-	public static boolean CreateProblem(Problem problem) {
+	public static boolean createProblem(Problem problem) {
 		
-		if (!problem.isVaild()) {
+		if (!problem.isValid()) {
 			return false;
 		}
 		else {
@@ -50,15 +50,15 @@ public class ProblemDBManager {
 	}
 	
 	// 문제를 바꾸는 함수
-	public static boolean ChangeProblem(int ID, Problem problem) {
-		if (!problem.isVaild()) {
+	public static boolean changeProblem(int ID, Problem problem) {
+		if (!problem.isValid()) {
 			return false;
 		}
 		else {
 			if(ProblemDBMap.containsKey(ID)) {
 				ProblemDBMap.put(ID, problem);
 				String filename = Integer.toString(ID);
-				String filepath = String.format("\\problems\\ProblemDB\\%s.txt", filename);
+				String filepath = String.format("problems\\ProblemDB\\%s.txt", filename);
 				FileManager.createUpdateObjectFile(problem, filepath);
 				return true;
 			}
@@ -69,7 +69,7 @@ public class ProblemDBManager {
 	}
 	
 	// 문제가 있는지 확인하는 함수
-	public static boolean ContainProblem(int ID) {
+	public static boolean containProblem(int ID) {
 		if (ProblemDBMap.containsKey(ID)) {
 			return true;
 		}
@@ -79,7 +79,7 @@ public class ProblemDBManager {
 	}
 	
 	// 문제 ID를 통해 문제를 찾는 함수
-	public static Problem FindProblem(int ID) {
+	public static Problem findProblem(int ID) {
 		Problem pblm = new Problem();
 		if (ProblemDBMap.containsKey(ID)) {
 			pblm = ProblemDBMap.get(ID);
@@ -91,7 +91,7 @@ public class ProblemDBManager {
 	}
 	
 	// 문제 ID를 기준으로 오름차순, 내림차순으로 정렬해서 반환하는 함수
-	public static ArrayList<Problem> FindProblemToID(boolean sort){
+	public static ArrayList<Problem> findProblemToID(boolean sort){
 		ArrayList<Integer> Keys = new ArrayList<>(ProblemDBMap.keySet());
 		ArrayList<Problem> ProblemSortID = new ArrayList<>();
 		
@@ -110,7 +110,7 @@ public class ProblemDBManager {
 	}
 	
 	// 문제 이름을 기준으로 오름차순, 내림차순으로 정렬해서 반환하는 함수
-	public static ArrayList<Problem> FindProblemToName(boolean sort) {
+	public static ArrayList<Problem> findProblemToName(boolean sort) {
 	    HashMap<Integer, String> ProblemName = new HashMap<>();
 	    ArrayList<Problem> SortProblem = new ArrayList<>();
 	    
@@ -144,7 +144,7 @@ public class ProblemDBManager {
 	}
 	
 	// 문제 랭크를 기준으로 오름차순, 내림차순을 해서 반환하는 함수
-	public static ArrayList<Problem> FindProblemToRank(boolean sort){
+	public static ArrayList<Problem> findProblemToRank(boolean sort){
 		HashMap<Integer, RANK> ProblemName = new HashMap<>();
 	    ArrayList<Problem> SortProblem = new ArrayList<>();
 	    
@@ -178,7 +178,7 @@ public class ProblemDBManager {
 	}
 	
 	// 문제 이름 검색을 통해 문제를 반환하는 함수
-	public static ArrayList<Problem> FindProblemSearch(String Name) {
+	public static ArrayList<Problem> findProblemSearch(String Name) {
 	    ArrayList<Problem> ProblemSearch = new ArrayList<>();
 	    
 	    for (Problem problem : ProblemDBMap.values()) {
@@ -200,7 +200,7 @@ public class ProblemDBManager {
 			for (Object obj : objList) {	
 				if(obj instanceof Problem) {
 					Problem plbm = (Problem)obj;
-					AddProblem(plbm.getProblemID(), plbm);				 
+					addProblem(plbm.getProblemID(), plbm);				 
 				} else {
 					throw new ClassCastException("Problem 인스턴스로 변환할 수 없습니다.");
 				}
