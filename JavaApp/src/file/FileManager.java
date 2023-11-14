@@ -25,7 +25,6 @@ public class FileManager {
 	 * return : 소스파일에 대한 절대경로
 	 */
 	public static String getPackageRootDir() {
-		System.out.println(System.getProperty("user.dir")+"\\src");
 		return System.getProperty("user.dir") +"\\src";
 	}
 

@@ -39,6 +39,9 @@ public class JsonFetcher {
 			System.out.println("Response status : " + conn.getResponseCode()+ ' ' + conn.getResponseMessage());
 
 			// 응답 JSON 데이터를 UTF-8 인코딩하여 하나의 Reader로 가져옴 
+			// 	1. InputStream을 통해 바이트 단위로 데이터를 입력 받음
+			// 	2. InputStreamReader을 통해 바이트 단위의 데이터를 UTF-8형식의 문자단위(char)로 변환함
+			// 	3. BufferedReader 버퍼를 통해 각 문자들을 하나의 문자열로 만듦
 			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 			// JsonParser 생성
 			JsonParser jsonParser = new JsonParser();            
@@ -94,8 +97,8 @@ public class JsonFetcher {
 				// 파싱한 JsonElement을 'items' 키에 해당하는 항목들만 요소로 가지는 JsonArray 배열로 변환
 				JsonArray itemsArray = problemPage.getAsJsonArray("items");
 				// 배열을 순회하여 problemId 키값을 int로 가져오고 solvedProblemIdList에 추가
-				for( JsonElement items : itemsArray) {
-					int problemId = items.getAsJsonObject().get("problemId").getAsInt();
+				for( JsonElement item : itemsArray) {
+					int problemId = item.getAsJsonObject().get("problemId").getAsInt();
 					solvedProblemIdList.add(problemId);
 				}
 			} catch (JsonSyntaxException  e) {

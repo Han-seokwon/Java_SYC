@@ -1,8 +1,4 @@
-import fetcher.JsonFetcher;
-import gui.MainFrame;
-import problems.ProblemDBManager;
-import users.AccountManager;
-import users.User;
+import gui.EvaluationFrame;
 import users.UserDBManager;
 
 public class Main {
@@ -12,10 +8,17 @@ public class Main {
 		UserDBManager.init();
 		
 		// UserDB 출력 
-		UserDBManager.printUserDBMap();
+//		UserDBManager.printUserDBMap();
+		
+		// 설문조사 데이터 로드 확인
+//		Question.loadQuestionList();
+//		EvaluationQuestion.loadEvaluationQuestionList();
+		
+		// 설문조사 프레임
+		new EvaluationFrame();
 		
 		
-		new MainFrame();
+//		new MainFrame();
 		
 
 		// 테스트 유저 데이터
