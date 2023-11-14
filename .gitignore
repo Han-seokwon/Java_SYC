@@ -127,8 +127,8 @@ $RECYCLE.BIN/
 
 #DB files
 
-UserDB/*
-ProblemDB/*
+JavaApp/src/users/UserDB/*.txt
+JavaApp/src/problems/ProblemDB/*.txt
 
 
 
