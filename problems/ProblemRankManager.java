@@ -3,6 +3,7 @@ package problems;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import file.FileManager;
 import users.RANK;
@@ -11,6 +12,19 @@ public class ProblemRankManager {
 	
 	// Key = 문제 번호, Value = Rank 리스트
 	private static HashMap<Integer, List<ProblemRank>> ProblemRankMap = new HashMap<>();
+	
+	public static void PrintProblemRankMap() {
+	    for (Map.Entry<Integer, List<ProblemRank>> entry : ProblemRankMap.entrySet()) {
+	        Integer key = entry.getKey();
+	        List<ProblemRank> ranks = entry.getValue();
+
+	        System.out.println("Key: " + key);
+	        for (ProblemRank rank : ranks) {
+	            System.out.println("  " + rank.toString());
+	        }
+	        System.out.println();
+	    }
+	}
 	
 	public static boolean addRank(int ID, ProblemRank problemRank) {
 	    if (!problemRank.isValid()) {
@@ -57,7 +71,10 @@ public class ProblemRankManager {
 		    	sum += RankList.get(i).getRANK().getRequireRankPoint();
 		    }
 		    
-		    int avg = (Math.round((int)((sum / RankList.size()) * 100))) / 100;
+		    int value = sum / RankList.size();
+	        int remainder = value % 100;
+	        int adjustment = remainder < 50 ? 0 : 100;
+	        int avg = (value / 100) * 100 + adjustment;
 		    
 		    if (avg == 0) {
 		    	plbm.setProblemRank(RANK.RANK5);
@@ -69,9 +86,6 @@ public class ProblemRankManager {
 		    	plbm.setProblemRank(RANK.RANK3);
 		    }
 		    else if(avg == 300) {
-		    	plbm.setProblemRank(RANK.RANK3);
-		    }
-		    else if(avg == 400) {
 		    	plbm.setProblemRank(RANK.RANK2);
 		    }
 		    else {
