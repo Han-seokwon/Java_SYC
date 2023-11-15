@@ -18,10 +18,9 @@ import problems.Problem;
 import problems.ProblemDBManager;
 import users.RANK;
 import users.User;
-
+import users.RANK;
 public class JsonFetcher {
 	private final static int PROBLEM_CNT_PER_PAGE = 50; // 한 페이지당 최대로 가져올 수 있는 문제 개수
-	private final static String BOJ_PROBLEM_PATH = "https://www.acmicpc.net/problem/";
 	
 	/*
 	 * URL에 fetch(HTTP GET request)하여 응답받은 JSON 문자열을 JsonElement로 파싱하여 반환
@@ -157,46 +156,67 @@ public class JsonFetcher {
 		ArrayList<String> algorithmTagList = new ArrayList<>();
 		String urlString = "https://solved.ac/api/v3/problem/show?problemId=" + problemId;
 		try {
-			JsonObject problemJson = fetchJsonElementFromUrl(urlString);
-			// "tags" 배열 가져오기
+			JsonObject problemJson = fetchJsonElementFromUrl(urlString); // throws IOException
+			// "tags" 항목을 JsonArray로 가져오기 (tags : 문제 종류에 대한 데이터를 저장하는 항목)
 			JsonArray tagsArray = problemJson.getAsJsonArray("tags");
 			for (JsonElement tagElement : tagsArray) {
-				// "tags" 배열에서 "displayNames"를 JsonArray로 가져오기
+				// "tags" 배열에서 "displayNames"가 여러개 존재하므로 JsonArray로 가져오기 (displayNames : 문제 종류 이름을 저장하는 항목 )
 				JsonArray displayNamesArray = tagElement.getAsJsonObject().getAsJsonArray("displayNames");
 				// "displayNames"에서 "language"가 "ko"인 "name" 값(= algorithmTag 이름)을 가져와 algorithmTagList에 추가			
 				for (JsonElement element : displayNamesArray) {
 					JsonObject displayNameObject = element.getAsJsonObject();
+					// 한글 이름만 가져옴
 					if ("ko".equals(displayNameObject.get("language").getAsString())) {
 						String tagName = displayNameObject.get("name").getAsString();
-						algorithmTagList.add(tagName);
+						algorithmTagList.add(tagName); // 리스트에 추가
 					}
 				}
 			}
 
-		} catch (IOException e) {
+		} catch (IOException e) { // fetch 문제 발생
 			System.out.println(e.getMessage());
-		} catch (NullPointerException e) {		
+		} catch (NullPointerException e) { 
 			e.printStackTrace();
 			System.out.println(problemId + "번 문제에 대한 알고리즘 분류 데이터를 가져올 수 없습니다.");
 			System.out.println(urlString);
 		}
+		// 결과 반환
 		return algorithmTagList;
 	}
+	
+	
 	
 	/*
 	 * JSON 데이터에서 problemId, titleKo, 알고리즘 분류 데이터를 가져와 Problem 객체를 생성 후 반환
 	 */
 	public static Problem createProblemFromJsonElement(JsonElement items) {
+		final String BOJ_PROBLEM_PATH = "https://www.acmicpc.net/problem/"; // 백준 문제조회페이지 url path
+		// 문제 JSON파일의 items 항목에 대한 JsonObject
 		JsonObject itemsJsonObj = items.getAsJsonObject();
-
+		// 문제 번호
 		int problemId = itemsJsonObj.get("problemId").getAsInt();
+		// 문제 제목
 		String problemName = itemsJsonObj.get("titleKo").getAsString();
+		// 문제 URL
 		String url = BOJ_PROBLEM_PATH + problemId;
-		RANK initialRank = RANK.RANK5;
-		itemsJsonObj.get("titleKo").getAsString();
+		// 문제 랭크
+		int level = itemsJsonObj.get("level").getAsInt();
+		// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환하여 그에 맞는 RANK 열거형 설정
+		RANK rank = changeSolvedLevelToRANK(level);		
+		// 문제 알고리즘 종류
+		// 알고리즘 정보는 현재 json 파일에 없어, 문제번호를 쿼리로 하는 추가적 api 요청 필요
 		ArrayList<String> algorithmTagList = getAlgorithmTagList(problemId);
-
-		return new Problem(problemName, problemId, url, initialRank, algorithmTagList);
+		// 위 데이터들을 가지고 Problem 객체 생성
+		return new Problem(problemName, problemId, url, rank, algorithmTagList);
+	}
+	
+	// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환하여 그에 맞는 RANK 열거형 반환
+	private static RANK changeSolvedLevelToRANK(int level) {
+		final int SOLVED_LEVEL_MAX = 30; 
+		final int RANK_POINT_MAX = 500;
+        double percentage = (double)level/SOLVED_LEVEL_MAX; // 0.0 ~ 1.0
+        int rankPoint = (int) (percentage * RANK_POINT_MAX); // 0 ~ 500
+        return RANK.getRankForPoint(rankPoint);
 	}
 
 	/*
@@ -229,3 +249,4 @@ public class JsonFetcher {
 
 
 }
+

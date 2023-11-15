@@ -1,8 +1,4 @@
-import gui.SurveyFrame;
-import users.EvaluationQuestion;
-import users.Question;
-import users.User;
-import users.UserDBManager;
+import fetcher.JsonFetcher;
 
 public class Main {
 
@@ -19,29 +15,29 @@ public class Main {
 //		AccountManager.createAccount(user4);
 		
 		
-		// UserDB 초기화
-		UserDBManager.init();
-		User user1 = UserDBManager.findUserByEmail("han@naver.com");
-		System.out.println(user1.toString());
-		
-		// UserDB 출력 
-//		UserDBManager.printUserDBMap();
-		 
-		// 설문조사 데이터 로드 확인
-		Question.loadQuestionList();
-		EvaluationQuestion.loadEvaluationQuestionList();
-		
-		// 설문조사 프레임
-		new SurveyFrame(user1);
-		System.out.println(user1.toString());
-		System.out.println(user1.toString());
+//		// UserDB 초기화
+//		UserDBManager.init();
+//		User user1 = UserDBManager.findUserByEmail("han@naver.com");
+//		System.out.println(user1.toString());
+//		
+//		// UserDB 출력 
+////		UserDBManager.printUserDBMap();
+//		 
+//		// 설문조사 데이터 로드 확인
+//		Question.loadQuestionList();
+//		EvaluationQuestion.loadEvaluationQuestionList();
+//		
+//		// 설문조사 프레임
+//		new SurveyFrame(user1);
+//		System.out.println(user1.toString());
+//		System.out.println(user1.toString());
 
 		
 //		new MainFrame();
 		
 		
 		// SolvedAC에서 문제 데이터 가져와서 ProblemDB에 추가하기 (900개쯤 가져오면 429에러 발생)
-//		JsonFetcher.updateProblemDB_FromSolvedAC();
+		JsonFetcher.updateProblemDB_FromSolvedAC();
 		
 
 //        long startTime = System.currentTimeMillis();        

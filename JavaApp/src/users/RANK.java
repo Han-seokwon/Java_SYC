@@ -18,4 +18,16 @@ public enum RANK {
     public RANK getNextRank() {
         return ordinal() < values().length - 1 ? values()[ordinal() + 1] : values()[-1];
     }
+    // 특정 포인트를 입력하면 그에 맞는 RANK 열거형 반환
+    public static RANK getRankForPoint(int point) {
+    	RANK matchingRank = RANK5;
+    	// for문을 돌며 최대 랭크로 결정됨
+        for (RANK rank : values()) {
+            if (point >= rank.getRequireRankPoint()) { 
+            	matchingRank = rank; 
+            }
+        }
+        return matchingRank;
+//        throw new IllegalArgumentException( point + " : 입력된 포인트와 매칭되는 랭크가 없습니다.");
+    }
 }
