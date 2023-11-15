@@ -45,8 +45,7 @@ public class Question {
 	
 	/*
 	 * json 데이터를 Question으로 변환하여 반환
-	 */
-	
+	 */	
 	protected static Question createQuestionFromJson(JsonObject questionJsonObj) {
 		String question = questionJsonObj.get("question").getAsString();
 		JsonArray choiceListJsonArray = questionJsonObj.get("choiceList").getAsJsonArray();
@@ -61,8 +60,7 @@ public class Question {
 	 * 질문 데이터가 저장된 json데이터를 ArrayList<Question> 로 변환하여 반환
 	 */
 	public static ArrayList<Question> loadQuestionList(){
-		ArrayList<Question> questionList = new ArrayList<>();
-		
+		ArrayList<Question> questionList = new ArrayList<>();		
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("src/users/Questions.json"), "UTF-8"))){
 			// JsonParser 생성
 			JsonParser jsonParser = new JsonParser();            

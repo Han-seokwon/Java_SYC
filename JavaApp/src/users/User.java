@@ -3,8 +3,10 @@ package users;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
+import file.FileManager;
 import problems.Problem;
 import problems.SolvedProblem;
 
@@ -18,7 +20,8 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     private String pwResetQuestion;
     private String pwResetAnswer;
     
-    private ArrayList<Problem> solvedProblemList = new ArrayList<>();
+    private HashSet<String> preferredAlgorithmTypeSet = new HashSet<>(); 
+	private ArrayList<Problem> solvedProblemList = new ArrayList<>();
     private ArrayList<Date> activityDateList= new ArrayList<>();    
     
     private static final long serialVersionUID = 1L; // 직렬화 버전 설정
@@ -74,11 +77,15 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 		return rankPoint; 
 	}
 	
+	
 	public String getPwResetQuestion() {
 		return pwResetQuestion;
 	}
 	public String getPwResetAnswer() {
 		return pwResetAnswer;
+	}
+    public HashSet<String> getPreferredAlgorithmTypeSet() {
+    	return new HashSet<String>(this.preferredAlgorithmTypeSet);// 복사 객체 반환		
 	}
 	
 	public List<Problem> getSolvedProblemList() {
@@ -92,10 +99,10 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	
     @Override
 	public String toString() {
-		return "User [ username=" + username + "\n email=" + email + "\n password_hashed=" + password_hashed + "\n rank="
-				+ rank + "\n rankPoint=" + rankPoint + "\n pwResetQuestion=" + pwResetQuestion + "\n pwResetAnswer="
-				+ pwResetAnswer + "\n solvedProblemList=" + solvedProblemList + "\n activityDateList=" + activityDateList
-				+ "]";
+		return "User [username=" + username + ",\n email=" + email + ",\n password_hashed=" + password_hashed + ",\n rank="
+				+ rank + ",\n rankPoint=" + rankPoint + ",\n pwResetQuestion=" + pwResetQuestion + ",\n pwResetAnswer="
+				+ pwResetAnswer + ",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet + ",\n solvedProblemList="
+				+ solvedProblemList + ",\n activityDateList=" + activityDateList + "]\n";
 	}
     
     // 유저 인스턴스가 유효한지 확인
@@ -113,21 +120,34 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	// 유저의 랭크 포인트를 증가하고 다음 티어 진급을 위한 포인트를 넘기면 티어 상승	
     public void addRankPoint( int rankPoint) {
     	this.rankPoint += rankPoint;
-    	RANK nextRank = this.rank.getNextRank();
+    	RANK nextRank = rank.getNextRank();
     	if (this.rankPoint >= nextRank.getRequireRankPoint()) {
-			this.rank = nextRank;
+			rank = nextRank;
 		}
     }
+    
+    public void addPreferredAlgorithmType(String type) {
+    	preferredAlgorithmTypeSet.add(type);
+    }
+    
+    
     // 해결된 문제를 문제 리스트에 추가함
     public void addSolvedProblemData(Problem problem) {
-    	this.solvedProblemList.add(problem);
+    	solvedProblemList.add(problem);
     }
     
 	// 활동날짜리스트에 해당 날짜 추가
     public void addActivityDate(Date date) { 
-    	if(!this.activityDateList.contains(date)) {
-    		this.activityDateList.add(date);    	
+    	if(!activityDateList.contains(date)) {
+    		activityDateList.add(date);    	
     	}
+    }
+    
+    public void updateUserFile() {
+		String filename = FileManager.emailToFilename(this.getEmail());
+		String filepath = String.format("\\users\\UserDB\\%s.txt", filename); // 경로 지정
+		FileManager.createUpdateObjectFile(this, filepath); // UserDB 폴더에 객체 텍스트 파일 생성
+		System.out.println(this.getEmail() + " 유저 데이터 저장 완료");
     }
 }
 

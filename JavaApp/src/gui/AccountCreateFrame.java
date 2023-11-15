@@ -121,6 +121,7 @@ public class AccountCreateFrame extends JFrame{
 				User newUser = new User(name, email, password, resetPwQuestionList[selectedQuestionNum], answer); // 새로운 User 객체 생성
 				AccountManager.createAccount(newUser);
 				mainFrame.logInComponents(newUser); // 메인 프레임 로그인 컴포넌트 업데이트
+				new SurveyFrame(newUser);// 설문 조사 프레임 생성
 				dispose(); // 창 닫음
 			}	
 		}

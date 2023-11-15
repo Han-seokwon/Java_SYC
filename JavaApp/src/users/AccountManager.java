@@ -67,9 +67,7 @@ public class AccountManager {
 	 * param :  회원 정보의 유효성이 확인된 유저 객체
 	 */
 	public static void createAccount(User user) {
-		String filename = FileManager.emailToFilename(user.getEmail());
-		String filepath = String.format("\\users\\UserDB\\%s.txt", filename); // 경로 지정
-		FileManager.createUpdateObjectFile(user, filepath); // UserDB 폴더에 객체 텍스트 파일 생성
+		user.updateUserFile(); // 유저 객체 UserDB 폴더에 파일로 저장
 		UserDBManager.addUser(user.getEmail(), user); // UserDBManager 해시맵에 객체 추가
 	}
 	
