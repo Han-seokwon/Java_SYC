@@ -127,20 +127,18 @@ public class JsonFetcher {
 	 * solved ac에 등록된 유저이름을 받아 해당 유저가 해결한 문제 데이터를 User 객체의 solvedProblemList에 추가함
 	 * notice : 이 메서드를 호출하기 전 ProblemDB에 solved ac에서 가져온 문제데이터들이 저장되어 있어야 함
 	 */
-	public static void updateUserSolvedProblemList_FromSolvedAC(String solvedacUsername, User user) {
-		int problemPageCnt = getUserSolvedProblemPageCnt_FromSolvedAC(solvedacUsername);
-		ArrayList<Integer> solvedProblemIdList = getSolvedProblemIdList_FromSolvedAC(problemPageCnt, solvedacUsername);
+	public static void updateUserSolvedProblemList_FromSolvedAC(User user) {
+		int problemPageCnt = getUserSolvedProblemPageCnt_FromSolvedAC(user.getSolvedName());
+		ArrayList<Integer> solvedProblemIdList = getSolvedProblemIdList_FromSolvedAC(problemPageCnt, user.getSolvedName());
 		System.out.println("해결한 문제 ID 리스트  : " + solvedProblemIdList);
 		System.out.println("해결한 문제 개수 : " +solvedProblemIdList.size());		
 		// 가져온 문제들 중에 현재 ProblemDB에 추가되지 않은 문제가 있을 수 있음 따라서 ProblemDBManager에 추가된 문제만 추가함
 		for(int problemId : solvedProblemIdList) {
 			Problem problem = ProblemDBManager.FindProblem(problemId);
 			if(problem.isVaild()) {
-				user.addSolvedProblemData(problem);
+				user.addSolvedProblem(problem); // 문제 추가
 			}
 		}
-
-
 	}
 
 	/*
@@ -196,8 +194,7 @@ public class JsonFetcher {
 		// 결과 반환
 		return algorithmTagList;
 	}
-	
-	
+		
 	
 	/*
 	 * JSON 데이터에서 problemId, titleKo, 알고리즘 분류 데이터를 가져와 Problem 객체를 생성 후 반환
@@ -226,7 +223,7 @@ public class JsonFetcher {
 	// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환하여 그에 맞는 RANK 열거형 반환
 	private static RANK changeSolvedLevelToRANK(int level) {
 		final int SOLVED_LEVEL_MAX = 30; 
-		final int RANK_POINT_MAX = RANK.getMaxRankPoint();
+		final int RANK_POINT_MAX = RANK.getMaxRequireRankPoint();
         double percentage = (double)level/SOLVED_LEVEL_MAX; // 0.0 ~ 1.0
         int rankPoint = (int) (percentage * RANK_POINT_MAX); // 0 ~ RANK max point
         return RANK.getRankForPoint(rankPoint);
@@ -254,6 +251,7 @@ public class JsonFetcher {
 
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
+			return ; // 종료
 		}
 	}
 
