@@ -13,6 +13,7 @@ import problems.SolvedProblem;
 
 public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도록 직렬화함
     private String username;
+    private String solvedName; // solved.ac에 등록된 프로필 이름
     private String email;
     private String password_hashed; 
     private RANK rank = RANK.RANK5; // 가장 낮은 랭크부터 시작
@@ -28,17 +29,27 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     
     // Constructor
     public User() {}
-    public User(String username, String email, String password, String pwResetQuestion, String pwResetAnswer) {
+    public User(String username, String solvedName, String email, String password, String pwResetQuestion, String pwResetAnswer) {
         this.username = username;
+        this.solvedName = solvedName;
         this.email = email;
         this.password_hashed = PasswordManager.hashPassword(password, email);
         this.pwResetQuestion = pwResetQuestion;
         this.pwResetAnswer = pwResetAnswer;
     }
+    public User(ResisterationFormat format) {
+        this.username = format.getName();
+        this.solvedName = format.getSolvedName();
+        this.email = format.getEmail();
+        this.password_hashed = PasswordManager.hashPassword(format.getPassword(), email);
+        this.pwResetQuestion = format.getResetPwQuestion();
+        this.pwResetAnswer = format.getAnswer();
+    }
     
     // 복사 생성자 ( deepcopy )
     public User(User user) {
         this.username = user.getUsername();
+        this.solvedName = user.getSolvedName();
         this.email = user.getEmail();
         this.password_hashed = user.getPassword_hashed();
         this.rank = user.getRank();
@@ -54,6 +65,9 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	public String getUsername() {
         return username;
     }
+	public String getSolvedName() {
+		return solvedName;
+	}
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -99,7 +113,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	
     @Override
 	public String toString() {
-		return "User [username=" + username + ",\n email=" + email + ",\n password_hashed=" + password_hashed + ",\n rank="
+		return "User [username=" + username + ",\n solvedName=" + solvedName + ",\n email=" + email + ",\n password_hashed=" + password_hashed + ",\n rank="
 				+ rank + ",\n rankPoint=" + rankPoint + ",\n pwResetQuestion=" + pwResetQuestion + ",\n pwResetAnswer="
 				+ pwResetAnswer + ",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet + ",\n solvedProblemList="
 				+ solvedProblemList + ",\n activityDateList=" + activityDateList + "]\n";
@@ -109,6 +123,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	public static boolean isVaild(User user) {    	
     	if( user.getEmail() == null ||
     			user.getUsername() == null ||
+    			user.getSolvedName() == null ||
     			user.getPassword_hashed() == null ||
     			user.getPwResetAnswer() == null) {
     		return false;

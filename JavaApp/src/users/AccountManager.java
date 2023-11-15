@@ -3,41 +3,46 @@ package users;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import fetcher.JsonFetcher;
 import file.FileManager;
 
 public class AccountManager {
 	
 	// È¸¿ø°¡ÀÔ Á¤º¸ À¯È¿¼º È®ÀÎ ¸Ş¼­µå
-	// param : ÀÌ¸§, ÀÌ¸ŞÀÏ, ºñ¹ø, ºñ¹øÈ®ÀÎ, ºñ¹ø ÃÊ±âÈ­¿ë Áú¹®¿¡ ´ëÇÑ ´äº¯
-	public static void registerInputCheck(String name, String email, String password, String passwordConfirm, String answer) throws IOException{
+	// param : ÀÔ·ÂµÈ È¸¿ø°¡ÀÔµ¥ÀÌÅÍ(ÀÌ¸§, solved.ac¿¡ µî·ÏµÈ ÇÁ·ÎÇÊ ÀÌ¸§, ÀÌ¸ŞÀÏ, ºñ¹ø, ºñ¹øÈ®ÀÎ, ºñ¹ø ÃÊ±âÈ­¿ë Áú¹®¿¡ ´ëÇÑ ´äº¯)
+	public static void registerInputCheck(ResisterationFormat format) throws IOException{
 		String errMsg = "";
 		
-		if(name.isEmpty()) {
+		if(format.getName().isEmpty()) {
 			errMsg += "°æ°í: »ç¿ëÀÚ ÀÌ¸§ÀÌ ÀÔ·ÂµÇÁö ¾Ê¾Ò½À´Ï´Ù.\n";
 		}
+		// Æ¯¼ö¹®ÀÚ Á¦¿Ü
+		if (!Pattern.matches("[a-zA-Z°¡-ÆR0-9]+", format.getName())) {
+			errMsg += "°æ°í: »ç¿ëÀÚ ÀÌ¸§¿¡ Æ¯¼ö ¹®ÀÚ¸¦ »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.\n";
+		}
 		
-		 // Æ¯¼ö¹®ÀÚ Á¦¿Ü
-        if (!Pattern.matches("[a-zA-Z°¡-ÆR0-9]+", name)) {
-        	errMsg += "°æ°í: »ç¿ëÀÚ ÀÌ¸§¿¡ Æ¯¼ö ¹®ÀÚ¸¦ »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.\n";
-        }
+		// solved.ac¿¡ µî·ÏµÈ È¸¿øÀÌ¸§ÀÎÁö È®ÀÎ
+		if(JsonFetcher.checkUserRegisteredInSolvedac(format.getSolvedName())) {
+			errMsg += String.format("°æ°í: %s ÀÌ¸§À¸·Î solved.ac¿¡ µî·ÏµÈ °èÁ¤ÀÌ ¾ø½À´Ï´Ù.\n", format.getSolvedName());
+		}		
         
         // ÀÌ¸ŞÀÏ Çü½Ä ÁØ¼ö
-        if (!Pattern.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", email)) {
+        if (!Pattern.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", format.getEmail())) {
         	errMsg += "°æ°í: ¿Ã¹Ù¸¥ ÀÌ¸ŞÀÏ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù.\n";
         }
         
-        // Áßº¹µÇ´Â ÀÌ¸ŞÀÏÀÌ ÀÖ´ÂÁö È®ÀÎ
-        if (UserDBManager.isEmailExist(email)) {
+        // Áßº¹µÇ´Â ÀÌ¸ŞÀÏÀÌ ÀÖ´ÂÁö È®ÀÎ (ÀÌ¸ŞÀÏÀº °íÀ¯ÇØ¾ß ÇÔ)
+        if (UserDBManager.isEmailExist(format.getEmail())) {
         	errMsg += "°æ°í: ÀÌ¹Ì µî·ÏµÈ ÀÌ¸ŞÀÏÀÔ´Ï´Ù.\n";
         }
         
         try { // ºñ¹Ğ¹øÈ£ À¯È¿¼º È®ÀÎ
-        	checkPasswordVaildity(password, passwordConfirm);
+        	checkPasswordVaildity(format.getPassword(), format.getPasswordConfirm());
 		} catch (IOException e) {
 			errMsg += e.getMessage();
 		}
         
-        if (answer.isEmpty()){
+        if (format.getName().isEmpty()){
         	errMsg += "°æ°í: ºñ¹Ğ¹øÈ£ ÃÊ±âÈ­¿ë Áú¹®¿¡ ´ëÇÑ ´äº¯ÀÌ ÀÔ·ÂµÇÁö ¾Ê¾Ò½À´Ï´Ù.\n";
         }
         

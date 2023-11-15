@@ -59,6 +59,18 @@ public class JsonFetcher {
 			throw new IOException("fetching 실패 : " + urlString + " 해당 주소로 sovled api 서버에 연결할 수 없습니다.");
 		}
 	}
+	
+	public static boolean checkUserRegisteredInSolvedac(String solvedacUsername) {
+		String urlString = "https://solved.ac/api/v3/user/show?handle="; // 사용자 데이터 가져오는 api 주소
+		try {
+			// 유저 이름으로 api를 호출
+			fetchJsonElementFromUrl(urlString + solvedacUsername);
+		} catch (IOException e) { // 존재하지 않는 경우
+			return false;
+		}
+		return true;
+	}
+	
 
 	/*
 	 * solved ac에 등록된 유저의 정보를 가져와 해결한 문제개수(solvedCount)를 토대로 해결한 문제데이터를 가져오는데 필요한 총 페이지 개수 리턴
@@ -76,6 +88,7 @@ public class JsonFetcher {
 			pageCnt = problemCnt/PROBLEM_CNT_PER_PAGE + 1;
 			System.out.println("solved.ac에서 가져올 " + solvedacUsername +"의 문제리스트 페이지 개수 : " +  pageCnt);
 		} catch (IOException e) {
+			System.out.println("이름이 " + solvedacUsername + "인 유저가 존재하지 않습니다.");
 			System.out.println(e.getMessage());
 		}
 		return pageCnt;
@@ -213,9 +226,9 @@ public class JsonFetcher {
 	// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환하여 그에 맞는 RANK 열거형 반환
 	private static RANK changeSolvedLevelToRANK(int level) {
 		final int SOLVED_LEVEL_MAX = 30; 
-		final int RANK_POINT_MAX = 500;
+		final int RANK_POINT_MAX = RANK.getMaxRankPoint();
         double percentage = (double)level/SOLVED_LEVEL_MAX; // 0.0 ~ 1.0
-        int rankPoint = (int) (percentage * RANK_POINT_MAX); // 0 ~ 500
+        int rankPoint = (int) (percentage * RANK_POINT_MAX); // 0 ~ RANK max point
         return RANK.getRankForPoint(rankPoint);
 	}
 
