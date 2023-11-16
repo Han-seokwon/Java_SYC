@@ -67,13 +67,14 @@ public class FileManager {
 	
 	/*
 	 * 객체파일(File)을 Object로 변환하여 반환하는 메서드
-	 * param : Object로 변환할 파일 경로(문자열)
+	 * param : Object로 변환할 객체파일(File)
 	 * return : Object로 변환한 파일
 	 */
 	public static Object readObjectFile(File file) {
 		Object obj = new Object();
+		// File 객체 -> InputStream -> Object로 변환
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-			obj = ois.readObject();
+			obj = ois.readObject(); // Object로 변환
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}

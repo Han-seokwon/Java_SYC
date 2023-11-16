@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import gui.MainFrame;
 import problems.ProblemDBManager;
 import users.AccountManager;
 import users.User;
@@ -42,7 +43,7 @@ public class Main {
 //		System.out.println(user1.toString());
 
 		// 메인 프레임 
-//		new MainFrame();
+		new MainFrame();
 		
 		
 		// SolvedAC에서 문제 데이터 가져와서 ProblemDB에 추가하기 (900개쯤 가져오면 429에러 발생)
