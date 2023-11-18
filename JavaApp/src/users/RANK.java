@@ -4,21 +4,28 @@ package users;
 // 사용자, 문제의 랭크를 구분하는 열거형
 public enum RANK {
 	// 랭크 포인트 차이는 모두 같아야 함
-    RANK5(0, 2), RANK4(100, 4), RANK3(200, 6), RANK2(300, 8), RANK1(400, 10);
+    RANK5(0, 2, "Rank5"), RANK4(100, 4, "Rank4"), RANK3(200, 6, "Rank3"), RANK2(300, 8, "Rank2"), RANK1(400, 10, "Rank1");
     
     private int requireRankPoint; // 해당 랭크가 되기 위해 필요한 랭크포인트
     private int pointGain; // 문제 해결시 사용자가 얻을 수 있는 포인트
+    private String rankName; // 열거형에 대한 문자열 이름
     
-    private RANK(int requireRankPoint, int pointGain) {
+    private RANK(int requireRankPoint, int pointGain, String rankName) {
         this.requireRankPoint = requireRankPoint;
         this.pointGain = pointGain;
+        this.rankName = rankName;
     }
     
+    
+    
     public int getRequireRankPoint() {
-        return this.requireRankPoint;
+        return requireRankPoint;
     }
     public int getPointGain() {
-        return this.pointGain;
+        return pointGain;
+    }
+    public String getRankName() {
+        return rankName;
     }
 
 	// 현재 열거 타입이 전체 열거타입 길이보다 작은 경우 다음 열거형을 반환, 그렇지 않으면 현재 열거 타입이 마지막 타입이므로 그대로 마지막 타입을 반환함
@@ -42,4 +49,5 @@ public enum RANK {
         }
         return matchingRank;
     }
+    
 }

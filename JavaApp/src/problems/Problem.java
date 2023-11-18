@@ -106,7 +106,7 @@ public class Problem implements Serializable {
 	}
 	
 	// 문제 힌트, 학습자료 추가
-	public void AddProblemHint(String key, User user, String hint) {
+	public void addProblemHint(String key, User user, String hint) {
 	    HashMap<User, String> userHintMap = this.ProblemHint.get(key);
 	    
 	    if (userHintMap == null) {
@@ -117,11 +117,11 @@ public class Problem implements Serializable {
 	    userHintMap.put(user, hint);
 	}
 	
-	public void AddProblemReferences(String References) {
+	public void addProblemReferences(String References) {
 		this.ProblemReferences.add(References);
 	}
 	
-	public boolean isVaild() {
+	public boolean isValid() {
 		if (this.ProblemID == 0 || 
 				this.ProblemName == null || 
 					this.ProblemRank == null ||

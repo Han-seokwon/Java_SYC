@@ -27,7 +27,8 @@ public class JsonFetcher {
 	 * param : fetch할 URL 문자열
 	 * return : 응답 JSON 데이터를 파싱한 JsonElement
 	 */
-	public static JsonObject fetchJsonElementFromUrl(String urlString) throws IOException{
+	public static JsonObject fetchJsonElementFromUrl(String urlString) throws IOException, TooManyRequestsException{  // 호출한 쪽에서 예외를 처리하게 함
+		int httpResponseCode = 0;
 		try {
 			
 			URL url = new URL(urlString);
@@ -35,7 +36,8 @@ public class JsonFetcher {
 			conn.setRequestMethod("GET");
 
 			// 응답 상태 확인
-			System.out.println("Response status : " + conn.getResponseCode()+ ' ' + conn.getResponseMessage());
+			httpResponseCode = conn.getResponseCode();
+			System.out.println("Response status : " + httpResponseCode + ' ' + conn.getResponseMessage());
 
 			// 응답 JSON 데이터를 UTF-8 인코딩하여 하나의 Reader로 가져옴 
 			// 	1. InputStream을 통해 바이트 단위로 데이터를 입력 받음
@@ -56,6 +58,9 @@ public class JsonFetcher {
 			throw new IOException("fetching 실패 : " + urlString + " 은 유효하지 않은 주소입니다.");
 		}
 		catch (IOException e) {
+			if(httpResponseCode == 429) {
+				throw new TooManyRequestsException("429 Too Many Requests : 짧은 시간동안 너무 많은 요청을 보냈습니다."); // 429에러에 대한 예외 생성
+			}
 			throw new IOException("fetching 실패 : " + urlString + " 해당 주소로 sovled api 서버에 연결할 수 없습니다.");
 		}
 	}
@@ -134,8 +139,8 @@ public class JsonFetcher {
 		System.out.println("해결한 문제 개수 : " +solvedProblemIdList.size());		
 		// 가져온 문제들 중에 현재 ProblemDB에 추가되지 않은 문제가 있을 수 있음 따라서 ProblemDBManager에 추가된 문제만 추가함
 		for(int problemId : solvedProblemIdList) {
-			Problem problem = ProblemDBManager.FindProblem(problemId);
-			if(problem.isVaild()) {
+			Problem problem = ProblemDBManager.findProblem(problemId);
+			if(problem.isValid()) {
 				user.addSolvedProblem(problem); // 문제 추가
 			}
 		}
@@ -163,7 +168,7 @@ public class JsonFetcher {
 	/*
 	 * 해당 문제에 대한 알고리즘 분류 데이터를 가져와 ArrayList에 저장해서 반환
 	 */
-	public static ArrayList<String> getAlgorithmTagList(int problemId){
+	public static ArrayList<String> getAlgorithmTagList(int problemId) throws IOException{ // 호출한 쪽에서 예외를 처리하게 함
 		ArrayList<String> algorithmTagList = new ArrayList<>();
 		String urlString = "https://solved.ac/api/v3/problem/show?problemId=" + problemId;
 		try {
@@ -184,12 +189,12 @@ public class JsonFetcher {
 				}
 			}
 
-		} catch (IOException e) { // fetch 문제 발생
-			System.out.println(e.getMessage());
+		} catch (IOException e) { // api 요청중 문제 발생
+			throw new IOException(e.getMessage()); 
 		} catch (NullPointerException e) { 
-			e.printStackTrace();
 			System.out.println(problemId + "번 문제에 대한 알고리즘 분류 데이터를 가져올 수 없습니다.");
 			System.out.println(urlString);
+			throw new IOException(e.getMessage());
 		}
 		// 결과 반환
 		return algorithmTagList;
@@ -199,7 +204,7 @@ public class JsonFetcher {
 	/*
 	 * JSON 데이터에서 problemId, titleKo, 알고리즘 분류 데이터를 가져와 Problem 객체를 생성 후 반환
 	 */
-	public static Problem createProblemFromJsonElement(JsonElement items) {
+	public static Problem createProblemFromJsonElement(JsonElement items) throws IOException{
 		final String BOJ_PROBLEM_PATH = "https://www.acmicpc.net/problem/"; // 백준 문제조회페이지 url path
 		// 문제 JSON파일의 items 항목에 대한 JsonObject
 		JsonObject itemsJsonObj = items.getAsJsonObject();
@@ -215,7 +220,13 @@ public class JsonFetcher {
 		RANK rank = changeSolvedLevelToRANK(level);		
 		// 문제 알고리즘 종류
 		// 알고리즘 정보는 현재 json 파일에 없어, 문제번호를 쿼리로 하는 추가적 api 요청 필요
-		ArrayList<String> algorithmTagList = getAlgorithmTagList(problemId);
+		ArrayList<String> algorithmTagList = new ArrayList<>();
+		try {
+			algorithmTagList = getAlgorithmTagList(problemId);
+		} catch (IOException e) { // api 요청중 문제 발생
+			throw new IOException(e.getMessage()); 
+		}
+		
 		// 위 데이터들을 가지고 Problem 객체 생성
 		return new Problem(problemName, problemId, url, rank, algorithmTagList);
 	}
@@ -245,19 +256,28 @@ public class JsonFetcher {
 					Problem problem = createProblemFromJsonElement(items);
 					// 생성된 Problem 인스턴스 ProblemDBManager의 ProblemDBMap에 추가하고 ProblemDB 폴더에 저장
 					System.out.println(problem);
-					ProblemDBManager.CreateProblem(problem);
+					ProblemDBManager.createProblem(problem);
 				}
 			}			
 
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			return ; // 종료
+			System.out.println(e.getMessage());	
+			return; //종료
 		}
 	}
-
-
-
-
-
 }
+
+// 429 에러에 대한 예외 클래스 생성
+// unchecked 예외로 하기위해 RuntimeException 상속
+class TooManyRequestsException extends RuntimeException{ 
+	public TooManyRequestsException() {
+		super();
+	}
+	public TooManyRequestsException(String errMsg) {
+		super(errMsg);
+	}
+}
+
+
+
 

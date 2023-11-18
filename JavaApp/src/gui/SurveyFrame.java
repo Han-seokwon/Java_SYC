@@ -90,10 +90,10 @@ public class SurveyFrame extends JFrame {
 		learningStyleCheckTitlePanel.add(learningStyleCheckTitleLabel);		
 		
 		// 학습성향확인용 내용을 담을 스크롤팬
-		JScrollPane learningStyleCheckContentPane = new JScrollPane();
-		learningStyleCheckContentPane.setBounds(0, 95, 870, 172); // 팬 사이즈 조정
-		learningStyleCheckContentPane.getVerticalScrollBar().setUnitIncrement(12); // 스크롤바 속도 설정
-		learningStyleCheckPanel.add(learningStyleCheckContentPane);
+		JScrollPane learningStyleCheckContentScrollPane = new JScrollPane();
+		learningStyleCheckContentScrollPane.setBounds(0, 95, 870, 172); // 팬 사이즈 조정
+		learningStyleCheckContentScrollPane.getVerticalScrollBar().setUnitIncrement(12); // 스크롤바 속도 설정
+		learningStyleCheckPanel.add(learningStyleCheckContentScrollPane);
 		
 		// 학습성향확인용 질문들을 담은 패널
 		JPanel learningStyleQeustionListPanel = new JPanel();
@@ -101,7 +101,7 @@ public class SurveyFrame extends JFrame {
 		learningStyleQeustionListPanel.setLayout(new GridLayout(1, 0, 0, 0));		
 		setLearningStyleCheckAndChoiceButton(learningStyleQeustionListPanel);		
 		// 질문들을 학습성향확인 항목을 담을 패널에 추가
-		learningStyleCheckContentPane.setViewportView(learningStyleQeustionListPanel);
+		learningStyleCheckContentScrollPane.setViewportView(learningStyleQeustionListPanel);
 		
 
 		// < 개념 테스트 >		
@@ -130,17 +130,17 @@ public class SurveyFrame extends JFrame {
 		evalTitlePanel.add(evalTitleLabel);
 				
 		// 개념 테스트 내용(질문)을 담을 스크롤팬
-		JScrollPane evalContentPane = new JScrollPane();
-		evalContentPane.setBounds(0, 95, 870, 342); // 팬 사이즈 조정
-		evalContentPane.getVerticalScrollBar().setUnitIncrement(12); // 스크롤바 속도 설정
-		evalPanel.add(evalContentPane);
+		JScrollPane evalContentScrollPane = new JScrollPane();
+		evalContentScrollPane.setBounds(0, 95, 870, 342); // 팬 사이즈 조정
+		evalContentScrollPane.getVerticalScrollBar().setUnitIncrement(12); // 스크롤바 속도 설정
+		evalPanel.add(evalContentScrollPane);
 		
 
 		
 		// 개념 테스트 내용(질문)을 담을 패널
 		JPanel evalQuestionListPanel = new JPanel();
 		evalQuestionListPanel.setBorder(new EmptyBorder(10, 10, 15, 10));
-		evalContentPane.setViewportView(evalQuestionListPanel);
+		evalContentScrollPane.setViewportView(evalQuestionListPanel);
 		// 질문 사이즈만큼 그리드 레이아웃 row를 생성
 		evalQuestionListPanel.setLayout(new GridLayout(evalQuestions.size(), 1, 0, 0));
 		// 각 질문, 버튼 등록
