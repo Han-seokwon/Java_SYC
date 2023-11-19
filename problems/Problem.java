@@ -39,13 +39,13 @@ public class Problem implements Serializable {
 	@Override
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
-	    sb.append("Problem ID: ").append(ProblemID).append("\n");
-	    sb.append("Problem Name: ").append(ProblemName).append("\n");
-	    sb.append("Problem URL: ").append(ProblemURL).append("\n");
-	    sb.append("Problem Rank: ").append(ProblemRank).append("\n");
-	    sb.append("Problem RankPoint: ").append(ProblemRankPoint).append("\n");
+	    sb.append("문제 번호 : ").append(ProblemID).append("\n");
+	    sb.append("제목 : ").append(ProblemName).append("\n");
+	    sb.append("난이도 : ").append(ProblemRank).append("(").append(ProblemRankPoint).append(")\n");
+	    sb.append("획득 랭크 포인트: ").append(ProblemRank.getPointGain()).append("\n");
+	    sb.append("URL: ").append(ProblemURL).append("\n");
 
-	    sb.append("Problem Algorithms: ");
+	    sb.append("알고리즘 : ");
 	    for (String algorithm : ProblemAlgorithm) {
 	        sb.append(algorithm).append(" ");
 	    }
@@ -56,6 +56,9 @@ public class Problem implements Serializable {
 	// 설정자
 	public void setProblemRank(RANK Rank) {
 		this.ProblemRank = Rank;
+	}
+	public void setProblemRankPoint(int Point) {
+		this.ProblemRankPoint = Point;
 	}
 	// 접근자
 	public String getProblemName() {
