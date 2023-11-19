@@ -55,6 +55,7 @@ public class ProblemRankManager {
 			String filename = Integer.toString(id);
 			String filepath = String.format("\\problems\\ProblemRankDB\\%s.txt", filename);
 	        FileManager.createUpdateObjectFile(ProblemRankMap.get(id), filepath);
+	        calcProblemRank(id);
 	        return true;
 	    }
 	}
