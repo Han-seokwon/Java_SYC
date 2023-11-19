@@ -85,15 +85,16 @@ public class Problem implements Serializable {
 	
 	// 문제 힌트 추가
 	public void addProblemHint(String key, HintSave plbmHint) {
-	    if(plbmHint.isValid()) {
-	    	List<HintSave> hintList = ProblemHint.getOrDefault(key, new ArrayList<>());
-            hintList.add(plbmHint);
-            ProblemHint.put(key, hintList);
-	    }
+	    List<HintSave> hintList = ProblemHint.getOrDefault(key, new ArrayList<>());
+        hintList.add(plbmHint);
+        ProblemHint.put(key, hintList);
+        ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}
+	
 	// 학습 자료 추가
 	public void addProblemReferences(LearningMaterialsSave plbmReferences) {
 		this.ProblemReferences.add(plbmReferences);
+		ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}
 	
 	public boolean isValid() {
