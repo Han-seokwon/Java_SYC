@@ -3,8 +3,8 @@ package problems;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import users.RANK;
-import users.User;
 
 public class Problem implements Serializable {
 	
@@ -15,12 +15,12 @@ public class Problem implements Serializable {
 	private RANK ProblemRank;
 	private int ProblemRankPoint;
 	/*
-	 * Step 1, Step 2, Step 3, Algorithm Hint를 키 값으로 탐색
-	 * 유저의 정보를 키 값으로 가지고 힌트를 값으로 가지는 해시맵을 값으로 가짐
+	 * Step 1, Step 2, Step 3를 키 값으로 탐색
+	 * 키값에 해당하는 ProblemHint 객체 리스트를 가짐
 	 */
-	private HashMap<String, HashMap<User, String>> ProblemHint = new HashMap<>();
+	private HashMap<String, List<HintSave>> ProblemHint = new HashMap<>();		
 	// 학습자료 URL, 문제 알고리즘 분류
-	private ArrayList<String> ProblemReferences = new ArrayList<>();
+	private List<LearningMaterialsSave> ProblemReferences = new ArrayList<>();
 	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();
 	
 	private static final long serialVersionUID = 1L;
@@ -35,13 +35,6 @@ public class Problem implements Serializable {
 		this.ProblemRankPoint = RankPoint;
 		this.ProblemAlgorithm = Algorithm;
 	}
-	public Problem(Problem problem) {
-		this.ProblemName = problem.ProblemName;
-		this.ProblemID = problem.ProblemID;
-		this.ProblemURL = problem.ProblemURL;
-		this.ProblemRank = problem.ProblemRank;
-		this.ProblemAlgorithm = problem.ProblemAlgorithm;
-	}
 	
 	@Override
 	public String toString() {
@@ -52,24 +45,9 @@ public class Problem implements Serializable {
 	    sb.append("Problem Rank: ").append(ProblemRank).append("\n");
 	    sb.append("Problem RankPoint: ").append(ProblemRankPoint).append("\n");
 
-	    sb.append("Problem Hints: \n");
-	    for (String hintKey : ProblemHint.keySet()) {
-	        sb.append("  ").append(hintKey).append(":\n");
-	        HashMap<User, String> hintMap = ProblemHint.get(hintKey);
-	        for (User user : hintMap.keySet()) {
-	            String hint = hintMap.get(user);
-	            sb.append("    ").append(user.getUsername()).append(": ").append(hint).append("\n");
-	        }
-	    }
-
-	    sb.append("Problem References: \n");
-	    for (String reference : ProblemReferences) {
-	        sb.append("  ").append(reference).append("\n");
-	    }
-
-	    sb.append("Problem Algorithms: \n");
+	    sb.append("Problem Algorithms: ");
 	    for (String algorithm : ProblemAlgorithm) {
-	        sb.append("  ").append(algorithm).append("\n");
+	        sb.append(algorithm).append(" ");
 	    }
 
 	    return sb.toString();
@@ -95,36 +73,27 @@ public class Problem implements Serializable {
 	public int getProblemRankPoint() {
 		return this.ProblemRankPoint;
 	}
-	public HashMap<User, String> getProblemHint(String key) {
-	    HashMap<User, String> userHintMap = this.ProblemHint.get(key);
-	    
-	    if (userHintMap == null) {
-	        return null;
-	    }
-	    
-	    return userHintMap;
+	public List<HintSave> getProblemHint(String key){
+		return this.ProblemHint.get(key);
 	}
-	public ArrayList<String> getProblemReferences(){
+	public List<LearningMaterialsSave> getProblemReferences(){
 		return this.ProblemReferences;
 	}
 	public ArrayList<String> getProblemAlgorithm(){
 		return this.ProblemAlgorithm;
 	}
 	
-	// 문제 힌트, 학습자료 추가
-	public void addProblemHint(String key, User user, String hint) {
-	    HashMap<User, String> userHintMap = this.ProblemHint.get(key);
-	    
-	    if (userHintMap == null) {
-	        userHintMap = new HashMap<>();
-	        this.ProblemHint.put(key, userHintMap);
+	// 문제 힌트 추가
+	public void addProblemHint(String key, HintSave plbmHint) {
+	    if(plbmHint.isValid()) {
+	    	List<HintSave> hintList = ProblemHint.getOrDefault(key, new ArrayList<>());
+            hintList.add(plbmHint);
+            ProblemHint.put(key, hintList);
 	    }
-
-	    userHintMap.put(user, hint);
 	}
-	
-	public void addProblemReferences(String References) {
-		this.ProblemReferences.add(References);
+	// 학습 자료 추가
+	public void addProblemReferences(LearningMaterialsSave plbmReferences) {
+		this.ProblemReferences.add(plbmReferences);
 	}
 	
 	public boolean isValid() {
