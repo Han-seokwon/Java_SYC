@@ -19,7 +19,7 @@ public class ProblemDBManager {
 		for (Map.Entry<Integer, Problem> entry : ProblemDBMap.entrySet()) {
             Integer key = entry.getKey();
             Problem value = entry.getValue();
-            System.out.println("Key: " + key + ", Value: " + value.toString() + "\n");
+            System.out.println("Key: " + key + "\n" + value.toString() + "\n");
         }
 	}
 	
@@ -86,6 +86,7 @@ public class ProblemDBManager {
 		}
 	}
 	
+	
 	// 문제 ID를 통해 문제를 찾는 함수
 	public static Problem findProblem(int ID) {
 		Problem pblm = new Problem();
@@ -118,6 +119,24 @@ public class ProblemDBManager {
 		}
 		
 		return ProblemSortID;
+	}
+	
+	// 검색을 통해 얻은 문제를 문제 ID 기준으로 정렬
+	public static ArrayList<Problem> findProblemToID(ArrayList<Problem> plbm, boolean sort){
+		List<Problem> list = new ArrayList<>(plbm);
+
+        Collections.sort(list, new Comparator<Problem>() {
+            @Override
+            public int compare(Problem o1, Problem o2) {
+                if (sort) {
+                    return Integer.compare(o1.getProblemID(), o2.getProblemID());
+                } else {
+                    return Integer.compare(o2.getProblemID(), o1.getProblemID());
+                }
+            }
+        });
+        
+        return new ArrayList<Problem>(list);
 	}
 	
 	/*
@@ -157,12 +176,31 @@ public class ProblemDBManager {
 	    return SortProblem;
 	}
 	
+	// 검색을 통해 얻은 문제를 이름 기준으로 정렬 
+	public static ArrayList<Problem> findProblemToName(ArrayList<Problem> plbm, boolean sort){
+		List<Problem> list = new ArrayList<>(plbm);
+
+        Collections.sort(list, new Comparator<Problem>() {
+            @Override
+            public int compare(Problem o1, Problem o2) {
+                if (sort) {
+                    return o1.getProblemName().compareTo(o2.getProblemName());
+                } else {
+                    return o2.getProblemName().compareTo(o1.getProblemName());
+                }
+            }
+        });
+        
+        return new ArrayList<Problem>(list);
+		
+	}
+	
 	/*
 	 *  문제 랭크를 기준으로 오름차순, 내림차순을 해서 반환하는 함수
 	 *  true - 오름차순, false - 내림차순
 	 */
 	public static ArrayList<Problem> findProblemToRank(boolean sort){
-		HashMap<Integer, RANK> ProblemName = new HashMap<>();
+		HashMap<Integer, RANK> ProblemRank = new HashMap<>();
 	    ArrayList<Problem> SortProblem = new ArrayList<>();
 	    
 	    for (Map.Entry<Integer, Problem> entry : ProblemDBMap.entrySet()) {
@@ -170,10 +208,10 @@ public class ProblemDBManager {
 	        Problem problem = entry.getValue();
 	        RANK Rank = problem.getProblemRank();
 
-	        ProblemName.put(key, Rank);
+	        ProblemRank.put(key, Rank);
 	    }
 	    
-	    List<Map.Entry<Integer,RANK>> list = new ArrayList<Map.Entry<Integer,RANK>>(ProblemName.entrySet());
+	    List<Map.Entry<Integer,RANK>> list = new ArrayList<Map.Entry<Integer,RANK>>(ProblemRank.entrySet());
 	    
         Collections.sort(list, new Comparator<>() {
             @Override
@@ -193,6 +231,26 @@ public class ProblemDBManager {
 	    
 	    return SortProblem;
 	}
+	
+	// 검색을 통해 얻은 문제를 랭크 기준으로 정렬
+	
+	public static ArrayList<Problem> findProblemToRank(ArrayList<Problem> plbm, boolean sort) {
+		
+		List<Problem> list = new ArrayList<>(plbm);
+
+        Collections.sort(list, new Comparator<Problem>() {
+            @Override
+            public int compare(Problem o1, Problem o2) {
+                if (sort) {
+                    return o1.getProblemRank().compareTo(o2.getProblemRank());
+                } else {
+                    return o2.getProblemRank().compareTo(o1.getProblemRank());
+                }
+            }
+        });
+        
+        return new ArrayList<Problem>(list);
+    }
 	
 	/*
 	 *  문제 이름 검색을 통해 문제를 반환하는 함수
