@@ -21,6 +21,11 @@ public class LoginFrame extends JFrame{
 	// 로그인 성공한 경우 메인프레임의 로그인 관련 컴포넌트를 업데이트 하기위해 멤버로 메인프레임 객체를 가짐
 	private MainFrame mainFrame;  
 	public LoginFrame(MainFrame mainFrame) {
+		// 프레임 속성 설정
+		setTitle("로그인");
+		setSize(500, 500);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 		// 메인 프레임 객체로 업데이트
 		this.mainFrame = mainFrame; 
 		
@@ -50,10 +55,6 @@ public class LoginFrame extends JFrame{
 		add(loginButton);
 		add(resetPasswordButton);
 
-		// 프레임 속성 설정
-		setTitle("로그인");
-		setSize(500, 500);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
 

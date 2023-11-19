@@ -50,8 +50,8 @@ enum TABLE_HEADER{
 	public static int length() {
 		return TABLE_HEADER.values().length;
 	}
-	// 헤더요소(열거형)의 문자열 이름을 벡터로 반환, DefaultTableModel에서 컬럼이름(헤더)를 Vector로 받음
-	public static Vector<String> getHeaderNames() {
+	// 헤더요소(열거형)의 문자열 이름을 벡터로 반환, (DefaultTableModel에서 컬럼이름(헤더)를 Vector로 받아 Vector로 컬렉션 설정)
+	public static Vector<String> getHeaderNameList() {
 		Vector<String> headerNames = new Vector<>(TABLE_HEADER.length());
 		for(TABLE_HEADER header : TABLE_HEADER.values()) {
 			headerNames.add(header.getName());
@@ -74,7 +74,7 @@ public class ProblemTable extends JTable{
 		this.user = user; // 현재 로그인된 유저데이터 가져오기
 
 		// 테이블에 동적으로 데이터를 추가하기 위한 테이블 모델 객체 생성
-		tableModel = new DefaultTableModel(TABLE_HEADER.getHeaderNames(), 0) { // 테이블 헤더, row 개수
+		tableModel = new DefaultTableModel(TABLE_HEADER.getHeaderNameList(), 0) { // 테이블 헤더, row 개수
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean isCellEditable(int row, int column) { return true; } // 셀 내용 수정할 수 없게 오버라이딩

@@ -2,9 +2,10 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import fetcher.JsonFetcher;
-import gui.RecommendProblemFrame;
+import gui.MainFrame;
+import gui.RateProblemFrame;
 import gui.SurveyFrame;
+import problems.Problem;
 import problems.ProblemDBManager;
 import users.AccountManager;
 import users.EvaluationQuestion;
@@ -23,8 +24,6 @@ public class Main {
 		AccountManager.createAccount(user3);
 		User user4 = new User("한석원","hoh9170", "han@naver.com", "qwer1234", "3. 좋아하는 음식은?", "사과");		
 		AccountManager.createAccount(user4);
-		// UserDBManager 출력
-		UserDBManager.printUserDBMap();
 	}
 	
 	private static void testSurveyData() { // 설문조사 테스트
@@ -73,7 +72,7 @@ public class Main {
 		ProblemDBManager.init();		
 		System.out.println("ProblemDB 초기화 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");   
 		
-		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
+//		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
 	}
 	
 	
@@ -93,7 +92,11 @@ public class Main {
 		
 		// <  기타 프레임 테스트 >
 		// 문제 추천 프레임
-		new RecommendProblemFrame(new User());
+//		new RecommendProblemFrame(new User());
+		
+		User user1 = UserDBManager.findUserByEmail("han@naver.com");
+		Problem problem = ProblemDBManager.findProblem(1000);
+        new RateProblemFrame(user1, problem);
 		
 	
 							
