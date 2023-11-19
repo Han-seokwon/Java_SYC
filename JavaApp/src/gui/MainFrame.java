@@ -22,95 +22,95 @@ import users.AccountManager;
 import users.User;
 
 public class MainFrame extends JFrame{
-	// ÄÄÆ÷³ÍÆ® ¼±¾ğ
+	// ì»´í¬ë„ŒíŠ¸ ì„ ì–¸
 	private JLabel usernameLabel;
 	private JButton accountCreateButton, loginButton, problemListButton, problemRecommendButton, myPageButton;
 	private User user = new User();
 	private boolean isLoggedin = false;
 
 	/* 
-	 * »ç¿ëÀÚ°¡ ·Î±×ÀÎÇÑ °æ¿ì ¸ŞÀÎÆäÀÌÁöÀÇ °èÁ¤°ü·Ã ÄÄÆ÷³ÍÆ®¸¦ ¾÷µ¥ÀÌÆ®
-	 * 1. À¯ÀúÀÌ¸§ display ,  2. ·Î±×ÀÎ -> ·Î±×¾Æ¿ô,  3. °èÁ¤»ı¼º ¹öÆ° »èÁ¦ 
+	 * ì‚¬ìš©ìê°€ ë¡œê·¸ì¸í•œ ê²½ìš° ë©”ì¸í˜ì´ì§€ì˜ ê³„ì •ê´€ë ¨ ì»´í¬ë„ŒíŠ¸ë¥¼ ì—…ë°ì´íŠ¸
+	 * 1. ìœ ì €ì´ë¦„ display ,  2. ë¡œê·¸ì¸ -> ë¡œê·¸ì•„ì›ƒ,  3. ê³„ì •ìƒì„± ë²„íŠ¼ ì‚­ì œ 
 	 * */
 	public void logInComponents(User user) {
 		isLoggedin = true;
 		this.user = user;
 		usernameLabel.setText(user.getUsername());		
-		loginButton.setText("·Î±×¾Æ¿ô");
-		accountCreateButton.setVisible(false); // È¸¿ø°¡ÀÔ ºÒ°¡´É
+		loginButton.setText("ë¡œê·¸ì•„ì›ƒ");
+		accountCreateButton.setVisible(false); // íšŒì›ê°€ì… ë¶ˆê°€ëŠ¥
 	}
 	
 	/* 
-	 * »ç¿ëÀÚ°¡ ·Î±×¾Æ¿ôÇÑ °æ¿ì ¸ŞÀÎÆäÀÌÁöÀÇ °èÁ¤°ü·Ã ÄÄÆ÷³ÍÆ®¸¦ ¾÷µ¥ÀÌÆ®
-	 * 1. À¯ÀúÀÌ¸§ undisplay,  2. ·Î±×¾Æ¿ô -> ·Î±×ÀÎ 3. °èÁ¤ »ı¼º ¹öÆ° È°¼ºÈ­ 
+	 * ì‚¬ìš©ìê°€ ë¡œê·¸ì•„ì›ƒí•œ ê²½ìš° ë©”ì¸í˜ì´ì§€ì˜ ê³„ì •ê´€ë ¨ ì»´í¬ë„ŒíŠ¸ë¥¼ ì—…ë°ì´íŠ¸
+	 * 1. ìœ ì €ì´ë¦„ undisplay,  2. ë¡œê·¸ì•„ì›ƒ -> ë¡œê·¸ì¸ 3. ê³„ì • ìƒì„± ë²„íŠ¼ í™œì„±í™” 
 	 * */
 	public void logOutComponents() {
 		isLoggedin = false;
 		this.user = new User();
 		usernameLabel.setText("");		
-		loginButton.setText("·Î±×ÀÎ");
-		accountCreateButton.setVisible(true); // È¸¿ø°¡ÀÔ °¡´É
+		loginButton.setText("ë¡œê·¸ì¸");
+		accountCreateButton.setVisible(true); // íšŒì›ê°€ì… ê°€ëŠ¥
 	}
 
-	// »ı¼ºÀÚ
+	// ìƒì„±ì
 	public MainFrame() {
-		String siteName = "»çÀÌÆ® ÀÌ¸§";
+		String siteName = "ì‚¬ì´íŠ¸ ì´ë¦„";
 		
-		// ÄÄÆ÷³ÍÆ® »ı¼º ¹× ÃÊ±âÈ­
+		// ì»´í¬ë„ŒíŠ¸ ìƒì„± ë° ì´ˆê¸°í™”
 		usernameLabel = new JLabel();
 		JLabel siteNameLabel = new JLabel(siteName);
-		JLabel introLabel = new JLabel("»çÀÌÆ® ¼Ò°³ ±Û");
+		JLabel introLabel = new JLabel("ì‚¬ì´íŠ¸ ì†Œê°œ ê¸€");
 
-		accountCreateButton = new JButton("°èÁ¤ »ı¼º");
+		accountCreateButton = new JButton("ê³„ì • ìƒì„±");
 		accountCreateButton.addActionListener(new ButtonActionListener(this));
 
-		loginButton = new JButton("·Î±×ÀÎ");
+		loginButton = new JButton("ë¡œê·¸ì¸");
 		loginButton.addActionListener(new ButtonActionListener(this));
 
-		problemListButton = new JButton("¹®Á¦ ¸®½ºÆ® È®ÀÎ");
+		problemListButton = new JButton("ë¬¸ì œ ë¦¬ìŠ¤íŠ¸ í™•ì¸");
 		problemListButton.addActionListener(new ButtonActionListener());
 
-		problemRecommendButton = new JButton("¹®Á¦ ÃßÃµ ¹Ş±â");
+		problemRecommendButton = new JButton("ë¬¸ì œ ì¶”ì²œ ë°›ê¸°");
 		problemRecommendButton.addActionListener(new ButtonActionListener());
 
-		myPageButton = new JButton("¸¶ÀÌ ÆäÀÌÁö");
+		myPageButton = new JButton("ë§ˆì´ í˜ì´ì§€");
 		myPageButton.addActionListener(new ButtonActionListener());
 
-		// °èÁ¤ °ü·Ã ¹öÆ° ´ã´Â ÆĞ³Î
+		// ê³„ì • ê´€ë ¨ ë²„íŠ¼ ë‹´ëŠ” íŒ¨ë„
 		JPanel accountPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		accountPanel.add(usernameLabel);
 		accountPanel.add(accountCreateButton);
 		accountPanel.add(loginButton);
 
-		// »çÀÌÆ® ·Î°í ¹× ¼Ò°³±Û ´ã´Â ÆĞ³Î (Áß¾Ó ¹èÄ¡)
-		JPanel introPanel = new JPanel(new FlowLayout()); // GridLayoutÀ» Á¤Áß¾Ó¿¡ À§Ä¡½ÃÅ°±â À§ÇÑ ÆĞ³Î 
+		// ì‚¬ì´íŠ¸ ë¡œê³  ë° ì†Œê°œê¸€ ë‹´ëŠ” íŒ¨ë„ (ì¤‘ì•™ ë°°ì¹˜)
+		JPanel introPanel = new JPanel(new FlowLayout()); // GridLayoutì„ ì •ì¤‘ì•™ì— ìœ„ì¹˜ì‹œí‚¤ê¸° ìœ„í•œ íŒ¨ë„ 
 		JPanel innerPanel = new JPanel(new GridLayout(2,1));
 		innerPanel.add(siteNameLabel);
 		innerPanel.add(introLabel);
 		introPanel.add(innerPanel);
 
-		// »çÀÌÆ® ±â´É ¹öÆ° ´ã´Â ÆĞ³Î		
+		// ì‚¬ì´íŠ¸ ê¸°ëŠ¥ ë²„íŠ¼ ë‹´ëŠ” íŒ¨ë„		
 		JPanel functionPanel = new JPanel(new FlowLayout());
 		functionPanel.add(problemListButton);
 		functionPanel.add(problemRecommendButton);
 		functionPanel.add(myPageButton);
 
-		// ·¹ÀÌ¾Æ¿ô
+		// ë ˆì´ì•„ì›ƒ
 		setLayout(new BorderLayout(50, 50));
 
-		// °¢ ÄÄÆ÷³ÍÆ® ÇÁ·¹ÀÓ¿¡ Ãß°¡
+		// ê° ì»´í¬ë„ŒíŠ¸ í”„ë ˆì„ì— ì¶”ê°€
 		add(introPanel, BorderLayout.CENTER);
 		add(accountPanel, BorderLayout.NORTH);
 		add(functionPanel, BorderLayout.SOUTH);
 
-		// ÇÁ·¹ÀÓ ¼Ó¼º ¼³Á¤
+		// í”„ë ˆì„ ì†ì„± ì„¤ì •
 		setTitle(siteName);
 		setSize(600, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setVisible(true);
 	}
 
-	// °¢ ¹öÆ° Å¬¸¯ ÀÌº¥Æ®¿¡ ´ëÇÑ ¸®½º³Ê Ã³¸®
+	// ê° ë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸ì— ëŒ€í•œ ë¦¬ìŠ¤ë„ˆ ì²˜ë¦¬
 	class ButtonActionListener implements ActionListener{
 		public MainFrame mainFrame;
 		public ButtonActionListener() {}
@@ -119,23 +119,24 @@ public class MainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!isLoggedin) { // ·Î±×ÀÎ ¾È µÈ °æ¿ì
-				if(e.getSource() == accountCreateButton) { // °èÁ¤ »ı¼º ¹öÆ° Å¬¸¯ 
-					new AccountCreateFrame(mainFrame); // °èÁ¤ »ı¼º ÇÁ·¹ÀÓ »ı¼º
-				} else if (e.getSource() == loginButton) { // ·Î±×ÀÎ
-					new LoginFrame(mainFrame);	// ·Î±×ÀÎ ÇÁ·¹ÀÓ »ı¼º				
-				} else { // ¹®Á¦ ¸®½ºÆ® Á¶È¸, ¹®Á¦ ÃßÃµ, ¸¶ÀÌÆäÀÌÁö ¹öÆ°ÀÌ Å¬¸¯
-					JOptionPane.showMessageDialog(null, "·Î±×ÀÎÀÌ ÇÊ¿äÇÕ´Ï´Ù.", "ÇØ´ç ±â´É »ç¿ë ºÒ°¡", JOptionPane.WARNING_MESSAGE);	
+			if(!isLoggedin) { // ë¡œê·¸ì¸ ì•ˆ ëœ ê²½ìš°
+				if(e.getSource() == accountCreateButton) { // ê³„ì • ìƒì„± ë²„íŠ¼ í´ë¦­ 
+					new AccountCreateFrame(mainFrame); // ê³„ì • ìƒì„± í”„ë ˆì„ ìƒì„±
+				} else if (e.getSource() == loginButton) { // ë¡œê·¸ì¸
+					new LoginFrame(mainFrame);	// ë¡œê·¸ì¸ í”„ë ˆì„ ìƒì„±				
+				} else { // ë¬¸ì œ ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ, ë¬¸ì œ ì¶”ì²œ, ë§ˆì´í˜ì´ì§€ ë²„íŠ¼ì´ í´ë¦­
+					JOptionPane.showMessageDialog(null, "ë¡œê·¸ì¸ì´ í•„ìš”í•©ë‹ˆë‹¤.", "í•´ë‹¹ ê¸°ëŠ¥ ì‚¬ìš© ë¶ˆê°€", JOptionPane.WARNING_MESSAGE);	
 				}
-			} else { // ·Î±×ÀÎ µÈ °æ¿ì
-				if (e.getSource() == loginButton) { // ·Î±×¾Æ¿ô ¹öÆ° Å¬¸¯
-					logOutComponents(); // ·Î±×¾Æ¿ô
-				} else if (e.getSource() == problemListButton) { // ¹®Á¦ ¸®½ºÆ® Á¶È¸ ¹öÆ° Å¬¸¯
+			} else { // ë¡œê·¸ì¸ ëœ ê²½ìš°
+				if (e.getSource() == loginButton) { // ë¡œê·¸ì•„ì›ƒ ë²„íŠ¼ í´ë¦­
+					logOutComponents(); // ë¡œê·¸ì•„ì›ƒ
+				} else if (e.getSource() == problemListButton) { // ë¬¸ì œ ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ ë²„íŠ¼ í´ë¦­
 					System.out.println("problemListButton clicked!");
-				} else if (e.getSource() == problemRecommendButton) {  // ¹®Á¦ ÃßÃµ ¹öÆ° Å¬¸¯
+				} else if (e.getSource() == problemRecommendButton) {  // ë¬¸ì œ ì¶”ì²œ ë²„íŠ¼ í´ë¦­
 					System.out.println("problemRecommendButton clicked!");
-				} else if (e.getSource() == myPageButton) { // ¸¶ÀÌ ÆäÀÌÁö ¹öÆ° Å¬¸¯
-					System.out.println("myPageButton clicked!");
+				} else if (e.getSource() == myPageButton) { // ë§ˆì´ í˜ì´ì§€ ë²„íŠ¼ í´ë¦­
+					MyPage myPageFrame = new MyPage(mainFrame, user);
+				    	myPageFrame.setVisible(true);
 				}
 			}
 		}
