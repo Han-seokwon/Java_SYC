@@ -8,11 +8,12 @@ import users.User;
 
 public class Problem implements Serializable {
 	
-	// 문제 이름, 문제 ID, 문제 URL(백준), 문제 랭크
+	// 문제 이름, 문제 ID, 문제 URL(백준), 문제 랭크, 문제 랭크 포인트
 	private String ProblemName;
 	private int ProblemID;
 	private String ProblemURL;
 	private RANK ProblemRank;
+	private int ProblemRankPoint;
 	/*
 	 * Step 1, Step 2, Step 3, Algorithm Hint를 키 값으로 탐색
 	 * 유저의 정보를 키 값으로 가지고 힌트를 값으로 가지는 해시맵을 값으로 가짐
@@ -26,11 +27,12 @@ public class Problem implements Serializable {
 	
 	// 생성자
 	public Problem() {}
-	public Problem(String ProblemName, int ID, String URL, RANK Rank, ArrayList<String> Algorithm) {
+	public Problem(String ProblemName, int ID, String URL, RANK Rank, int RankPoint, ArrayList<String> Algorithm) {
 		this.ProblemName = ProblemName;
 		this.ProblemID = ID;
 		this.ProblemURL = URL;
 		this.ProblemRank = Rank;
+		this.ProblemRankPoint = RankPoint;
 		this.ProblemAlgorithm = Algorithm;
 	}
 	public Problem(Problem problem) {
@@ -48,6 +50,7 @@ public class Problem implements Serializable {
 	    sb.append("Problem Name: ").append(ProblemName).append("\n");
 	    sb.append("Problem URL: ").append(ProblemURL).append("\n");
 	    sb.append("Problem Rank: ").append(ProblemRank).append("\n");
+	    sb.append("Problem RankPoint: ").append(ProblemRankPoint).append("\n");
 
 	    sb.append("Problem Hints: \n");
 	    for (String hintKey : ProblemHint.keySet()) {
@@ -88,6 +91,9 @@ public class Problem implements Serializable {
 	}
 	public RANK getProblemRank() {
 		return this.ProblemRank;
+	}
+	public int getProblemRankPoint() {
+		return this.ProblemRankPoint;
 	}
 	public HashMap<User, String> getProblemHint(String key) {
 	    HashMap<User, String> userHintMap = this.ProblemHint.get(key);
