@@ -10,10 +10,12 @@ import users.RANK;
 import file.FileManager;
 
 public class ProblemDBManager {
+	
 	// Key = 문제 ID, Value = Problem 객체
 	private static HashMap<Integer, Problem> ProblemDBMap = new HashMap<>();
 
-	public static void PrintProblemDBMap() { // 디버깅용
+	// 디버깅용
+	public static void PrintProblemDBMap() {
 		for (Map.Entry<Integer, Problem> entry : ProblemDBMap.entrySet()) {
             Integer key = entry.getKey();
             Problem value = entry.getValue();
@@ -21,7 +23,10 @@ public class ProblemDBManager {
         }
 	}
 	
-	// 문제를 해시맵 ProblemDBMap에 추가하는 함수
+	/*
+	 *  문제를 해시맵 ProblemDBMap에 추가하는 함수
+	 *  DB에서 문제를 가져올 때 사용
+	 */
 	public static boolean addProblem(int ID, Problem problem) {
 		if (!problem.isValid()) {
 			return false;
@@ -32,24 +37,27 @@ public class ProblemDBManager {
 		}
 	}
 	
-	// 문제를 .txt 파일에 저장 후 해시맵 ProblemDBMap에 추가하는 함수
+	/* 
+	 *  문제를 .txt 파일에 저장 후 해시맵 ProblemDBMap에 추가하는 함수
+	 *  문제를 DB에 새롭게 추가할 때 사용
+	 */
 	public static boolean createProblem(Problem problem) {
-		
 		if (!problem.isValid()) {
 			return false;
 		}
 		else {
 			String filename = Integer.toString(problem.getProblemID());
 			String filepath = String.format("\\problems\\ProblemDB\\%s.txt", filename);
-			FileManager.createUpdateObjectFile(problem, filepath);
-			ProblemDBMap.put(problem.getProblemID(), problem);
-			
+			FileManager.createUpdateObjectFile(problem, filepath);     // .txt 파일 저장
+			ProblemDBMap.put(problem.getProblemID(), problem);		   // 해시맵에 추가
 			return true;
 		}
-		
 	}
 	
-	// 문제를 바꾸는 함수
+	/* 
+	 *  문제를 바꾸는 함수
+	 *  사용자 기여를 통해 문제의 랭크가 변경됐을 때 사용
+	 */
 	public static boolean changeProblem(int ID, Problem problem) {
 		if (!problem.isValid()) {
 			return false;
@@ -58,7 +66,7 @@ public class ProblemDBManager {
 			if(ProblemDBMap.containsKey(ID)) {
 				ProblemDBMap.put(ID, problem);
 				String filename = Integer.toString(ID);
-				String filepath = String.format("problems\\ProblemDB\\%s.txt", filename);
+				String filepath = String.format("\\problems\\ProblemDB\\%s.txt", filename);
 				FileManager.createUpdateObjectFile(problem, filepath);
 				return true;
 			}
@@ -68,7 +76,7 @@ public class ProblemDBManager {
 		}
 	}
 	
-	// 문제가 있는지 확인하는 함수
+	// 문제가 해시맵에 있는지 확인하는 함수
 	public static boolean containProblem(int ID) {
 		if (ProblemDBMap.containsKey(ID)) {
 			return true;
@@ -90,7 +98,10 @@ public class ProblemDBManager {
 		}
 	}
 	
-	// 문제 ID를 기준으로 오름차순, 내림차순으로 정렬해서 반환하는 함수
+	/*
+	 *  문제 ID를 기준으로 오름차순, 내림차순으로 정렬해서 반환하는 함수
+	 *  true - 오름차순, false - 내림차순
+	 */
 	public static ArrayList<Problem> findProblemToID(boolean sort){
 		ArrayList<Integer> Keys = new ArrayList<>(ProblemDBMap.keySet());
 		ArrayList<Problem> ProblemSortID = new ArrayList<>();
@@ -109,7 +120,10 @@ public class ProblemDBManager {
 		return ProblemSortID;
 	}
 	
-	// 문제 이름을 기준으로 오름차순, 내림차순으로 정렬해서 반환하는 함수
+	/*
+	 *  문제 이름을 기준으로 오름차순, 내림차순으로 정렬해서 반환하는 함수
+	 *  true - 오름차순, false - 내림차순
+	 */
 	public static ArrayList<Problem> findProblemToName(boolean sort) {
 	    HashMap<Integer, String> ProblemName = new HashMap<>();
 	    ArrayList<Problem> SortProblem = new ArrayList<>();
@@ -143,7 +157,10 @@ public class ProblemDBManager {
 	    return SortProblem;
 	}
 	
-	// 문제 랭크를 기준으로 오름차순, 내림차순을 해서 반환하는 함수
+	/*
+	 *  문제 랭크를 기준으로 오름차순, 내림차순을 해서 반환하는 함수
+	 *  true - 오름차순, false - 내림차순
+	 */
 	public static ArrayList<Problem> findProblemToRank(boolean sort){
 		HashMap<Integer, RANK> ProblemName = new HashMap<>();
 	    ArrayList<Problem> SortProblem = new ArrayList<>();
@@ -177,7 +194,9 @@ public class ProblemDBManager {
 	    return SortProblem;
 	}
 	
-	// 문제 이름 검색을 통해 문제를 반환하는 함수
+	/*
+	 *  문제 이름 검색을 통해 문제를 반환하는 함수
+	 */
 	public static ArrayList<Problem> findProblemSearch(String Name) {
 	    ArrayList<Problem> ProblemSearch = new ArrayList<>();
 	    
@@ -188,6 +207,31 @@ public class ProblemDBManager {
 	    }
 	    
 	    return ProblemSearch;
+	}
+	
+	/*
+	 *  문제 알고리즘을 통해 문제를 반환하는 함수
+	 *  매개변수로 받은 리스트를 모두 포함하고 있는 문제만 반환
+	 */
+	public static ArrayList<Problem> findProblemAlgorithm(ArrayList<String> algorithm){
+		 ArrayList<Problem> ProblemSearch = new ArrayList<>();
+		 
+		 for (Problem problem : ProblemDBMap.values()) {
+			 if (containsAll(problem.getProblemAlgorithm(), algorithm)) {
+				 ProblemSearch.add(problem);
+			 }
+		 }
+		 
+		 return ProblemSearch;
+	}
+	
+	public static <T> boolean containsAll(ArrayList<T> A, ArrayList<T> B) {
+        return A.containsAll(B);
+    }
+	
+	// 문제 랭크 포인트를 통해 문제를 반환하는 함수
+	public static ArrayList<Problem> findProblemRankPoint(int RankPoint){
+		return null;
 	}
 	
 	// ProblemDB에 저장된 문제들을 불러 해시맵 ProblemDBManger에 추가하는 함수
