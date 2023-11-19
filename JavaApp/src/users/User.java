@@ -18,6 +18,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     private String solvedName; // solved.ac에 등록된 프로필 이름
     private String email;
     private String password_hashed; 
+    private String selfIntroduction = "";
     private RANK rank = RANK.RANK5; // 가장 낮은 랭크부터 시작
     private int rankPoint = 0; // 티어를 올리는데 필요한 포인트(경험치)
     private int consecutiveActivityDate = 0; // 연속 출석일
@@ -86,8 +87,13 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	}
 	public void setPassword_hashed(String password_hashed) {
 		this.password_hashed = password_hashed;
+	}	
+	public String getSelfIntroduction() {
+		return selfIntroduction;
 	}
-
+	public void setSelfIntroduction(String selfIntroduction) {
+		this.selfIntroduction = selfIntroduction;
+	}
 	public RANK getRank() {
 		return RANK.valueOf(rank.name()); // 깊은 복사를 위해 새로운 열거형 생성
 	}
