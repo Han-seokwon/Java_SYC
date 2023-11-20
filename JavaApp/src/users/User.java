@@ -87,12 +87,15 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	}
 	public void setPassword_hashed(String password_hashed) {
 		this.password_hashed = password_hashed;
+		updateUserFile(); // 직렬화 파일 업데이트
 	}	
 	public String getSelfIntroduction() {
 		return selfIntroduction;
 	}
 	public void setSelfIntroduction(String selfIntroduction) {
 		this.selfIntroduction = selfIntroduction;
+		updateUserFile(); // 직렬화 파일 업데이트
+		
 	}
 	public RANK getRank() {
 		return RANK.valueOf(rank.name()); // 깊은 복사를 위해 새로운 열거형 생성
@@ -144,8 +147,14 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     		return true;
     	}
     }
-	
-	// 유저의 랭크 포인트를 증가하고 다음 티어 진급을 위한 포인트를 넘기면 티어 상승	
+    
+    // 알고리즘 타입(분류)를 선호하는 알고리즘타입리스트에 추가
+    public void addPreferredAlgorithmType(String type) {
+    	preferredAlgorithmTypeSet.add(type);
+    }    
+    
+	// 유저의 랭크 포인트를 증가하고 다음 티어 진급을 위한 포인트를 넘기면 티어 상승
+	// addSolvedProblem() <- updateSolvedProbleList_FromSolvedAC() 에서 호출
     public void addRankPoint( int rankPoint) {
     	this.rankPoint += rankPoint;
     	RANK nextRank = rank.getNextRank();
@@ -155,18 +164,17 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 		}
     }
     
-    // 알고리즘 타입(분류)를 선호하는 알고리즘타입리스트에 추가
-    public void addPreferredAlgorithmType(String type) {
-    	preferredAlgorithmTypeSet.add(type);
-    }    
-    
     // 해결된 문제를 문제 리스트에 추가하고 문제의 랭크에 맞게 포인트를 증가시킴
+    // updateSolvedProbleList_FromSolvedAC() 에서 호출
     public void addSolvedProblem(Problem problem) {
-    	solvedProblemList.add(problem);
-    	addRankPoint(problem.getProblemRank().getPointGain()); // 포인트 증가    	
+    	if(!solvedProblemList.contains(problem)) { // 이미 추가된 문제가 아닌 경우
+    		solvedProblemList.add(problem);
+        	addRankPoint(problem.getProblemRank().getPointGain()); // 포인트 증가
+    	}    	
     }
     
     // 연속출석일 업데이트, today와 activityDateList의 마지막 요소를 비교해 연속출석일+1 하므로 오늘 날짜를 추가하기 전 이 메서드를 호출해야 함
+    // addTodayAttendance() <- updateSolvedProbleList_FromSolvedAC() 에서 호출
     private void updateConsecutiveDate(Date today) {
     	if(activityDateList.size() == 0) { // 아직 추가된 날짜가 없는 경우
     		consecutiveActivityDate++;
@@ -213,6 +221,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     	if(solvedProblemList.size() > solvedProblemCnt_before) { // 해결한 문제가 늘었다면 출석 반영
     	    addTodayAttendance(); // 오늘 출석 추가
     	}
+    	updateUserFile(); // 직렬화 파일 업데이트
     	
     }
     

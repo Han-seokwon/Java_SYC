@@ -12,13 +12,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /// 설문조사에 사용되는 질문항목을 저장하는 클래스로 문제와 선택지(객관식) 정보를 저장
-public class Question {
+public class SurveyQuestion {
 
 	protected String question;
 	protected ArrayList<String> choiceList = new ArrayList<>();
 
-	public Question() {};	
-	public Question(String question, ArrayList<String> choiceList) {
+	public SurveyQuestion() {};	
+	public SurveyQuestion(String question, ArrayList<String> choiceList) {
 		this.question = question;
 		this.choiceList = choiceList;
 	}	
@@ -44,21 +44,21 @@ public class Question {
 	/*
 	 * json 데이터를 Question으로 변환하여 반환
 	 */	
-	protected static Question createQuestionFromJson(JsonObject questionJsonObj) {
+	protected static SurveyQuestion createQuestionFromJson(JsonObject questionJsonObj) {
 		String question = questionJsonObj.get("question").getAsString();
 		JsonArray choiceListJsonArray = questionJsonObj.get("choiceList").getAsJsonArray();
 		ArrayList<String> choiceList = new ArrayList<>();
 		for(JsonElement choiceListJson : choiceListJsonArray) {
 			choiceList.add(choiceListJson.getAsString());
 		}
-		return new Question(question, choiceList);		
+		return new SurveyQuestion(question, choiceList);		
 	}
 	
 	/*
 	 * 질문 데이터가 저장된 json데이터를 ArrayList<Question> 로 변환하여 반환
 	 */
-	public static ArrayList<Question> loadQuestionList(){
-		ArrayList<Question> questionList = new ArrayList<>();		
+	public static ArrayList<SurveyQuestion> loadQuestionList(){
+		ArrayList<SurveyQuestion> questionList = new ArrayList<>();		
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("src/users/Questions.json"), "UTF-8"))){
 			// JsonParser 생성
 			JsonParser jsonParser = new JsonParser();            

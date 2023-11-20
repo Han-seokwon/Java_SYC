@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import users.EvaluationQuestion;
-import users.Question;
+import users.SurveyQuestion;
 import users.User;
 
 // 계정 생성 시 사용자의 선호 알고리즘 유형 및 기본 개념 테스트를 진행하는 클래스
@@ -35,7 +35,7 @@ public class SurveyFrame extends JFrame {
 	private JPanel contentPane;
 	
 	// 현재는 학습 성향 확인용 문제가 1개 밖에 없지만 확장성을 위해 문제를 저장하는 ArrayList로 선언
-	private ArrayList<Question> learningStyleCheckQuestions = new ArrayList<>(); 
+	private ArrayList<SurveyQuestion> learningStyleCheckQuestions = new ArrayList<>(); 
 	private ArrayList<Checkbox[]> learningStyleCheckBtnGroupList = new ArrayList<>();
 	
 	private ArrayList<EvaluationQuestion> evalQuestions = new ArrayList<>();
@@ -46,7 +46,7 @@ public class SurveyFrame extends JFrame {
 		this.user = user; // 현재 설문조사를 진행하는 유저 데이터 받아오기
 		
 		// 학습성향 확인 질문 불러오기		
-		learningStyleCheckQuestions = Question.loadQuestionList();
+		learningStyleCheckQuestions = SurveyQuestion.loadQuestionList();
 		// 개념 테스트 질문 불러오기
 		evalQuestions = EvaluationQuestion.loadEvaluationQuestionList();
 		
@@ -172,7 +172,7 @@ public class SurveyFrame extends JFrame {
         for (int i = 0 ; i < learningStyleCheckQuestions.size(); i++ ) {        	 
         	JPanel questionPanel = new JPanel(new GridLayout(2, 0, 5, 5));
         	// 질문 라벨 추가
-        	Question question = learningStyleCheckQuestions.get(i);
+        	SurveyQuestion question = learningStyleCheckQuestions.get(i);
         	questionPanel.add(new JLabel(String.format("(%d번) ", i+1) + question.getQuestion()));
         	
         	// 선택지 체크 박스 추가

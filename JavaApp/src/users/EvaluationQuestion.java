@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 // Question 클래스를 상속받은 클래스로 설문조사에 사용되는 개념 테스트 문제들을 저장, 문제와 선택지, 정답, 맞춘 경우 얻을 수 있는 랭크 포인트를 필드로 가지고 있음
-public class EvaluationQuestion extends Question{
+public class EvaluationQuestion extends SurveyQuestion{
 
 	private int answerNum;
 	private int point;
@@ -47,7 +47,7 @@ public class EvaluationQuestion extends Question{
 	 * json데이터를 EvaluationQuestion로 변환하여 반환
 	 * */
 	private static EvaluationQuestion createEvaluationQuestionFromJson(JsonObject questionJsonObj) {
-		Question question = createQuestionFromJson(questionJsonObj);
+		SurveyQuestion question = createQuestionFromJson(questionJsonObj);
 		int answerNum = questionJsonObj.get("answerNum").getAsInt();
 		int point = questionJsonObj.get("point").getAsInt();
 		return new EvaluationQuestion(question.getQuestion(), question.getChoiceList(), answerNum, point);

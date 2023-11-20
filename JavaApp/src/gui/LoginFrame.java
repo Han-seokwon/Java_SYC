@@ -43,7 +43,6 @@ public class LoginFrame extends JFrame{
 		loginButton.addActionListener(new LoginButtonListener());
 		resetPasswordButton.addActionListener(new ResetButtonListener());
 
-
 		// 레이아웃
 		setLayout(new GridLayout(3, 2, 70, 70));
 
@@ -54,10 +53,8 @@ public class LoginFrame extends JFrame{
 		add(passwordField);
 		add(loginButton);
 		add(resetPasswordButton);
-
 		setVisible(true);
 	}
-
 
 	class LoginButtonListener implements ActionListener {
 		@Override
@@ -75,7 +72,8 @@ public class LoginFrame extends JFrame{
 			}	                
 			JOptionPane.showMessageDialog(null, dialogMsg); // 로그인 실패, 성공 여부를 알려주는 팝업창 오픈
 			System.out.println(user);
-			if(loginSuccess) { // 로그인 성공한 경우				
+			if(loginSuccess) { // 로그인 성공한 경우	
+				user.updateSolvedProbleList_FromSolvedAC(); // 백준 해결한 문제 업데이트
 				mainFrame.logInComponents(user); // 메인 프레임 로그인관련 컴포넌트 업데이트 및 유저 인스턴스 전달
 				// 로그아웃 버튼으로 바꾸기
 				dispose(); // 로그인 창 닫기
@@ -86,7 +84,7 @@ public class LoginFrame extends JFrame{
 	class ResetButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e2) {   
-			// 비밀번호 초기화 전 유저이름, 이메일 확인 프레임용 생성
+			// 비밀번호 초기화 1단계 유저이름, 이메일 확인용 프레임 생성
 			new PasswordResetUsernameEmailCheckFrame(); 
 		}
 	}

@@ -172,7 +172,7 @@ public class RecommendProblemFrame extends JFrame {
 				recommendedProblemList = ProblemDBManager.findProblemSearch("정렬");
 				System.out.println(recommendedProblemList);
 
-				//				recommendedProblemList = RecommendProblem.메서드이름 // 클래스 완성시 추가
+				// ㄲrecommendedProblemList = RecommendProblem.메서드이름 // 클래스 완성시 추가
 			} else if(selectedButton == recommendByRankButton) {				
 				System.out.println("난이도별 추천 버튼 clicked!");
 				// 테스트용 -> 추후 삭제

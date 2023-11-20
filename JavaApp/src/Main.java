@@ -9,7 +9,7 @@ import problems.Problem;
 import problems.ProblemDBManager;
 import users.AccountManager;
 import users.EvaluationQuestion;
-import users.Question;
+import users.SurveyQuestion;
 import users.User;
 import users.UserDBManager;
 
@@ -28,7 +28,7 @@ public class Main {
 	
 	private static void testSurveyData() { // 설문조사 테스트
 //		설문조사 데이터 로드 확인
-		Question.loadQuestionList();
+		SurveyQuestion.loadQuestionList();
 		EvaluationQuestion.loadEvaluationQuestionList();
 
 		User user = UserDBManager.findUserByEmail("han@naver.com");		
@@ -93,6 +93,7 @@ public class Main {
 		// <  기타 프레임 테스트 >
 		// 문제 추천 프레임
 //		new RecommendProblemFrame(new User());
+		
 		
 		User user1 = UserDBManager.findUserByEmail("han@naver.com");
 		Problem problem = ProblemDBManager.findProblem(1000);

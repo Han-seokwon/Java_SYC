@@ -37,6 +37,21 @@ public class UserDBManager {
 	}
 	
 	/*
+	 * 유저이름에 해당하는 User 인스턴스 반환, isEmailExist() 사용하여 등록된 유저인지 확인후 사용하는 것 권장
+	 * return : 인자로 전달된 유저이름에 일치하는 유저
+	 */
+	public static User findUserByUsername(String username) throws NullPointerException{
+		for(User user : userDBMap.values()) {
+			if(user.getUsername().equals(username)) {
+				return user;
+			}
+		}
+		// 해당 유저가 없는 경우
+		throw new NullPointerException("경고 : 존재하지 않는 이메일입니다.");
+	}
+	
+	
+	/*
 	 *  유저 데이터의 유효성을 검사하고 email을 key로 하여 해시맵에 추가함
 	 *  return : 정상적으로 추가되었는지 여부를 반환
 	 */
