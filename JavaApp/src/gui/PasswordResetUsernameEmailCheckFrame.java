@@ -18,9 +18,9 @@ import users.UserDBManager;
 
 // 비밀번호 초기화 과정 1단계 : 유저이름, 이메일 확인 -> 2단계 : 초기화 질문에 대한 답변 확인 -> 3 단계 : 새롭게 변경할 비밀번호 입력
 
+// << 비밀번호 초기화 과정 1단계 >>
+// 유저이름, 이메일를 입력하여 비밀번호를 초기화할 사용자를 찾는 프레임
 public class PasswordResetUsernameEmailCheckFrame extends JFrame {
-	// << 비밀번호 초기화 과정 1단계 >>
-	// 유저이름, 이메일를 입력하여 비밀번호를 초기화할 사용자를 찾는 프레임
  
 
 	private JTextField usernameField;
