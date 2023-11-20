@@ -18,7 +18,7 @@ import users.AccountManager;
 import users.ResisterationFormat;
 import users.User;
 
-
+// 계정 생성을 진행하는 페이지
 public class AccountCreateFrame extends JFrame{
 
 	// 컴포넌트 선언

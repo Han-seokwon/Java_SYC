@@ -8,8 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+// JButton을 상속하는 클래스로 버튼 클릭 시, 버튼이 추가된 프레임을 닫는 리스너를 추가한 버튼 클래스
 public class CancelButton extends JButton{
-	// 상위프레임을 닫는 핸들러를 추가한 취소버튼을 생성하는 버튼 클래스
 	public CancelButton() {
 		this("취소");
 	}

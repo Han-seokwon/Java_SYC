@@ -11,7 +11,7 @@ import file.FileManager;
 import problems.Problem;
 import problems.SolvedProblem;
 
-
+//유저의 데이터를 저장하는 클래스, 기본적인 회원 정보와 유저가 해결한 문제를 저장
 public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도록 직렬화함
 	
     private String username;

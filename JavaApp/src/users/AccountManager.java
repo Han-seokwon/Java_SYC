@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import fetcher.JsonFetcher;
 import file.FileManager;
 
+// 회원 관리에 필요한 static 메서드들을 모은 클래스
 public class AccountManager {
 	
 	// 회원가입 정보 유효성 확인 메서드
@@ -94,19 +95,5 @@ public class AccountManager {
 		} catch (NullPointerException e) { 
 			throw e;// 에러 메시지를 전달하기 위해 예외 되던지기
 		}
-	}
-	
-	/* 사용자의 비밀번호를 변경하는 메서드, UserDB 폴더에 저장된 객체파일도 수정
-	 * param : 비번을 수정할 유저 객체, 수정할 비번 문자열
-	 */
-	public static void updatePassword(User user, String newPassWord) {
-		String newPassword_hashed = PasswordManager.hashPassword(newPassWord, user.getEmail());
-		user.setPassword_hashed(newPassword_hashed);		
-		// 해당 객체 파일 업데이트
-		String filename = FileManager.emailToFilename(user.getEmail());
-		String filepath = String.format("/users/UserDB/%s.txt", filename); // 경로 지정
-		FileManager.createUpdateObjectFile(user, filepath);
-		
-	}
-	
+	}	
 }

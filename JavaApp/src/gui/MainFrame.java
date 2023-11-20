@@ -21,6 +21,7 @@ import gui.AccountCreateFrame.SubmitButtonListener;
 import users.AccountManager;
 import users.User;
 
+// 프로그램 홈체이지
 public class MainFrame extends JFrame{
 	// 컴포넌트 선언
 	private JLabel usernameLabel;

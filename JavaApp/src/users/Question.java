@@ -11,13 +11,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/// 설문조사에 사용되는 질문항목을 저장하는 클래스로 문제와 선택지(객관식) 정보를 저장
 public class Question {
 
 	protected String question;
 	protected ArrayList<String> choiceList = new ArrayList<>();
 
-	
-	
 	public Question() {};	
 	public Question(String question, ArrayList<String> choiceList) {
 		this.question = question;
@@ -41,7 +40,6 @@ public class Question {
 	public void setChoiceList(ArrayList<String> choiceList) {
 		this.choiceList = choiceList;
 	}
-
 	
 	/*
 	 * json 데이터를 Question으로 변환하여 반환
@@ -78,7 +76,6 @@ public class Question {
 			System.out.println("Questions.json을 읽어오지 못했습니다.");
             e.printStackTrace(); 
         }
-		
 		return questionList;	
 		
 	}

@@ -5,8 +5,23 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+import file.FileManager;
 
+// 비밀번호관련 작업을 하는 static 메서드를 모은 클래스
 public class PasswordManager {
+	/* 사용자의 비밀번호를 변경하는 메서드, UserDB 폴더에 저장된 객체파일도 수정
+	 * param : 비번을 수정할 유저 객체, 수정할 비번 문자열
+	 */
+	public static void updatePassword(User user, String newPassWord) {
+		String newPassword_hashed = hashPassword(newPassWord, user.getEmail());
+		user.setPassword_hashed(newPassword_hashed);		
+		// 해당 객체 파일 업데이트
+		String filename = FileManager.emailToFilename(user.getEmail());
+		String filepath = String.format("/users/UserDB/%s.txt", filename); // 경로 지정
+		FileManager.createUpdateObjectFile(user, filepath);
+		
+	}
+	
 	/* 비밀번호를 해싱하는 메서드, 이메일을 솔트로 이용함
 	 * return : 해싱된 문자열   
 	 */

@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+// 직렬화가 가능한 객체들을 직렬화하여 .txt 파일로 지정된 경로의 DB 폴더에 저장하고 저장된 .txt 파일들을 역직렬화를 통해 다시 Object 객체로 변환
 public class FileManager {	
 	/* 
 	 * email을 파일명에 맞게 변환, @를 0으로 .을 1로 바꾸어 저장 ( 예시 qwe@naver.com -> qwe0naver1com )

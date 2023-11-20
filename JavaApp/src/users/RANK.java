@@ -3,7 +3,7 @@ package users;
 import java.util.ArrayList;
 import java.util.Vector;
 
-// 사용자, 문제의 랭크를 구분하는 열거형
+//사용자의 랭크 및 문제의 랭크를 정하는데 사용되는 열거형 클래스 
 public enum RANK {
 	// 랭크 포인트 차이는 모두 같아야 함
     RANK5(0, 2, "Rank5"), RANK4(1, 4, "Rank4"), RANK3(2, 6, "Rank3"), RANK2(3, 8, "Rank2"), RANK1(4, 10, "Rank1");

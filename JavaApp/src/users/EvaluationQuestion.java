@@ -1,6 +1,7 @@
 package users;
 
 import java.io.BufferedReader;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+// Question 클래스를 상속받은 클래스로 설문조사에 사용되는 개념 테스트 문제들을 저장, 문제와 선택지, 정답, 맞춘 경우 얻을 수 있는 랭크 포인트를 필드로 가지고 있음
 public class EvaluationQuestion extends Question{
 
 	private int answerNum;

@@ -28,7 +28,7 @@ import problems.ProblemRank;
 import problems.ProblemRankManager;
 import users.RANK;
 import users.User;
-
+// 사용자가 문제의 랭크, 랭크 포인트, 그에 대한 코멘트를 입력하면 해당 데이터를 관련 클래스로 전달하는 클래스
 public class RateProblemFrame extends JFrame {
 	private JPanel centerPanel; // 프레임의 컴포넌트들을 배치할 메인 패널
 	private JComboBox<RANK> rankComboBox; // 랭크 선택 콤보박스

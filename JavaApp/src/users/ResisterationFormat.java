@@ -1,5 +1,6 @@
 package users;
 
+// 회원 가입에 필요한 정보를 저장하는 클래스
 public class ResisterationFormat {
     private String name;
     private String solvedName; // solved.ac에 등록된 프로필 이름

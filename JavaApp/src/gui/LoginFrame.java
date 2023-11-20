@@ -14,8 +14,8 @@ import javax.swing.JTextField;
 import users.AccountManager;
 import users.User;
 
+// 로그인을 진행하는 프레임, 비밀번호 초기화 버튼 클릭시 초기화용 프레임을 오픈함
 public class LoginFrame extends JFrame{
-	// 로그인을 진행하는 프레임, 비밀번호 초기화 버튼 클릭시 초기화용 프레임을 오픈함
 	private JTextField emailField;
 	private JPasswordField passwordField;
 	// 로그인 성공한 경우 메인프레임의 로그인 관련 컴포넌트를 업데이트 하기위해 멤버로 메인프레임 객체를 가짐

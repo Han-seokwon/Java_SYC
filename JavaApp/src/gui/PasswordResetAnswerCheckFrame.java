@@ -17,9 +17,9 @@ import javax.swing.SwingUtilities;
 import users.User;
 //비밀번호 초기화 과정 1단계 : 유저이름, 이메일 확인 -> 2단계 : 초기화 질문에 대한 답변 확인 -> 3 단계 : 새롭게 변경할 비밀번호 입력
 
+// << 비밀번호 초기화 과정 2단계 >>
+// 유저이름, 이메일을 토대로 확인된 사용자의 비번 초기화 질문을 가져와 답변을 입력받는 프레임
 public class PasswordResetAnswerCheckFrame extends JFrame {
-	// << 비밀번호 초기화 과정 2단계 >>
-	// 유저이름, 이메일을 토대로 확인된 사용자의 비번 초기화 질문을 가져와 답변을 입력받는 프레임
 	
 	private String resetQuestion, resetAnswer;
 	private JTextField answerField;

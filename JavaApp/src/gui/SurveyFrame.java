@@ -28,6 +28,7 @@ import users.EvaluationQuestion;
 import users.Question;
 import users.User;
 
+// 계정 생성 시 사용자의 선호 알고리즘 유형 및 기본 개념 테스트를 진행하는 클래스
 public class SurveyFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
