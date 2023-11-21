@@ -8,7 +8,7 @@ import users.RANK;
 
 public class Problem implements Serializable {
 	
-	// 문제 이름, 문제 ID, 문제 URL(백준), 문제 랭크, 문제 랭크 포인트
+	// 문제 이름, 문제 ID, 문제 URL, 문제 랭크, 문제 랭크 포인트
 	private String ProblemName;
 	private int ProblemID;
 	private String ProblemURL;
@@ -19,9 +19,12 @@ public class Problem implements Serializable {
 	 * 키값에 해당하는 ProblemHint 객체 리스트를 가짐
 	 */
 	private HashMap<String, List<HintSave>> ProblemHint = new HashMap<>();		
-	// 학습자료 URL, 문제 알고리즘 분류
+	// 학습자료, 문제 알고리즘 분류
 	private List<LearningMaterialsSave> ProblemReferences = new ArrayList<>();
 	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();
+	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();
+	private ArrayList<Integer> ProblemMemory = new ArrayList<>();
+	
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -85,8 +88,34 @@ public class Problem implements Serializable {
 	public ArrayList<String> getProblemAlgorithm(){
 		return this.ProblemAlgorithm;
 	}
+	// 평균 런타임과 평균 메모리 사용량을 반환하는 함수
+	public int getProblemAvgRunTime() {
+		int sum = 0;
+	    
+		for(int i = 0; i < this.ProblemRunTime.size(); i++) {
+	    	sum += this.ProblemRunTime.get(i);
+	    }
+		
+		return sum / this.ProblemRunTime.size();
+	}
+	public int getProblemAvgMemory() {
+		int sum = 0;
+	    
+		for(int i = 0; i < this.ProblemMemory.size(); i++) {
+	    	sum += this.ProblemMemory.get(i);
+	    }
+		
+		return sum / this.ProblemMemory.size();
+	}
 	
-	// 문제 힌트 추가
+	/*
+	 *  Problem에 힌트를 추가하는 함수
+	 *  key : 'Step 1', 'Step 2', 'Step 3' / plbmHint : HintSave 객체 변수
+	 *  key 값에 해당하는 리스트를 ProblemHint 해시맵에서 가져옴
+	 *  리스트에 넘겨받은 HintSave 객체 변수를 추가
+	 *  이후, 해당 키값과 리스트를 ProblemHint 해시맵에 추가
+	 *  changProblem 함수를 이용하여 힌트가 추가된 문제로 최신화
+	 */
 	public void addProblemHint(String key, HintSave plbmHint) {
 	    List<HintSave> hintList = ProblemHint.getOrDefault(key, new ArrayList<>());
         hintList.add(plbmHint);
@@ -94,12 +123,40 @@ public class Problem implements Serializable {
         ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}
 	
-	// 학습 자료 추가
+	/*
+	 *  Problem에 학습 자료를 추가하는 함수
+	 *  plbmReferences : LearningMaterialsSave 객체 변수
+	 *  매개변수로 받은 객체 변수를 ProblemReferences 리스트에 추가
+	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화
+	 */
 	public void addProblemReferences(LearningMaterialsSave plbmReferences) {
 		this.ProblemReferences.add(plbmReferences);
 		ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}
 	
+	/*
+	 *  Problem에 사용자가 얻은 런타임 정보를 추가하는 함수
+	 *  RunTime : 사용자가 얻은 런타임 값
+	 *  매개변수로 받은 RunTime를 ProblemRunTime 리스트에 추가
+	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화 
+	 */
+	public void addProblemRunTime(int RunTime) {
+		this.ProblemRunTime.add(RunTime);
+		ProblemDBManager.changeProblem(this.getProblemID(), this);
+	}
+	
+	/*
+	 *  Problem에 사용자가 얻은 메모리 사용량 정보를 추가하는 함수
+	 *  Memory : 사용자가 얻은 메모리 사용량 값
+	 *  매개변수로 받은 Memory를 ProblemMemory 리스트에 추가
+	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화 
+	 */
+	public void addProblemMemory(int Memory) {
+		this.ProblemMemory.add(Memory);
+		ProblemDBManager.changeProblem(this.getProblemID(), this);
+	}
+	
+	// 유효한 Problem인지 확인하는 함수
 	public boolean isValid() {
 		if (this.ProblemID == 0 || 
 				this.ProblemName == null || 
