@@ -10,7 +10,7 @@ import users.RANK;
 
 public class ProblemRankManager {
 	
-	// Key = 문제 번호, Value = Rank 리스트
+	// Key = 문제 번호, Value = ProblemRank 리스트
 	private static HashMap<Integer, List<ProblemRank>> ProblemRankMap = new HashMap<>();
 	
 	// 디버깅
@@ -28,13 +28,19 @@ public class ProblemRankManager {
 	}
 	
 	/*
-	 *  사용자 기여를 해시맵에 저장하는 함수
-	 *  DB에서 사용자 기여 정보를 가져올 때 사용
+	 *  ProblemRank를 ProblemRankMap 해시맵에 저장하는 함수
+	 *  ProblemRankDB 폴더에서 ProblemRank를 가져올 때 사용
+	 *  ID : 문제 번호, problemRank : ProblemRank 객체 변수
 	 */
 	public static boolean addRank(int ID, ProblemRank problemRank) {
 	    if (!problemRank.isValid()) {
 	        return false;
 	    } else {
+	    	/*
+	    	 *  getOrDefault
+	    	 *  키 값에 해당하는 값이 없으면 새롭게 리스트 선언
+	    	 *  해당하는 값이 있으면 해당하는 리스트 반환
+	    	 */
 	        List<ProblemRank> problemRanks = ProblemRankMap.getOrDefault(ID, new ArrayList<>());
 	        problemRanks.add(problemRank);
 	        ProblemRankMap.put(ID, problemRanks);
@@ -43,18 +49,21 @@ public class ProblemRankManager {
 	}
 	
 	/* 
-	 *  사용자 기여를 추가하는 함수
-	 *  새롭게 추가된 사용자 기여 정보를 해시맵에 먼저 저장 후 DB에 저장
+	 *  사용자 기여정보를 .txt로 변환하여 ProblemRankDB 폴더에 저장 
+	 *  이후, ProblemRankMap 해시맵에 추가하는 함수
+	 *  problemRank : ProblemRank 객체 변수
+	 *  새롭게 생성된 ProblemRank 객체 변수를 ProblemRankDB 폴더에 추가할 때 사용한다.
+	 *  이후, 문제 난이도를 재평가한다. 
 	 */
 	public static boolean createRank(ProblemRank problemRank) {
 	    if (!problemRank.isValid()) {
 	        return false;
 	    } else {
-	        int id = problemRank.getID();
-	        addRank(id, problemRank);
+	        int id = problemRank.getID();      // 문제 번호 추출
+	        addRank(id, problemRank);          // 해시맵에 추가
 			String filename = Integer.toString(id);
 			String filepath = String.format("\\problems\\ProblemRankDB\\%s.txt", filename);
-	        FileManager.createUpdateObjectFile(ProblemRankMap.get(id), filepath);
+	        FileManager.createUpdateObjectFile(ProblemRankMap.get(id), filepath);     // .txt 파일 저장
 	        calcProblemRank(id);
 	        return true;
 	    }
@@ -62,6 +71,7 @@ public class ProblemRankManager {
 	
 	/*
 	 *  문제에 대한 사용자 기여 정보를 얻는 함수
+	 *  ID : 문제 번호
 	 */
 	public static List<ProblemRank> getComment(int ID){
 		if(ProblemRankMap.get(ID) == null) {
@@ -72,12 +82,19 @@ public class ProblemRankManager {
 		}
 	}
 	
-	// 난이도를 계산하여 난이도 재설정하는 함수
+	/*
+	 *  문제 난이도를 재평가하는 함수
+	 *  ID : 문제 번호
+	 *  해당 문제의 기여 수가 10개 단위가 되면 문제 난이도가 재평가
+	 *  문제 랭크 및 문제 랭크 포인트가 사용자 기여의 평균값으로 재평가가 됨
+	 */
 	public static boolean calcProblemRank(int ID) {
 		List<ProblemRank> RankList = ProblemRankMap.get(ID);	
 		
 		if (RankList.size() % 10 == 0) {
+			// ProblemDBManager에서 번호에 해당하는 문제를 가져옴
 			Problem plbm = ProblemDBManager.findProblem(ID);
+			// 문제 랭크 및 문제 랭크 포인트 계산
 			int sum = 0;
 			int point = 0;
 		    
@@ -85,30 +102,30 @@ public class ProblemRankManager {
 		    	sum += RankList.get(i).getRANK().getRequireRankPoint();
 		    	point += RankList.get(i).getRankPoint();
 		    }
-		    
-		    int value = sum / RankList.size();
-	        int remainder = value % 100;
-	        int adjustment = remainder < 50 ? 0 : 100;
-	        int avg = (value / 100) * 100 + adjustment;
-	        
+		     
+	        int avg = sum / RankList.size();
 	        int pointavg = point / RankList.size();
 		    
 		    if (avg == 0) {
 		    	plbm.setProblemRank(RANK.RANK5);
 		    }
-		    else if(avg == 100) {
+		    else if(avg == 1) {
 		    	plbm.setProblemRank(RANK.RANK4);
 		    }
-		    else if(avg == 200) {
+		    else if(avg == 2) {
 		    	plbm.setProblemRank(RANK.RANK3);
 		    }
-		    else if(avg == 300) {
+		    else if(avg == 3) {
 		    	plbm.setProblemRank(RANK.RANK2);
 		    }
 		    else {
 		    	plbm.setProblemRank(RANK.RANK1);
 		    }
 	        
+		    /*
+		     * setProblemRankPoint를 이용하여 해당 문제의 난이도를 재설정
+		     * 이후. ProblemDBManager에서 해당 문제를 최신화
+		     */
 		    plbm.setProblemRankPoint(pointavg);
 		    ProblemDBManager.changeProblem(ID, plbm);
 		    ProblemDBManager.addProblem(ID, plbm);
@@ -119,6 +136,7 @@ public class ProblemRankManager {
 		}	
 	}
 	
+	// ProblemRankDB에 저장된 문제들을 불러 ProblemRankMap 해시맵에 추가하는 함수
 	public static void init() {
 		String dirpath = String.format("\\problems\\ProblemRankDB"); // 경로 지정
 		// 해당 폴더에 저장된 모든 파일을 Object로 변환하여 ArrayList<Object>로 변환 
