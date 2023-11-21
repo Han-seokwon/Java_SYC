@@ -18,9 +18,10 @@ public class ProblemRank implements Serializable {
 	
 	@Override
 	public String toString() {
-	    return "-" + user + " : ( " + Rank + " 선택 ) " + Comment + "\n"; 
+	    return "-" + user + " : ( " + Rank + " 선택 ) " + Comment + " " + RankPoint; 
 	}
 	
+	// 생성자
 	public ProblemRank() {}
 	public ProblemRank(int ID, User user, RANK Rank, int Point, String Comment) {
 		this.ID = ID;
@@ -30,6 +31,7 @@ public class ProblemRank implements Serializable {
 		this.Comment = Comment;
 	}
 	
+	// 접근자
 	public RANK getRANK() {
 		return this.Rank;
 	}
