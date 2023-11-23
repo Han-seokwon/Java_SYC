@@ -217,9 +217,9 @@ public class JsonFetcher {
 		// 문제 URL
 		String url = BOJ_PROBLEM_PATH + problemId;
 		// 문제 랭크
-		int level = itemsJsonObj.get("level").getAsInt();
+		int rankPoint = itemsJsonObj.get("level").getAsInt();
 		// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환하여 그에 맞는 RANK 열거형 설정
-		RANK rank = changeSolvedLevelToRANK(level);		
+		RANK rank = changeSolvedLevelToRANK(rankPoint);		
 		// 문제 알고리즘 종류
 		// 알고리즘 정보는 현재 json 파일에 없어, 문제번호를 쿼리로 하는 추가적 api 요청 필요
 		ArrayList<String> algorithmTagList = new ArrayList<>();
@@ -230,7 +230,7 @@ public class JsonFetcher {
 		}
 		
 		// 위 데이터들을 가지고 Problem 객체 생성
-		return new Problem(problemName, problemId, url, rank, algorithmTagList);
+		return new Problem(problemName, problemId, url, rank, rankPoint, algorithmTagList);
 	}
 	
 	// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환하여 그에 맞는 RANK 열거형 반환

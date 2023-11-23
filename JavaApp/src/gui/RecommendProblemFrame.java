@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -169,14 +170,16 @@ public class RecommendProblemFrame extends JFrame {
 			if(selectedButton== recommendByAlgorithmTypeButton) { 
 				System.out.println("알고리즘별 추천 버튼  clicked!");
 				// 테스트용 -> 추후 삭제
-				recommendedProblemList = ProblemDBManager.findProblemSearch("정렬");
+				ArrayList<String> temp = new ArrayList<>(Arrays.asList("정렬"));
+				recommendedProblemList = ProblemDBManager.findProblemAlgorithm(temp);
 				System.out.println(recommendedProblemList);
 
-				// ㄲrecommendedProblemList = RecommendProblem.메서드이름 // 클래스 완성시 추가
+				// recommendedProblemList = RecommendProblem.메서드이름 // 클래스 완성시 추가
 			} else if(selectedButton == recommendByRankButton) {				
 				System.out.println("난이도별 추천 버튼 clicked!");
 				// 테스트용 -> 추후 삭제
-				recommendedProblemList = ProblemDBManager.findProblemSearch("수");
+				ArrayList<String> temp = new ArrayList<>(Arrays.asList("수"));
+				recommendedProblemList = ProblemDBManager.findProblemAlgorithm(temp);
 				System.out.println(recommendedProblemList);				
 				// recommendedProblemList = RecommendProblem.메서드이름(user) // 클래스 완성시 추가
 			}

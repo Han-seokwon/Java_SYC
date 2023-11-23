@@ -3,70 +3,55 @@ package problems;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import users.RANK;
-import users.User;
 
 public class Problem implements Serializable {
 	
-	// 문제 이름, 문제 ID, 문제 URL(백준), 문제 랭크
+	// 문제 이름, 문제 ID, 문제 URL, 문제 랭크, 문제 랭크 포인트
 	private String ProblemName;
 	private int ProblemID;
 	private String ProblemURL;
 	private RANK ProblemRank;
+	private int ProblemRankPoint;
 	/*
-	 * Step 1, Step 2, Step 3, Algorithm Hint를 키 값으로 탐색
-	 * 유저의 정보를 키 값으로 가지고 힌트를 값으로 가지는 해시맵을 값으로 가짐
+	 * Step 1, Step 2, Step 3를 키 값으로 탐색
+	 * 키값에 해당하는 ProblemHint 객체 리스트를 가짐
 	 */
-	private HashMap<String, HashMap<User, String>> ProblemHint = new HashMap<>();
-	// 학습자료 URL, 문제 알고리즘 분류
-	private ArrayList<String> ProblemReferences = new ArrayList<>();
+	private HashMap<String, List<HintSave>> ProblemHint = new HashMap<>();		
+	// 학습자료, 문제 알고리즘 분류
+	private List<LearningMaterialsSave> ProblemReferences = new ArrayList<>();
 	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();
+	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();
+	private ArrayList<Integer> ProblemMemory = new ArrayList<>();
+	
 	
 	private static final long serialVersionUID = 1L;
 	
 	// 생성자
 	public Problem() {}
-	public Problem(String ProblemName, int ID, String URL, RANK Rank, ArrayList<String> Algorithm) {
+	public Problem(String ProblemName, int ID, String URL, RANK Rank, int RankPoint, ArrayList<String> Algorithm) {
 		this.ProblemName = ProblemName;
 		this.ProblemID = ID;
 		this.ProblemURL = URL;
 		this.ProblemRank = Rank;
+		this.ProblemRankPoint = RankPoint;
 		this.ProblemAlgorithm = Algorithm;
-	}
-	public Problem(Problem problem) {
-		this.ProblemName = problem.ProblemName;
-		this.ProblemID = problem.ProblemID;
-		this.ProblemURL = problem.ProblemURL;
-		this.ProblemRank = problem.ProblemRank;
-		this.ProblemAlgorithm = problem.ProblemAlgorithm;
 	}
 	
 	@Override
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
-	    sb.append("Problem ID: ").append(ProblemID).append("\n");
-	    sb.append("Problem Name: ").append(ProblemName).append("\n");
-	    sb.append("Problem URL: ").append(ProblemURL).append("\n");
-	    sb.append("Problem Rank: ").append(ProblemRank).append("\n");
+	    sb.append("문제 번호 : ").append(ProblemID).append("\n");
+	    sb.append("제목 : ").append(ProblemName).append("\n");
+	    sb.append("난이도 : ").append(ProblemRank).append("(").append(ProblemRankPoint).append(")\n");
+	    sb.append("획득 랭크 포인트: ").append(ProblemRank.getPointGain()).append("\n");
+	    sb.append("URL: ").append(ProblemURL).append("\n");
 
-	    sb.append("Problem Hints: \n");
-	    for (String hintKey : ProblemHint.keySet()) {
-	        sb.append("  ").append(hintKey).append(":\n");
-	        HashMap<User, String> hintMap = ProblemHint.get(hintKey);
-	        for (User user : hintMap.keySet()) {
-	            String hint = hintMap.get(user);
-	            sb.append("    ").append(user.getUsername()).append(": ").append(hint).append("\n");
-	        }
-	    }
-
-	    sb.append("Problem References: \n");
-	    for (String reference : ProblemReferences) {
-	        sb.append("  ").append(reference).append("\n");
-	    }
-
-	    sb.append("Problem Algorithms: \n");
+	    sb.append("알고리즘 : ");
 	    for (String algorithm : ProblemAlgorithm) {
-	        sb.append("  ").append(algorithm).append("\n");
+	        sb.append(algorithm).append(" ");
 	    }
 
 	    return sb.toString();
@@ -75,6 +60,9 @@ public class Problem implements Serializable {
 	// 설정자
 	public void setProblemRank(RANK Rank) {
 		this.ProblemRank = Rank;
+	}
+	public void setProblemRankPoint(int Point) {
+		this.ProblemRankPoint = Point;
 	}
 	// 접근자
 	public String getProblemName() {
@@ -89,38 +77,87 @@ public class Problem implements Serializable {
 	public RANK getProblemRank() {
 		return this.ProblemRank;
 	}
-	public HashMap<User, String> getProblemHint(String key) {
-	    HashMap<User, String> userHintMap = this.ProblemHint.get(key);
-	    
-	    if (userHintMap == null) {
-	        return null;
-	    }
-	    
-	    return userHintMap;
+	public int getProblemRankPoint() {
+		return this.ProblemRankPoint;
 	}
-	public ArrayList<String> getProblemReferences(){
+	public List<HintSave> getProblemHint(String key){
+		return this.ProblemHint.get(key);
+	}
+	public List<LearningMaterialsSave> getProblemReferences(){
 		return this.ProblemReferences;
 	}
 	public ArrayList<String> getProblemAlgorithm(){
 		return this.ProblemAlgorithm;
 	}
-	
-	// 문제 힌트, 학습자료 추가
-	public void addProblemHint(String key, User user, String hint) {
-	    HashMap<User, String> userHintMap = this.ProblemHint.get(key);
+	// 평균 런타임과 평균 메모리 사용량을 반환하는 함수
+	public int getProblemAvgRunTime() {
+		int sum = 0;
 	    
-	    if (userHintMap == null) {
-	        userHintMap = new HashMap<>();
-	        this.ProblemHint.put(key, userHintMap);
+		for(int i = 0; i < this.ProblemRunTime.size(); i++) {
+	    	sum += this.ProblemRunTime.get(i);
 	    }
-
-	    userHintMap.put(user, hint);
+		
+		return sum / this.ProblemRunTime.size();
+	}
+	public int getProblemAvgMemory() {
+		int sum = 0;
+	    
+		for(int i = 0; i < this.ProblemMemory.size(); i++) {
+	    	sum += this.ProblemMemory.get(i);
+	    }
+		
+		return sum / this.ProblemMemory.size();
 	}
 	
-	public void addProblemReferences(String References) {
-		this.ProblemReferences.add(References);
+	/*
+	 *  Problem에 힌트를 추가하는 함수
+	 *  key : 'Step 1', 'Step 2', 'Step 3' / plbmHint : HintSave 객체 변수
+	 *  key 값에 해당하는 리스트를 ProblemHint 해시맵에서 가져옴
+	 *  리스트에 넘겨받은 HintSave 객체 변수를 추가
+	 *  이후, 해당 키값과 리스트를 ProblemHint 해시맵에 추가
+	 *  changProblem 함수를 이용하여 힌트가 추가된 문제로 최신화
+	 */
+	public void addProblemHint(String key, HintSave plbmHint) {
+	    List<HintSave> hintList = ProblemHint.getOrDefault(key, new ArrayList<>());
+        hintList.add(plbmHint);
+        ProblemHint.put(key, hintList);
+        ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}
 	
+	/*
+	 *  Problem에 학습 자료를 추가하는 함수
+	 *  plbmReferences : LearningMaterialsSave 객체 변수
+	 *  매개변수로 받은 객체 변수를 ProblemReferences 리스트에 추가
+	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화
+	 */
+	public void addProblemReferences(LearningMaterialsSave plbmReferences) {
+		this.ProblemReferences.add(plbmReferences);
+		ProblemDBManager.changeProblem(this.getProblemID(), this);
+	}
+	
+	/*
+	 *  Problem에 사용자가 얻은 런타임 정보를 추가하는 함수
+	 *  RunTime : 사용자가 얻은 런타임 값
+	 *  매개변수로 받은 RunTime를 ProblemRunTime 리스트에 추가
+	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화 
+	 */
+	public void addProblemRunTime(int RunTime) {
+		this.ProblemRunTime.add(RunTime);
+		ProblemDBManager.changeProblem(this.getProblemID(), this);
+	}
+	
+	/*
+	 *  Problem에 사용자가 얻은 메모리 사용량 정보를 추가하는 함수
+	 *  Memory : 사용자가 얻은 메모리 사용량 값
+	 *  매개변수로 받은 Memory를 ProblemMemory 리스트에 추가
+	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화 
+	 */
+	public void addProblemMemory(int Memory) {
+		this.ProblemMemory.add(Memory);
+		ProblemDBManager.changeProblem(this.getProblemID(), this);
+	}
+	
+	// 유효한 Problem인지 확인하는 함수
 	public boolean isValid() {
 		if (this.ProblemID == 0 || 
 				this.ProblemName == null || 

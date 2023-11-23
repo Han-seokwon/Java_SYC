@@ -221,7 +221,7 @@ public class RateProblemFrame extends JFrame {
 			int rankPoint = Integer.valueOf(rankPointField.getText().trim());
 			String comment = commentField.getText().trim();
 			// 입력값을 토대로 문제 랭크 데이터 생성
-			ProblemRank problemRank = new ProblemRank(problem.getProblemID(), user, selectedRANK, comment); //rankPoint 필드는 추가예정 
+			ProblemRank problemRank = new ProblemRank(problem.getProblemID(), user, selectedRANK, rankPoint, comment); //rankPoint 필드는 추가예정 
 			System.out.println(problemRank + String.format(" rankPoint = %d", rankPoint));	
 			
 			ProblemRankManager.addRank(problem.getProblemID(), problemRank); // 생성된 문제 랭크 데이터 추가
