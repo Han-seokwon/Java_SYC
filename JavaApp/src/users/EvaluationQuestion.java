@@ -69,7 +69,6 @@ public class EvaluationQuestion extends SurveyQuestion{
 			for( JsonElement item : questionJsonArray) {
 				// json데이터를 EvaluationQuestion로 변환하여 반환하여 리스트에 추가
 				questionList.add(createEvaluationQuestionFromJson(item.getAsJsonObject()));
-				System.out.println(createEvaluationQuestionFromJson(item.getAsJsonObject()));
 			}		
 						
 		} catch (IOException e) {

@@ -27,7 +27,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     private String pwResetAnswer; 
     
     private HashSet<String> preferredAlgorithmTypeSet = new HashSet<>(); 
-	private ArrayList<Problem> solvedProblemList = new ArrayList<>();
+	private HashSet<Problem> solvedProblemList = new HashSet<>();
     private ArrayList<Date> activityDateList= new ArrayList<>();    
     
     private static final long serialVersionUID = 1L; // 직렬화 버전 설정
@@ -61,7 +61,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
         this.rankPoint = user.getRankPoint();
         this.pwResetQuestion = user.getPwResetQuestion();
         this.pwResetAnswer = user.getPwResetAnswer();
-        this.solvedProblemList = new ArrayList<>(user.getSolvedProblemList());
+        this.solvedProblemList = new HashSet<>(user.getSolvedProblemList());
         this.activityDateList = new ArrayList<>(user.getActivityDateList()); 
     }
     
@@ -165,7 +165,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     }
     
     // 해결된 문제를 문제 리스트에 추가하고 문제의 랭크에 맞게 포인트를 증가시킴
-    // updateSolvedProbleList_FromSolvedAC() 에서 호출
+    // updateSolvedProbleList_FromSolvedAC()에서 호출
     public void addSolvedProblem(Problem problem) {
     	if(!solvedProblemList.contains(problem)) { // 이미 추가된 문제가 아닌 경우
     		solvedProblemList.add(problem);
@@ -215,7 +215,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     
     // solved.ac에서 해결한 문제를 가져와 업데이트, 만약 해결한 문제가 늘었다면 출석 반영
     // 회원 가입, 로그인시에 실행
-    public void updateSolvedProbleList_FromSolvedAC() {
+    public void updateSolvedProblemList() {
     	int solvedProblemCnt_before = solvedProblemList.size();
     	JsonFetcher.updateUserSolvedProblemList_FromSolvedAC(this); // solvedProblemList 업데이트
     	if(solvedProblemList.size() > solvedProblemCnt_before) { // 해결한 문제가 늘었다면 출석 반영

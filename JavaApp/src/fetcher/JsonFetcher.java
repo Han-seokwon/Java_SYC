@@ -76,7 +76,6 @@ public class JsonFetcher {
 			System.out.println(e.getMessage());
 			return false;
 		}
-		System.out.println(solvedacUsername + " 유저를 찾았습니다. ");
 		return true;
 	}
 	

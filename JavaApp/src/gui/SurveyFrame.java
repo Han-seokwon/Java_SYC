@@ -220,8 +220,7 @@ public class SurveyFrame extends JFrame {
     
 	class SubmitButtonListener implements ActionListener{
 		@Override
-		public void actionPerformed(ActionEvent e) {			
-			
+		public void actionPerformed(ActionEvent e) {	
 			int totalPoint = 0;
 			try {
 				totalPoint = gradeEvaluationResult();
@@ -240,6 +239,8 @@ public class SurveyFrame extends JFrame {
 			
 			user.updateUserFile(); // 수정된 유저 정보를 DB 유저 파일에 적용
 			dispose(); // 창 닫음
+			System.out.println("설문조사 완료");
+			System.out.println(user);
 		}
 	}	
 	

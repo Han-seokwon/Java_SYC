@@ -2,10 +2,9 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import fetcher.JsonFetcher;
 import gui.MainFrame;
-import gui.RateProblemFrame;
 import gui.SurveyFrame;
-import problems.Problem;
 import problems.ProblemDBManager;
 import users.AccountManager;
 import users.EvaluationQuestion;
@@ -77,7 +76,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// < 1. 데이터 생성 >
-//		createTestUserData(); // 테스트 유저 데이터 생성
+		createTestUserData(); // 테스트 유저 데이터 생성
 		// SolvedAC에서 문제 데이터 가져와서 ProblemDB에 추가하기 (900개쯤 가져오면 429에러 발생)
 //		JsonFetcher.updateProblemDB_FromSolvedAC();	
 

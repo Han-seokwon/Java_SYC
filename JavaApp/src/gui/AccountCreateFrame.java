@@ -101,7 +101,7 @@ public class AccountCreateFrame extends JFrame{
 
 
 			boolean isVaildInput = true;
-			String dialogMsg = "정상적으로 회원등록되었습니다.";
+			String dialogMsg = "정상적으로 회원등록되었습니다.\n 곧 설문조사가 진행되니 잠시만 기다려주세요.";
 			try {
 				// 회원가입 정보 유효성 확인
 				AccountManager.registerInputCheck(format);
@@ -119,8 +119,8 @@ public class AccountCreateFrame extends JFrame{
 				User newUser = new User(format); // 새로운 User 객체 생성
 				AccountManager.createAccount(newUser);
 				mainFrame.logInComponents(newUser); // 메인 프레임 로그인 컴포넌트 업데이트
-				new SurveyFrame(newUser);// 설문 조사 프레임 생성
 				dispose(); // 창 닫음
+				new SurveyFrame(newUser);// 설문 조사 프레임 생성
 			}	
 		}
 	}

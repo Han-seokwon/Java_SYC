@@ -74,10 +74,14 @@ public class LoginFrame extends JFrame{
 			JOptionPane.showMessageDialog(null, dialogMsg); // 로그인 실패, 성공 여부를 알려주는 팝업창 오픈
 			System.out.println(user);
 			if(loginSuccess) { // 로그인 성공한 경우	
-				user.updateSolvedProbleList_FromSolvedAC(); // 백준 해결한 문제 업데이트
+				long startTime = System.currentTimeMillis(); 
+				user.updateSolvedProblemList(); // 백준 해결한 문제 업데이트
+				System.out.println("유저가 해결한 문제 업데이트 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");
 				mainFrame.logInComponents(user); // 메인 프레임 로그인관련 컴포넌트 업데이트 및 유저 인스턴스 전달
 				// 로그아웃 버튼으로 바꾸기
 				dispose(); // 로그인 창 닫기
+				System.out.println("로그인 완료");
+				System.out.println(user);
 			}
 		}
 	}
