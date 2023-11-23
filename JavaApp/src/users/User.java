@@ -23,8 +23,8 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     private int rankPoint = 0; // 티어를 올리는데 필요한 포인트(경험치)
     private int consecutiveActivityDate = 0; // 연속 출석일
 
-	private String pwResetQuestion;
-    private String pwResetAnswer;
+	private String pwResetQuestion; 
+    private String pwResetAnswer; 
     
     private HashSet<String> preferredAlgorithmTypeSet = new HashSet<>(); 
 	private ArrayList<Problem> solvedProblemList = new ArrayList<>();
@@ -42,7 +42,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
         this.pwResetQuestion = pwResetQuestion;
         this.pwResetAnswer = pwResetAnswer;
     }
-    public User(ResisterationFormat format) {
+    public User(ResistrationFormat format) {
         this.username = format.getName();
         this.solvedName = format.getSolvedName();
         this.email = format.getEmail();

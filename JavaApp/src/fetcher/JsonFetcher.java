@@ -189,7 +189,6 @@ public class JsonFetcher {
 					}
 				}
 			}
-
 		} catch (IOException e) { // api 요청중 문제 발생
 			throw new IOException(e.getMessage()); 
 		} catch (NullPointerException e) { 

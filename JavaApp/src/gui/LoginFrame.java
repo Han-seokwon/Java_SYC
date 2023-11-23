@@ -25,6 +25,7 @@ public class LoginFrame extends JFrame{
 		setTitle("로그인");
 		setSize(500, 500);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setLocationRelativeTo(null); // 창 가운데 위치
 		
 		// 메인 프레임 객체로 업데이트
 		this.mainFrame = mainFrame; 

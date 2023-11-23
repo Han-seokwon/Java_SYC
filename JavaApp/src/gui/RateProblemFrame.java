@@ -48,6 +48,7 @@ public class RateProblemFrame extends JFrame {
     	// 프레임 속성 설정
     	setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null); // 창 가운데 위치
 
         // centerPanel 생성
         centerPanel = new JPanel();         

@@ -13,8 +13,7 @@ import users.SurveyQuestion;
 import users.User;
 import users.UserDBManager;
 
-public class Main {
-	
+public class Main {	
 	private static void createTestUserData() { // 테스트 유저 데이터 생성
 		User user = new User("qwer", "hoh9170", "qwr@na.com", "d1dd", "1. 좋아하는 동물은?", "사자");
 		AccountManager.createAccount(user);
@@ -30,7 +29,6 @@ public class Main {
 //		설문조사 데이터 로드 확인
 		SurveyQuestion.loadQuestionList();
 		EvaluationQuestion.loadEvaluationQuestionList();
-
 		User user = UserDBManager.findUserByEmail("han@naver.com");		
 		AccountManager.createAccount(user);
 //		설문조사 프레임
@@ -85,19 +83,16 @@ public class Main {
 
 		// < 2. DB 초기화 >
 		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
-
+//		testSurveyData();
 		// < 3. 메인 프레임 생성>
 		// 메인 프레임 
-//		new MainFrame();
+		new MainFrame();
 		
 		// <  기타 프레임 테스트 >
 		// 문제 추천 프레임
 //		new RecommendProblemFrame(new User());
 		
-		
-		User user1 = UserDBManager.findUserByEmail("han@naver.com");
-		Problem problem = ProblemDBManager.findProblem(1000);
-        new RateProblemFrame(user1, problem);
+	
 		
 	
 							

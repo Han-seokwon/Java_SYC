@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 import file.FileManager;
 import users.AccountManager;
-import users.ResisterationFormat;
+import users.ResistrationFormat;
 import users.User;
 
 // 계정 생성을 진행하는 페이지
@@ -91,7 +91,7 @@ public class AccountCreateFrame extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// 입력된 필드의 데이터를 토대로 회원가입정보 클래스 생성
-			ResisterationFormat format = new ResisterationFormat( // 이름, solvedac이름, 이메일, 비번, 비번확인, 비번초기화질문, 답변
+			ResistrationFormat format = new ResistrationFormat( // 이름, solvedac이름, 이메일, 비번, 비번확인, 비번초기화질문, 답변
 					nameField.getText(), solvedNameField.getText(), emailField.getText(),
 					new String(passwordField.getPassword()), new String(passwordConfirmField.getPassword()),
 					resetPwQuestionList[resetPwQuestionComboBox.getSelectedIndex()], resetPwAnswerField.getText());

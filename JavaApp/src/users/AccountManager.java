@@ -11,7 +11,7 @@ public class AccountManager {
 	
 	// 회원가입 정보 유효성 확인 메서드
 	// param : 입력된 회원가입데이터(이름, solved.ac에 등록된 프로필 이름, 이메일, 비번, 비번확인, 비번 초기화용 질문에 대한 답변)
-	public static void registerInputCheck(ResisterationFormat format) throws IOException{
+	public static void registerInputCheck(ResistrationFormat format) throws IOException{
 		String errMsg = "";
 		
 		if(format.getName().isEmpty()) {

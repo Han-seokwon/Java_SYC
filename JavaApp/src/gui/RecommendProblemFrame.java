@@ -39,10 +39,10 @@ public class RecommendProblemFrame extends JFrame {
 		this.user= user; // 현재 로그인된 유저
 
 		// 프레임 속성 설정
-		final int FRAME_WIDTH = 1200;
-		final int FRAME_HEIGHT = 800;
+		final int FRAME_WIDTH = 1000;
+		final int FRAME_HEIGHT = 700;
 		setTitle("문제 추천");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, FRAME_WIDTH, FRAME_HEIGHT);
 		
 		// contentPane 레이아웃 설정

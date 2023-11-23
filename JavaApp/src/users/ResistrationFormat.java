@@ -1,7 +1,7 @@
 package users;
 
 // 회원 가입에 필요한 정보를 저장하는 클래스
-public class ResisterationFormat {
+public class ResistrationFormat {
     private String name;
     private String solvedName; // solved.ac에 등록된 프로필 이름
     private String email;
@@ -10,8 +10,8 @@ public class ResisterationFormat {
     private String resetPwQuestion;
     private String answer;
 
-    public ResisterationFormat() {}
-    public ResisterationFormat(String name, String solvedName, String email, String password, String passwordConfirm, String resetPwQuestion, String answer) {
+    public ResistrationFormat() {}
+    public ResistrationFormat(String name, String solvedName, String email, String password, String passwordConfirm, String resetPwQuestion, String answer) {
         this.name = name;
         this.solvedName = solvedName;
         this.email = email;

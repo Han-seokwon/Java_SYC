@@ -22,7 +22,7 @@ import users.AccountManager;
 import users.User;
 
 // 프로그램 홈체이지
-public class MainFrame extends JFrame{
+public class MainFrame extends GuiJFrame{
 	// 컴포넌트 선언
 	private JLabel usernameLabel;
 	private JButton accountCreateButton, loginButton, problemListButton, problemRecommendButton, myPageButton;
@@ -106,7 +106,7 @@ public class MainFrame extends JFrame{
 
 		// 프레임 속성 설정
 		setTitle(siteName);
-		setSize(600, 400);
+		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setVisible(true);
 	}
@@ -135,6 +135,7 @@ public class MainFrame extends JFrame{
 					System.out.println("problemListButton clicked!");
 				} else if (e.getSource() == problemRecommendButton) {  // 문제 추천 버튼 클릭
 					System.out.println("problemRecommendButton clicked!");
+					new RecommendProblemFrame(user);
 				} else if (e.getSource() == myPageButton) { // 마이 페이지 버튼 클릭
 					System.out.println("myPageButton clicked!");
 				}
