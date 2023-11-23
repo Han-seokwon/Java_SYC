@@ -38,6 +38,7 @@ public class JsonFetcher {
 
 			// 응답 상태 확인
 			httpResponseCode = conn.getResponseCode();
+			System.out.println("Request -> "+  urlString);
 			System.out.println("Response status : " + httpResponseCode + ' ' + conn.getResponseMessage());
 
 			// 응답 JSON 데이터를 UTF-8 인코딩하여 하나의 Reader로 가져옴 
@@ -66,14 +67,16 @@ public class JsonFetcher {
 		}
 	}
 	
-	public static boolean checkUserRegisteredInSolvedac(String solvedacUsername) {
+	public static boolean checkUserRegisteredInSolvedAc(String solvedacUsername) {
 		String urlString = "https://solved.ac/api/v3/user/show?handle="; // 사용자 데이터 가져오는 api 주소
 		try {
 			// 유저 이름으로 api를 호출
 			fetchJsonElementFromUrl(urlString + solvedacUsername);
 		} catch (IOException e) { // 존재하지 않는 경우
+			System.out.println(e.getMessage());
 			return false;
 		}
+		System.out.println(solvedacUsername + " 유저를 찾았습니다. ");
 		return true;
 	}
 	

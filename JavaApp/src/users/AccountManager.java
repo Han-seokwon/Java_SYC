@@ -22,8 +22,8 @@ public class AccountManager {
 			errMsg += "경고: 사용자 이름에 특수 문자를 사용할 수 없습니다.\n";
 		}
 		
-		// solved.ac에 등록된 회원이름인지 확인
-		if(JsonFetcher.checkUserRegisteredInSolvedac(format.getSolvedName())) {
+		// solved.ac에 등록된 회원이름인지 확인				
+		if(!JsonFetcher.checkUserRegisteredInSolvedAc(format.getSolvedName())) { // 유저를 찾지 못한 경우
 			errMsg += String.format("경고: %s 이름으로 solved.ac에 등록된 계정이 없습니다.\n", format.getSolvedName());
 		}		
         
