@@ -96,12 +96,15 @@ public class ProblemDBManager {
 	 *  문제 ID를 통해 ProblemDBMap 해시맵에서 문제를 찾는 함수
 	 *  ID - 문제 번호
 	 */
-	public static Problem findProblem(int ID) {	
+	public static Problem findProblem(int ID) {
+		Problem pblm = new Problem();
+		
 		if (ProblemDBMap.containsKey(ID)) {
-			return ProblemDBMap.get(ID);
+			pblm = ProblemDBMap.get(ID);
+			return pblm;
 		}
 		else {
-			return null;
+			return pblm;
 		}
 	}
 	
