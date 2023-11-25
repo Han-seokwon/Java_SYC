@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import users.RANK;
 
@@ -15,20 +16,20 @@ public class Problem implements Serializable {
 	private String ProblemURL;
 	private RANK ProblemRank;
 	private int ProblemRankPoint;
+	
 	/*
 	 * Step 1, Step 2, Step 3를 키 값으로 탐색
 	 * 키값에 해당하는 ProblemHint 객체 리스트를 가짐
 	 */
 	private HashMap<String, List<HintSave>> ProblemHint = new HashMap<>();		
+	
 	// 학습자료, 문제 알고리즘 분류
 	private List<LearningMaterialsSave> ProblemReferences = new ArrayList<>();
 	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();
 	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();
-	private ArrayList<Integer> ProblemMemory = new ArrayList<>();
+	private ArrayList<Integer> ProblemMemory = new ArrayList<>();	
 	
-	
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	// 생성자
 	public Problem() {}
 	public Problem(String ProblemName, int ID, String URL, RANK Rank, int RankPoint, ArrayList<String> Algorithm) {
@@ -48,14 +49,30 @@ public class Problem implements Serializable {
 	    sb.append("난이도 : ").append(ProblemRank).append("(").append(ProblemRankPoint).append(")\n");
 	    sb.append("획득 랭크 포인트: ").append(ProblemRank.getPointGain()).append("\n");
 	    sb.append("URL: ").append(ProblemURL).append("\n");
-
 	    sb.append("알고리즘 : ");
 	    for (String algorithm : ProblemAlgorithm) {
 	        sb.append(algorithm).append(" ");
 	    }
-
 	    return sb.toString();
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(ProblemID);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Problem other = (Problem) obj;
+		return ProblemID == other.ProblemID;
+	}
+
 	
 	// 설정자
 	public void setProblemRank(RANK Rank) {
@@ -99,13 +116,13 @@ public class Problem implements Serializable {
 		
 		return sum / this.ProblemRunTime.size();
 	}
+	
 	public int getProblemAvgMemory() {
 		int sum = 0;
 	    
 		for(int i = 0; i < this.ProblemMemory.size(); i++) {
 	    	sum += this.ProblemMemory.get(i);
-	    }
-		
+	    }		
 		return sum / this.ProblemMemory.size();
 	}
 	
@@ -170,5 +187,4 @@ public class Problem implements Serializable {
 			return true;
 		}
 	}
-	
 }

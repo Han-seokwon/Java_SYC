@@ -28,7 +28,6 @@ import users.User;
 
 
 public class RecommendProblemFrame extends JFrame {
-
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton recommendByRankButton, recommendByAlgorithmTypeButton ; // 난이도별 추천 버튼, 알고리즘별 추천 버튼

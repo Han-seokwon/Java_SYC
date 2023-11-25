@@ -136,10 +136,13 @@ public class JsonFetcher {
 	 * notice : 이 메서드를 호출하기 전 ProblemDB에 solved ac에서 가져온 문제데이터들이 저장되어 있어야 함
 	 */
 	public static void updateUserSolvedProblemList_FromSolvedAC(User user) {
+		long startTime = System.currentTimeMillis(); 
+		
 		int problemPageCnt = getUserSolvedProblemPageCnt_FromSolvedAC(user.getSolvedName());
 		ArrayList<Integer> solvedProblemIdList = getSolvedProblemIdList_FromSolvedAC(problemPageCnt, user.getSolvedName());
-		System.out.println("해결한 문제 ID 리스트  : " + solvedProblemIdList);
-		System.out.println("해결한 문제 개수 : " +solvedProblemIdList.size());		
+//		System.out.println("해결한 문제 ID 리스트  : " + solvedProblemIdList);
+		System.out.println("해결한 문제 개수 : " +solvedProblemIdList.size());
+		System.out.println("유저 데이터 업데이트 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");
 		// 가져온 문제들 중에 현재 ProblemDB에 추가되지 않은 문제가 있을 수 있음 따라서 ProblemDBManager에 추가된 문제만 추가함
 		for(int problemId : solvedProblemIdList) {
 			Problem problem = ProblemDBManager.findProblem(problemId);
@@ -147,6 +150,8 @@ public class JsonFetcher {
 				user.addSolvedProblem(problem); // 문제 추가
 			}
 		}
+		
+		
 	}
 
 	/*

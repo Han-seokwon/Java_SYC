@@ -64,24 +64,22 @@ public class LoginFrame extends JFrame{
 			String password = new String(passwordField.getPassword());
 			boolean loginSuccess = true;
 			String dialogMsg = "로그인 성공";	
-			User user = new User();
+			User userLoggedIn = new User();
 			try {
-				user = AccountManager.checklogin(email, password);	// 로그인 정보 유효성 확인					
+				userLoggedIn = AccountManager.checklogin(email, password);	// 로그인 정보 유효성 확인					
 			} catch (NullPointerException err) {					
 				dialogMsg = err.getMessage();
 				loginSuccess = false;					
 			}	                
 			JOptionPane.showMessageDialog(null, dialogMsg); // 로그인 실패, 성공 여부를 알려주는 팝업창 오픈
-			System.out.println(user);
 			if(loginSuccess) { // 로그인 성공한 경우	
 				long startTime = System.currentTimeMillis(); 
-				user.updateSolvedProblemList(); // 백준 해결한 문제 업데이트
-				System.out.println("유저가 해결한 문제 업데이트 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");
-				mainFrame.logInComponents(user); // 메인 프레임 로그인관련 컴포넌트 업데이트 및 유저 인스턴스 전달
-				// 로그아웃 버튼으로 바꾸기
-				dispose(); // 로그인 창 닫기
-				System.out.println("로그인 완료");
-				System.out.println(user);
+				userLoggedIn.updateSolvedProblemList(); // 백준 해결한 문제 업데이트				
+				mainFrame.logInComponents(userLoggedIn); // 메인 프레임 로그인관련 컴포넌트 업데이트 및 유저 인스턴스 전달
+				dispose(); // 로그인 창 닫기				
+				System.out.println(userLoggedIn.getUsername() + " 로그인 완료");				
+				System.out.println(userLoggedIn);
+				System.out.println("로그인 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");
 			}
 		}
 	}

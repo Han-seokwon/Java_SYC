@@ -9,6 +9,7 @@ import java.util.List;
 import fetcher.JsonFetcher;
 import file.FileManager;
 import problems.Problem;
+import problems.ProblemDBManager;
 import problems.SolvedProblem;
 
 //유저의 데이터를 저장하는 클래스, 기본적인 회원 정보와 유저가 해결한 문제를 저장
@@ -61,7 +62,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
         this.rankPoint = user.getRankPoint();
         this.pwResetQuestion = user.getPwResetQuestion();
         this.pwResetAnswer = user.getPwResetAnswer();
-        this.solvedProblemSet = new HashSet<>(user.getSolvedProblemList());
+        this.solvedProblemSet = user.getSolvedProblemSet(); // 복사된 HashSet 반환됨
         this.activityDateList = new ArrayList<>(user.getActivityDateList()); 
     }
     
@@ -117,11 +118,13 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 		return pwResetAnswer;
 	}
     public HashSet<String> getPreferredAlgorithmTypeSet() {
-    	return new HashSet<String>(this.preferredAlgorithmTypeSet);// 복사 객체 반환		
-	}
-	
-	public List<Problem> getSolvedProblemList() {
-		return List.of(solvedProblemSet.toArray(new SolvedProblem[0]));// 불변 리스트 반환
+    	return new HashSet<String>(preferredAlgorithmTypeSet);// 복사 객체 반환		
+	}	
+	public HashSet<Problem> getSolvedProblemSet() {
+		return new HashSet<Problem>(solvedProblemSet);// 복사 객체 반환
+	}	
+	public ArrayList<Problem> getSolvedProblemListSorted() { // SolvedProblemSet(HashSet)을 순서를 정렬시킨 ArrayList로 반환
+		return ProblemDBManager.findProblemToID(new ArrayList<Problem>(solvedProblemSet), true); //복사 객체
 	}
 	public List<Date> getActivityDateList() {
 		return List.of(activityDateList.toArray(new Date[0])); // 불변 리스트 반환
@@ -166,11 +169,10 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     
     // 해결된 문제를 문제 리스트에 추가하고 문제의 랭크에 맞게 포인트를 증가시킴
     // updateSolvedProbleList_FromSolvedAC()에서 호출
-    public void addSolvedProblem(Problem problem) {
-    	if(!solvedProblemSet.contains(problem)) { // 이미 추가된 문제가 아닌 경우
-    		solvedProblemSet.add(problem);
-        	addRankPoint(problem.getProblemRank().getPointGain()); // 포인트 증가
-    	}    	
+    public void addSolvedProblem(Problem problem) {	
+		if(solvedProblemSet.add(problem)) { // 문제 추가 -> 만약 중복된 문제가 아닌 경우
+			addRankPoint(problem.getProblemRank().getPointGain()); // 포인트 증가
+		}    		
     }
     
     // 연속출석일 업데이트, today와 activityDateList의 마지막 요소를 비교해 연속출석일+1 하므로 오늘 날짜를 추가하기 전 이 메서드를 호출해야 함
@@ -221,8 +223,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     	if(solvedProblemSet.size() > solvedProblemCnt_before) { // 해결한 문제가 늘었다면 출석 반영
     	    addTodayAttendance(); // 오늘 출석 추가
     	}
-    	updateUserFile(); // 직렬화 파일 업데이트
-    	
+    	updateUserFile(); // DB 폴더에 저장된 유저 파일 업데이트    	
     }
     
     // 저장된 유저 파일을 업데이트(없는 경우 생성)
