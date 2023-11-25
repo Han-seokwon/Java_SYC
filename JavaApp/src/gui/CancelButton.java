@@ -14,8 +14,8 @@ public class CancelButton extends JButton{
 		this("√Îº“");
 	}
 	public CancelButton(String btnName) {
-		super.setText(btnName);
-		super.addActionListener(new CancleButtonListener());
+		setText(btnName);
+		addActionListener(new CancleButtonListener());
 	}
 	
 	class CancleButtonListener implements ActionListener{

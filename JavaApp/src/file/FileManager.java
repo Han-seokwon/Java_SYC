@@ -1,11 +1,14 @@
 package file;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InvalidClassException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -48,7 +51,7 @@ public class FileManager {
 		}
 		return true;
 	}
-	
+
 	/*
 	 * 파일경로에 해당하는 객체파일을 Object로 변환하여 반환하는 메서드
 	 * param : Object로 변환할 파일이 저장된 경로 (문자열) ( 예시 :  "//패키지//DB폴더//파일명.확장자" ) 			
@@ -65,7 +68,7 @@ public class FileManager {
 		return obj;
 	}
 
-	
+
 	/*
 	 * 객체파일(File)을 Object로 변환하여 반환하는 메서드
 	 * param : Object로 변환할 객체파일(File)
@@ -100,7 +103,7 @@ public class FileManager {
 			e.printStackTrace();			
 			System.out.println("경로 : "+ dirpath + ", 해당 파일을 Obeject로 변환할 수 없습니다.");
 		}
-		
+
 		return objList;
 	}	
 
@@ -118,6 +121,24 @@ public class FileManager {
 			e.printStackTrace();
 		}
 		return lineList;
+	}
+
+	/*
+	 * 폴더에 있는 파일을 Font로 변환하여 반환
+	 * param : ttf 파일명
+	 * return : 변환된 Font 객체 
+	 */
+	public static Font createFontFromFile(String filename) throws IOException {
+		String filepath = getPackageRootDir() + "\\sources\\" + filename + ".ttf";
+		try {			
+			InputStream is = new FileInputStream(filepath);
+			return Font.createFont(Font.TRUETYPE_FONT, is);
+			//			return Font.createFont(Font.TRUETYPE_FONT, new File(filepath));		       
+		} catch (FontFormatException e) {
+			throw new IOException("해당 파일을 Font 객체로 변환할 수 없습니다.");
+		} catch (IOException e) {
+			throw new IOException(filepath + " 해당 경로에서 폰트 파일을 불러오지 못했습니다.");
+		}
 	}
 
 }

@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Checkbox;
+
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,7 +15,7 @@ import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,39 +29,39 @@ import users.SurveyQuestion;
 import users.User;
 
 // 계정 생성 시 사용자의 선호 알고리즘 유형 및 기본 개념 테스트를 진행하는 클래스
-public class SurveyFrame extends JFrame {
+public class SurveyFrame extends DesignedJFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private DesignedContentPane contentPane;
 	
 	// 현재는 학습 성향 확인용 문제가 1개 밖에 없지만 확장성을 위해 문제를 저장하는 ArrayList로 선언
 	private ArrayList<SurveyQuestion> learningStyleCheckQuestions = new ArrayList<>(); 
-	private ArrayList<Checkbox[]> learningStyleCheckBtnGroupList = new ArrayList<>();
+	private ArrayList<JCheckBox[]> learningStyleCheckBtnGroupList = new ArrayList<>();
 	
 	private ArrayList<EvaluationQuestion> evalQuestions = new ArrayList<>();
     private ArrayList<ButtonGroup> evalChoiceRadioBtnGroupList = new ArrayList<>();   
     private User user;
     
 	public SurveyFrame(User user) {	
-		this.user = user; // 현재 설문조사를 진행하는 유저 데이터 받아오기
-		
+		super();
+		int panelWidth = getWindowWidth() - 100; // 각 패널의 너비를 현재 윈도우 너비 - 100 으로 함
+		this.user = user; // 현재 설문조사를 진행하는 유저 데이터 받아오기		
 		// 학습성향 확인 질문 불러오기		
 		learningStyleCheckQuestions = SurveyQuestion.loadQuestionList();
 		// 개념 테스트 질문 불러오기
 		evalQuestions = EvaluationQuestion.loadEvaluationQuestionList();
 		
 		// 컴포넌트를 담을 컨텐트 팬 선언
-		contentPane = new JPanel();		
+		contentPane = new DesignedContentPane();		
 		contentPane.setBorder(new EmptyBorder(15, 15, 15, 15));	
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		//  컨텐트팬  레이아웃 설정
-		gbl_contentPane.columnWidths = new int[]{853, 0};
+		gbl_contentPane.columnWidths = new int[]{panelWidth};
 		gbl_contentPane.rowHeights = new int[]{277, 442, 35, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
-		
+		GridBagConstraints gbc_contentPane  = new GridBagConstraints();
+		gbc_contentPane.fill = GridBagConstraints.BOTH;
+		contentPane.setLayout(gbl_contentPane);		
 
 		// < 학습성향 확인 >		
 		
@@ -79,9 +79,9 @@ public class SurveyFrame extends JFrame {
 		
 		// 학습성향확인 제목을 담을 패널
 		JPanel learningStyleCheckTitlePanel = new JPanel();
-		learningStyleCheckTitlePanel.setBounds(0, 0, 870, 96);
+		learningStyleCheckTitlePanel.setBounds(0, 0, panelWidth, 96);
 		learningStyleCheckTitlePanel.setLayout(new GridLayout(0, 1, 0, 0));
-		// 	컨텐트팬에 추가
+		// 컨텐트팬에 추가
 		learningStyleCheckPanel.add(learningStyleCheckTitlePanel);
 		
 		// 학습성향확인 제목
@@ -92,9 +92,10 @@ public class SurveyFrame extends JFrame {
 		
 		// 학습성향확인용 내용을 담을 스크롤팬
 		JScrollPane learningStyleCheckContentScrollPane = new JScrollPane();
-		learningStyleCheckContentScrollPane.setBounds(0, 95, 870, 172); // 팬 사이즈 조정
+		learningStyleCheckContentScrollPane.setBounds(0, 95, panelWidth, 172); // 팬 사이즈 조정
 		learningStyleCheckContentScrollPane.getVerticalScrollBar().setUnitIncrement(12); // 스크롤바 속도 설정
 		learningStyleCheckPanel.add(learningStyleCheckContentScrollPane);
+		
 		
 		// 학습성향확인용 질문들을 담은 패널
 		JPanel learningStyleQeustionListPanel = new JPanel();
@@ -120,7 +121,7 @@ public class SurveyFrame extends JFrame {
 		
 		// 개념 테스트 제목을 담을 패널
 		JPanel evalTitlePanel = new JPanel();
-		evalTitlePanel.setBounds(0, 0, 870, 96); // 팬 사이즈 조정 
+		evalTitlePanel.setBounds(0, 0, panelWidth, 96); // 팬 사이즈 조정 
 		evalPanel.add(evalTitlePanel);
 		evalTitlePanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
@@ -130,13 +131,11 @@ public class SurveyFrame extends JFrame {
 		evalTitleLabel.setFont(new Font("굴림", Font.PLAIN, 30));
 		evalTitlePanel.add(evalTitleLabel);
 				
-		// 개념 테스트 내용(질문)을 담을 스크롤팬
+		// 개념 테스트를 패널을 담을 스크롤팬
 		JScrollPane evalContentScrollPane = new JScrollPane();
-		evalContentScrollPane.setBounds(0, 95, 870, 342); // 팬 사이즈 조정
+		evalContentScrollPane.setBounds(0, 95, panelWidth, 342); // 팬 사이즈 조정
 		evalContentScrollPane.getVerticalScrollBar().setUnitIncrement(12); // 스크롤바 속도 설정
 		evalPanel.add(evalContentScrollPane);
-		
-
 		
 		// 개념 테스트 내용(질문)을 담을 패널
 		JPanel evalQuestionListPanel = new JPanel();
@@ -158,11 +157,7 @@ public class SurveyFrame extends JFrame {
 		gbc_submitButton.gridy = 2;
 		contentPane.add(submitButton, gbc_submitButton);		
 		
-		// 프레임 속성 설정
-		setTitle("설문조사");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLocationRelativeTo(null); // 창 가운데 위치
-		setBounds(100, 100, 920, 850);		
+		contentPane.applyFontAndBackgroundToAllComponents(); // 전체 폰트 적용 및 패널 배경색 투명하게 적용
 		setVisible(true);	
 	}
 	
@@ -178,7 +173,7 @@ public class SurveyFrame extends JFrame {
         	// 선택지 체크 박스 추가
         	JPanel choiceListPanel = new JPanel(new GridLayout(2, 1, 5, 5)); // 선택지 저장용 패널        	
         	ArrayList<String> choiceStringList = question.getChoiceList(); // 선택지 문자열 가져오기       	
-        	Checkbox[] choiceList = new Checkbox[choiceStringList.size()]; // 선택지 개수만큼 체크박스 배열 생성        	
+        	JCheckBox[] choiceList = new JCheckBox[choiceStringList.size()]; // 선택지 개수만큼 체크박스 배열 생성        	
         	// 체크 박스에 선택지에 해당하는 문자열을 넣어서 Checkbox[]과 패널에 추가
         	for(int j = 0 ; j < choiceStringList.size(); j++ ) {
         		Checkbox choiceBtn = new Checkbox(choiceStringList.get(j));
@@ -244,7 +239,7 @@ public class SurveyFrame extends JFrame {
 		}
 	}	
 	
-	private void addPreferredAlgorithmType_ToUser(Checkbox[] checkboxList){
+	private void addPreferredAlgorithmType_ToUser(JCheckBox[] checkboxList){
         for (int i = 0; i < checkboxList.length; i++) {
             if (checkboxList[i].getState()) { // 체크박스가 선택된 경우
             	System.out.println("선택 : " + checkboxList[i].getLabel());

@@ -15,7 +15,6 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,8 +28,8 @@ import problems.ProblemRankManager;
 import users.RANK;
 import users.User;
 // 사용자가 문제의 랭크, 랭크 포인트, 그에 대한 코멘트를 입력하면 해당 데이터를 관련 클래스로 전달하는 클래스
-public class RateProblemFrame extends JFrame {
-	private JPanel centerPanel; // 프레임의 컴포넌트들을 배치할 메인 패널
+public class RateProblemFrame extends DesignedJFrame {
+	private JPanel centerPanel; // 프레임의 컴포넌트들을 배치할 컨텐트팬
 	private JComboBox<RANK> rankComboBox; // 랭크 선택 콤보박스
 	private JLabel rankPointLabel; // 랭크 포인트 라벨 ( 랭크 선택에 따라 입력 가능 최대, 최소 포인트 안내문을 출력하기 위해 별도 필드로 설정)
 	private JTextField rankPointField; // 랭크 포인트를 입력받는 필드(정수만 입력받음)
@@ -42,50 +41,48 @@ public class RateProblemFrame extends JFrame {
 	private Problem problem;
 	
     public RateProblemFrame(User user, Problem problem) {
+    	super();
     	this.user = user; // 현재 로그인된 유저데이터 가져오기
     	this.problem = problem; // 현재 선택된 문제데이터 가져오기
     	
-    	// 프레임 속성 설정
-    	setSize(800, 800);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null); // 창 가운데 위치
-
-        // centerPanel 생성
-        centerPanel = new JPanel();         
-        // 패딩용 경계선 설정
-        centerPanel.setBorder(new EmptyBorder(80, 80, 80, 80)); 
+        // contentPane 생성
+    	DesignedContentPane contentPane = new DesignedContentPane();
+    	setContentPane(contentPane);
+    	contentPane.setBorder(new EmptyBorder(80, 80, 80, 80)); // 패딩용 경계선 설정 
         BorderLayout borderLayout = new BorderLayout(); 
-        getContentPane().setLayout(borderLayout);
-
+        contentPane.setLayout(borderLayout);
+        
+    	// 기본 내용을 추가할 중앙 패널 생성
+    	centerPanel = new JPanel();               
         // centerPanel GridBagLayout 설정
-        getContentPane().add(centerPanel, BorderLayout.CENTER);
-        GridBagLayout gbl_centerPanel = new GridBagLayout();
-        gbl_centerPanel.columnWidths = new int[] {500};
-        gbl_centerPanel.rowHeights = new int[] {100};
-        gbl_centerPanel.columnWeights = new double[]{1.0};
-        gbl_centerPanel.rowWeights = new double[]{0.0, 1.0};
-        centerPanel.setLayout(gbl_centerPanel);
+        GridBagLayout gbl_contentPane = new GridBagLayout();
+        gbl_contentPane.columnWidths = new int[] {500};
+        gbl_contentPane.rowHeights = new int[] {100};
+        gbl_contentPane.columnWeights = new double[]{1.0};
+        gbl_contentPane.rowWeights = new double[]{0.0};
+        centerPanel.setLayout(gbl_contentPane);
+        contentPane.add(centerPanel, BorderLayout.CENTER); // 컨텐트 팬에 추가
                 
         // 1행. 문제 난이도 선택 콤보박스 행 추가
         rankComboBox = new JComboBox<RANK>(RANK.values());
         rankComboBox.setSelectedIndex(-1); // 빈 값 선택부터 시작        
         rankComboBox.addActionListener(new RankComboBoxListener());
-        addRowPanelToCenterPanel(0, new JLabel("문제 난이도"),rankComboBox);
+        addRowPanelToContentPane(0, new JLabel("문제 난이도"),rankComboBox);
        
         // 2행. 문제 랭크 포인트 행 추가   
         rankPointField = new JTextField();
         rankPointField.setHorizontalAlignment(SwingConstants.CENTER);
-        rankPointField.setColumns(10);       
+        rankPointField.setColumns(20);       
         rankPointField.addKeyListener(new IntegerInputKeyListener());  // 정수 이외 값 입력 및 최대값 초과 자릿수 입력 제한 리스너 등록
         
-        rankPointLabel = new JLabel("문제 랭크 포인트");
-        addRowPanelToCenterPanel(1, rankPointLabel, rankPointField);
+        rankPointLabel = new JLabel("랭크 포인트");
+        addRowPanelToContentPane(1, rankPointLabel, rankPointField);
         
         // 3행. 랭크 기여 코멘트 행 추가  
         commentField = new JTextField();
         commentField.setHorizontalAlignment(SwingConstants.CENTER);
         commentField.setColumns(20);
-        addRowPanelToCenterPanel(2, new JLabel("코멘트"), commentField);
+        addRowPanelToContentPane(2, new JLabel("코멘트"), commentField);
         
         // 버튼 패널 생성
         JPanel buttonPanel = new JPanel();
@@ -94,8 +91,8 @@ public class RateProblemFrame extends JFrame {
         flowLayout.setVgap(30);
         flowLayout.setHgap(30);
         flowLayout.setAlignment(FlowLayout.RIGHT);
-        // 버튼 패널 centerPanel에 추가
-        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        // 버튼 패널 contentPane에 추가
+        contentPane.add(buttonPanel, BorderLayout.SOUTH);
         
         // 취소 버튼 패널에 추가
         buttonPanel.add(new CancelButton());
@@ -104,15 +101,17 @@ public class RateProblemFrame extends JFrame {
         submitButton.addActionListener(new SubmitButtonListener()); // 리스너 등록
         buttonPanel.add(submitButton);
 
+        
+        contentPane.applyFontAndBackgroundToAllComponents(); // 전체 폰트 적용 및 패널 배경색 투명하게 적용
         setVisible(true); // 윈도우 display
     }
     
     /*
-     * centerPanel에 Label과 Component을 나란히 추가한 row 패널을 추가
+     * contentPane에 Label과 Component을 나란히 추가한 row 패널을 추가
      * @param  rowNum : 추가할 row 번호,   labelString : 라벨 텍스트, component : 추가할 컴포넌트(라벨 오른쪽에 배치됨)
      * */    
-    void addRowPanelToCenterPanel(int row, JLabel label, Component component) {
-    	// centerPanel에 row로 추가할 패널 생성
+    void addRowPanelToContentPane(int row, JLabel label, Component component) {
+    	// contentPane에 row로 추가할 패널 생성
         JPanel rowPanel = new JPanel();
         // 패널 배치(GridBagConstraints) 설정
         GridBagConstraints gbc_rowPanel = new GridBagConstraints();
@@ -121,12 +120,12 @@ public class RateProblemFrame extends JFrame {
         gbc_rowPanel.fill = GridBagConstraints.BOTH;
         gbc_rowPanel.gridx = 0;
         gbc_rowPanel.gridy = row;
-        // 패널에 centerPanel에 추가
+        // 패널에 contentPane에 추가
         centerPanel.add(rowPanel, gbc_rowPanel);
         
         // 패널 레이아웃 설정
         GridBagLayout gbl_rowPanel = new GridBagLayout();
-        gbl_rowPanel.columnWidths = new int[] {100, 170, 0};
+        gbl_rowPanel.columnWidths = new int[] {200, 170};
         gbl_rowPanel.rowHeights = new int[] {80};
         rowPanel.setLayout(gbl_rowPanel);
         
@@ -144,7 +143,7 @@ public class RateProblemFrame extends JFrame {
         
         
         // 컴포넌트 사이즈 설정
-        component.setPreferredSize(new Dimension(150, 30));
+        component.setPreferredSize(new Dimension(160, 30));
         // 추가할 컴포넌트 배치 설정
         GridBagConstraints gbc_component = new GridBagConstraints();
         gbc_component.weightx = 1.0;
@@ -162,7 +161,7 @@ public class RateProblemFrame extends JFrame {
         	minRankPoint = selectedRANK.getRequireRankPoint();
         	maxRankPoint = minRankPoint + RANK.getRankPointGap();
             // 라벨에 입력 최소, 최대값 가이드 출력
-            rankPointLabel.setText(String.format("<html>문제 랭크 포인트<br>(최소 : %d, 최대 : %d)</html>", minRankPoint, maxRankPoint));       
+            rankPointLabel.setText(String.format("랭크 포인트 (%d ~ %d)", minRankPoint, maxRankPoint));
         }
     }
     
@@ -195,8 +194,7 @@ public class RateProblemFrame extends JFrame {
 			int inputedRankPoint = Integer.valueOf(rankPointField.getText().trim());
 			if(inputedRankPoint < minRankPoint || inputedRankPoint > maxRankPoint) {
 				errMsg += String.format("랭크 포인트 입력 범위를 벗어났습니다. (입력값 = %d) \n 입력가능 범위 : (%d ~ %d)\n",
-						inputedRankPoint, minRankPoint, maxRankPoint);
-				
+						inputedRankPoint, minRankPoint, maxRankPoint);				
 			}
 		}
 		

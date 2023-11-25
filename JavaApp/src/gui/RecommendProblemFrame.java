@@ -27,32 +27,25 @@ import problems.ProblemDBManager;
 import users.User;
 
 
-public class RecommendProblemFrame extends JFrame {
+public class RecommendProblemFrame extends DesignedJFrame {
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private DesignedContentPane contentPane;
 	private JButton recommendByRankButton, recommendByAlgorithmTypeButton ; // 난이도별 추천 버튼, 알고리즘별 추천 버튼
 	private JLabel seletedBtnDisplayLabel; 	// 선택된 추천방식 버튼 결과를 보여주는 라벨
 	private ProblemTable recommendedProblemTable;// 추천된 문제를 담는 테이블
 	private User user;// 현재 로그인된 유저
 
 	public RecommendProblemFrame(User user) {	
+		super();
 		this.user= user; // 현재 로그인된 유저
-
-		// 프레임 속성 설정
-		final int FRAME_WIDTH = 1000;
-		final int FRAME_HEIGHT = 700;
-		setTitle("문제 추천");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, FRAME_WIDTH, FRAME_HEIGHT);
 		
 		// contentPane 레이아웃 설정
-		contentPane = new JPanel();
+		contentPane = new DesignedContentPane();
 		contentPane.setBorder(new EmptyBorder(20, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{FRAME_WIDTH};
-		final int CONTENT_ROW_HEIGHT = 550;
-		gbl_contentPane.rowHeights = new int[] {FRAME_HEIGHT - FRAME_HEIGHT, CONTENT_ROW_HEIGHT};
+		gbl_contentPane.columnWidths = new int[]{getWindowWidth()};
+		gbl_contentPane.rowHeights = new int[] {300, getWindowHeight() - 300};
 		contentPane.setLayout(gbl_contentPane);
 
 		// 문제 추천 메뉴 레이아웃 설정
@@ -100,7 +93,7 @@ public class RecommendProblemFrame extends JFrame {
 		recommendMethodButtonPanel.add(recommendByRankButton, gbc_recommendByRankButton);
 
 		// 화살표 이미지 라벨 추가
-		ImageIcon arrowImg = new ImageIcon(RecommendProblemFrame.class.getResource("/images/right-arrow.png"));
+		ImageIcon arrowImg = new ImageIcon(RecommendProblemFrame.class.getResource("/sources/right-arrow.png"));
 		int imgWidth = (int)(MENU_PANEL_WIDTH*2/3);
 		Image resizedImg = arrowImg.getImage().getScaledInstance(imgWidth, imgWidth/2, Image.SCALE_SMOOTH); // 사이즈 조정		
 		JLabel arrowImgLabel = new JLabel(new ImageIcon(resizedImg)); 
@@ -151,6 +144,8 @@ public class RecommendProblemFrame extends JFrame {
 		recommendedProblemTable = new ProblemTable(user); // 추천된 문제들을 담는 테이블 생성
 		scrollPane.setViewportView(recommendedProblemTable);
 
+		
+		contentPane.applyFontAndBackgroundToAllComponents(); // 전체 폰트 적용 및 패널 배경색 투명하게 적용
 		setVisible(true); // 윈도우 show
 	}
 
