@@ -25,7 +25,6 @@ public class Problem implements Serializable {
 	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();
 	private ArrayList<Integer> ProblemMemory = new ArrayList<>();
 	
-	
 	private static final long serialVersionUID = 1L;
 	
 	// 생성자
@@ -117,10 +116,15 @@ public class Problem implements Serializable {
 	 *  changProblem 함수를 이용하여 힌트가 추가된 문제로 최신화
 	 */
 	public void addProblemHint(String key, HintSave plbmHint) {
-	    List<HintSave> hintList = ProblemHint.getOrDefault(key, new ArrayList<>());
-        hintList.add(plbmHint);
-        ProblemHint.put(key, hintList);
-        ProblemDBManager.changeProblem(this.getProblemID(), this);
+		if (!key.equals("Step 1") || !key.equals("Step 2") || !key.equals("Step 3")) {
+			return ;
+		}
+		else {
+			List<HintSave> hintList = ProblemHint.getOrDefault(key, new ArrayList<>());
+	        hintList.add(plbmHint);
+	        ProblemHint.put(key, hintList);
+	        ProblemDBManager.changeProblem(this.getProblemID(), this);	
+		}
 	}
 	
 	/*
