@@ -72,7 +72,7 @@ public class RecommendProblemFrame extends DesignedJFrame {
 		recommendMethodButtonPanel.setLayout(gbl_recommendMethodButtonPanel);
 
 		// 알고리즘별 추천 버튼 추가
-		recommendByAlgorithmTypeButton = new JButton("알고리즘별 추천");
+		recommendByAlgorithmTypeButton = new DesignedButton("알고리즘별 추천", COLOR.CHET_WODE_BLUE);
 		recommendByAlgorithmTypeButton.addActionListener(new ButtonActionListener()); // 이벤트 리스너 추가
 		// 알고리즘별 추천 버튼 레이아웃 설정
 		GridBagConstraints gbc_recommendByAlgorithmTypeButton = new GridBagConstraints();
@@ -83,7 +83,7 @@ public class RecommendProblemFrame extends DesignedJFrame {
 
 
 		// 난이도별 추천 버튼 추가
-		recommendByRankButton = new JButton("난이도별 추천");
+		recommendByRankButton = new DesignedButton("난이도별 추천", COLOR.SUNFLOWER);
 		recommendByRankButton.addActionListener(new ButtonActionListener()); // 이벤트 리스너 추가		
 		// 난이도별 추천 버튼 레이아웃 설정
 		GridBagConstraints gbc_recommendByRankButton = new GridBagConstraints();

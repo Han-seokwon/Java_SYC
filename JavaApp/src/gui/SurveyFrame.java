@@ -44,7 +44,7 @@ public class SurveyFrame extends DesignedJFrame {
     
 	public SurveyFrame(User user) {	
 		super();
-		int panelWidth = getWindowWidth() - 100; // 각 패널의 너비를 현재 윈도우 너비 - 100 으로 함
+		int panelWidth = getWindowWidth() - 250; // 각 패널의 너비
 		this.user = user; // 현재 설문조사를 진행하는 유저 데이터 받아오기		
 		// 학습성향 확인 질문 불러오기		
 		learningStyleCheckQuestions = SurveyQuestion.loadQuestionList();
@@ -53,7 +53,7 @@ public class SurveyFrame extends DesignedJFrame {
 		
 		// 컴포넌트를 담을 컨텐트 팬 선언
 		contentPane = new DesignedContentPane();		
-		contentPane.setBorder(new EmptyBorder(15, 15, 15, 15));	
+		contentPane.setBorder(new EmptyBorder(15, 100, 15, 15));	
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		//  컨텐트팬  레이아웃 설정
@@ -92,7 +92,7 @@ public class SurveyFrame extends DesignedJFrame {
 		
 		// 학습성향확인용 내용을 담을 스크롤팬
 		JScrollPane learningStyleCheckContentScrollPane = new JScrollPane();
-		learningStyleCheckContentScrollPane.setBounds(0, 95, panelWidth, 172); // 팬 사이즈 조정
+		learningStyleCheckContentScrollPane.setBounds(0, 95, panelWidth, 200); // 팬 사이즈 조정
 		learningStyleCheckContentScrollPane.getVerticalScrollBar().setUnitIncrement(12); // 스크롤바 속도 설정
 		learningStyleCheckPanel.add(learningStyleCheckContentScrollPane);
 		
@@ -171,14 +171,15 @@ public class SurveyFrame extends DesignedJFrame {
         	questionPanel.add(new JLabel(String.format("(%d번) ", i+1) + question.getQuestion()));
         	
         	// 선택지 체크 박스 추가
-        	JPanel choiceListPanel = new JPanel(new GridLayout(2, 1, 5, 5)); // 선택지 저장용 패널        	
+        	JPanel choiceListPanel = new JPanel(new GridLayout(3, 4, 5, 5)); // 선택지 저장용 패널        	
         	ArrayList<String> choiceStringList = question.getChoiceList(); // 선택지 문자열 가져오기       	
         	JCheckBox[] choiceList = new JCheckBox[choiceStringList.size()]; // 선택지 개수만큼 체크박스 배열 생성        	
         	// 체크 박스에 선택지에 해당하는 문자열을 넣어서 Checkbox[]과 패널에 추가
         	for(int j = 0 ; j < choiceStringList.size(); j++ ) {
-        		Checkbox choiceBtn = new Checkbox(choiceStringList.get(j));
+        		JCheckBox choiceBtn = new JCheckBox(choiceStringList.get(j));
         		choiceList[j] = (choiceBtn);
-        		choiceListPanel.add(choiceBtn); // 패널에도 버튼 추가       		
+        		choiceListPanel.add(choiceBtn); // 패널에도 버튼 추가 
+        		choiceBtn.setBackground(COLOR.AQUA_ISLAND.getColor());
         	}
         	learningStyleCheckBtnGroupList.add(choiceList); // 선택지버튼그룹리스트에 선택지 체크박스 배열 추가
         	questionPanel.add(choiceListPanel); // 질문 패널에 선택지버튼리스트 추가
@@ -196,14 +197,15 @@ public class SurveyFrame extends DesignedJFrame {
         	questionPanel.add(new JLabel(String.format("(%d번) ", i+1) + question.getQuestion()));
         	
         	// 선택지 라디오 버튼 추가
-        	JPanel choiceListPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        	JPanel choiceListPanel = new JPanel(new GridLayout(3, 2, 5, 5));
         	ArrayList<String> choiceList = question.getChoiceList(); // 선택지 저장용 패널        	
         	ButtonGroup choiceRadioBtnGroup = new ButtonGroup();// 각 선택지 라디오 버튼을 저장할 버튼 그룹 
         	// 라디오 버튼에 선택지에 해당하는 문자열을 넣어서 버튼 그룹과 패널에 추가
         	for(int j = 0 ; j < choiceList.size(); j++ ) {
         		JRadioButton choiceBtn = new JRadioButton(choiceList.get(j));
         		choiceRadioBtnGroup.add(choiceBtn);
-        		choiceListPanel.add(choiceBtn); // 패널에도 버튼 추가       		
+        		choiceListPanel.add(choiceBtn); // 패널에도 버튼 추가      
+        		choiceBtn.setBackground(COLOR.JORDY_BLUE.getColor());
         	}
         	evalChoiceRadioBtnGroupList.add(choiceRadioBtnGroup); // 선택지버튼그룹리스트에 선택지버튼그룹 추가
         	questionPanel.add(choiceListPanel); // 질문 패널에 선택지버튼리스트 추가
@@ -241,9 +243,9 @@ public class SurveyFrame extends DesignedJFrame {
 	
 	private void addPreferredAlgorithmType_ToUser(JCheckBox[] checkboxList){
         for (int i = 0; i < checkboxList.length; i++) {
-            if (checkboxList[i].getState()) { // 체크박스가 선택된 경우
-            	System.out.println("선택 : " + checkboxList[i].getLabel());
-            	user.addPreferredAlgorithmType(checkboxList[i].getLabel()); // 선택된 알고리즘 종류 유저데이터에 추가            	
+            if (checkboxList[i].isSelected()) { // 체크박스가 선택된 경우
+            	System.out.println("선택 : " + checkboxList[i].getText());
+            	user.addPreferredAlgorithmType(checkboxList[i].getText()); // 선택된 알고리즘 종류 유저데이터에 추가            	
             }
         }
 	}

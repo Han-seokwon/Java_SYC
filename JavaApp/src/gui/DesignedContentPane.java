@@ -65,23 +65,14 @@ public class DesignedContentPane extends JPanel{
 	// Container 하위요소에 폰트를 적용하고 배경을 투명하게 함
 	private void applyFontAndBackgroundToAllComponents(Container container) {
         for (Component component : container.getComponents()) {
-//            if (component instanceof JPanel || 
-//            		component instanceof JScrollPane){ // 해당 컴포넌트가 다른 컴포넌트를 포함하는 경우
-//            		((JComponent) component).setOpaque(false); // 메인 배경이미지가 잘 보이게, 배경색 투명하게 설정 
-//            		applyFontAndBackgroundToAllComponents((Container) component); // 현재 컴포넌트를 Container재귀 호출
-//            		
-//            } else if (component instanceof JComponent) { // 해당 컴포넌트가 다른 하위 컴포넌트 객체인 경우
-//                ((JComponent) component).setFont(font); // 폰트 적용
-//                System.out.println(((JComponent) component).getClass());
-//            }
-            if (component instanceof JLabel || 
+            if (component instanceof JLabel ||  // 해당 컴포넌트가 다른 하위 컴포넌트 객체인 경우
             		component instanceof JTextComponent ||
             		component instanceof AbstractButton) { 
 	                ((JComponent) component).setFont(font); // 폰트 적용
-	                System.out.println(((JComponent) component).getClass());       		
-            } else if (component instanceof JComponent) { // 해당 컴포넌트가 다른 하위 컴포넌트 객체인 경우
+	                
+            } else if (component instanceof JComponent) { // 해당 컴포넌트가 다른 컴포넌트를 포함하는 경우
             	((JComponent) component).setOpaque(false); // 메인 배경이미지가 잘 보이게, 배경색 투명하게 설정 
-        		applyFontAndBackgroundToAllComponents((Container) component); // 현재 컴포넌트를 Container재귀 호출
+        		applyFontAndBackgroundToAllComponents((Container) component); // 현재 컴포넌트를 Container로 재귀 호출 -> 하위 컴포넌트 탐색
             }
         }
     }

@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import file.FileManager;
 import problems.Problem;
 import users.User;
 
@@ -92,10 +93,18 @@ public class ProblemTable extends JTable{
 			col.setCellRenderer(new TableCellRenderer()); // 지정한 텍스트 폰트 적용해주는 TableCellRenderer 생성 후 적용
 		}		
 		
-		setRowHeight(ROW_HEIGHT); // 행 높이 설정
-
-
+		setRowHeight(ROW_HEIGHT); // 행 높이 설정		
 		addMouseListener(new tableClickListener()); // 테이블 클릭에 대한 이벤트 리스너 등록
+
+		try { // 폰트 설정, 딜레이 발생
+			Font font = FileManager.createFontFromFile("contentFont");
+			getTableHeader().setFont(font.deriveFont(20f));
+			setFont(font.deriveFont(17f));
+		} catch (IOException e) { 
+			System.out.println(e.getMessage());				
+		}
+		getTableHeader().setBackground(COLOR.AQUA_ISLAND.getColor());
+		
 	}
 
 	// 지정한 텍스트 폰트 적용해주는 CellRenderer 생성 

@@ -2,7 +2,8 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import gui.RecommendProblemFrame;
+import gui.MainFrame;
+import gui.RateProblemFrame;
 import gui.SurveyFrame;
 import problems.ProblemDBManager;
 import users.AccountManager;
@@ -85,12 +86,12 @@ public class Main {
 //		testSurveyData();
 		// < 3. 메인 프레임 생성>
 		// 메인 프레임 
-//		new MainFrame();
+		new MainFrame();
 		
 		// <  기타 프레임 테스트 >
-		new SurveyFrame(null);
+//		new SurveyFrame(null);
 //		new RecommendProblemFrame(null); // 문제 추천 프레임
-//		new RateProblemFrame(null, null);		
+		new RateProblemFrame(null, null);		
 	
 							
 
