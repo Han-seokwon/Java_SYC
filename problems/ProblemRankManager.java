@@ -74,12 +74,7 @@ public class ProblemRankManager {
 	 *  ID : 문제 번호
 	 */
 	public static List<ProblemRank> getComment(int ID){
-		if(ProblemRankMap.get(ID) == null) {
-			return null;
-		}
-		else {
-			return ProblemRankMap.get(ID);
-		}
+		return ProblemRankMap.get(ID);
 	}
 	
 	/*
@@ -107,19 +102,19 @@ public class ProblemRankManager {
 	        int pointavg = point / RankList.size();
 		    
 		    if (avg == 0) {
-		    	plbm.setProblemRank(RANK.RANK5);
+		    	plbm.setProblemRank(RANK.RANK1);
 		    }
 		    else if(avg == 1) {
-		    	plbm.setProblemRank(RANK.RANK4);
+		    	plbm.setProblemRank(RANK.RANK2);
 		    }
 		    else if(avg == 2) {
 		    	plbm.setProblemRank(RANK.RANK3);
 		    }
 		    else if(avg == 3) {
-		    	plbm.setProblemRank(RANK.RANK2);
+		    	plbm.setProblemRank(RANK.RANK4);
 		    }
 		    else {
-		    	plbm.setProblemRank(RANK.RANK1);
+		    	plbm.setProblemRank(RANK.RANK5);
 		    }
 	        
 		    /*
