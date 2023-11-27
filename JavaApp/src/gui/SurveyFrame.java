@@ -128,7 +128,6 @@ public class SurveyFrame extends DesignedJFrame {
 		// 개념 테스트 제목 라벨
 		JLabel evalTitleLabel = new JLabel("알고리즘, 자료구조 개념 테스트(모든 항목 필수 입력)");
 		evalTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		evalTitleLabel.setFont(new Font("굴림", Font.PLAIN, 30));
 		evalTitlePanel.add(evalTitleLabel);
 				
 		// 개념 테스트를 패널을 담을 스크롤팬
@@ -147,10 +146,11 @@ public class SurveyFrame extends DesignedJFrame {
 		setEvalQuestionAndChoiceButton(evalQuestionListPanel);
 		
 		// 제출 버튼
-		JButton submitButton = new JButton("제출");
+		JButton submitButton = new DesignedButton("제출", COLOR.SUNFLOWER);		
+		submitButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		submitButton.addActionListener(new SubmitButtonListener()); // 리스너 등록		
-		submitButton.setFont(new Font("굴림", Font.PLAIN, 20));
 		GridBagConstraints gbc_submitButton = new GridBagConstraints();
+		gbc_submitButton.insets = new Insets(0, 0, 0, 50);
 		gbc_submitButton.anchor = GridBagConstraints.EAST;
 		gbc_submitButton.fill = GridBagConstraints.VERTICAL;
 		gbc_submitButton.gridx = 0;

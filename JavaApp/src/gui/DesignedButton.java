@@ -40,7 +40,6 @@ public class DesignedButton extends JButton{
         setForeground(fontColor.getColor()); // 텍스트색 설정
         Color backgroundColor = btnColor.getColor();
         setBackground(backgroundColor);
-        System.out.println(getBackground());
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) { // 버튼 눌렸을 때

@@ -97,7 +97,7 @@ public class RateProblemFrame extends DesignedJFrame {
         // 취소 버튼 패널에 추가
         buttonPanel.add(new CancelButton());
         // 제출 버튼 패널에 추가
-        submitButton = new JButton("제출"); 
+        submitButton = new DesignedButton("제출", COLOR.SUNFLOWER); 
         submitButton.addActionListener(new SubmitButtonListener()); // 리스너 등록
         buttonPanel.add(submitButton);
 

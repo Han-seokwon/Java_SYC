@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import file.FileManager;
 import users.User;
+import javax.swing.SwingConstants;
 
 // 프로그램 홈페이지
 public class MainFrame extends DesignedJFrame{
@@ -70,7 +71,8 @@ public class MainFrame extends DesignedJFrame{
 		}catch (Exception e) {
 			System.out.println("사이트 로고를 불러오지 못했습니다.");
 		}
-		JLabel introLabel = new JLabel("사이트 소개 글");
+		JLabel introLabel = new JLabel("길 잃은 개발자여, 이 곳으로 오너라");
+		introLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		accountCreateButton = new DesignedButton("계정 생성");
 		accountCreateButton.addActionListener(new ButtonActionListener(this));

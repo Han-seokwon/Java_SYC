@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 
+// 팔레트 색 조합에 맞게 Color 객체 반환하는 열거형
 public enum COLOR {
 	MEDIUM_SLATE_BLUE(new Color(160,127,241)),
 	CHET_WODE_BLUE(new Color(130,141,226)),
