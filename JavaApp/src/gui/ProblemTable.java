@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -22,6 +24,7 @@ import javax.swing.table.TableColumn;
 
 import file.FileManager;
 import problems.Problem;
+import users.RANK;
 import users.User;
 
 
@@ -72,6 +75,7 @@ public class ProblemTable extends JTable{
 
 	public ProblemTable(User user) {
 		super();// JTable 멤버 상속받기
+		
 		this.user = user; // 현재 로그인된 유저데이터 가져오기
 
 		// 테이블에 동적으로 데이터를 추가하기 위한 테이블 모델 객체 생성
@@ -96,7 +100,7 @@ public class ProblemTable extends JTable{
 		setRowHeight(ROW_HEIGHT); // 행 높이 설정		
 		addMouseListener(new tableClickListener()); // 테이블 클릭에 대한 이벤트 리스너 등록
 
-		try { // 폰트 설정, 딜레이 발생
+		try { // 폰트 설정
 			Font font = FileManager.createFontFromFile("contentFont");
 			getTableHeader().setFont(font.deriveFont(20f));
 			setFont(font.deriveFont(17f));
@@ -106,7 +110,7 @@ public class ProblemTable extends JTable{
 		getTableHeader().setBackground(COLOR.AQUA_ISLAND.getColor());
 		
 	}
-
+	
 	// 지정한 텍스트 폰트 적용해주는 CellRenderer 생성 
 	class TableCellRenderer extends DefaultTableCellRenderer{
 		public TableCellRenderer() {
@@ -120,6 +124,12 @@ public class ProblemTable extends JTable{
 				setText("<html><u>" + value + "</u></html>");// 밑줄 적용
 	            setForeground(Color.BLUE);// 파란색 적용
 			}
+			if(column == TABLE_HEADER.RANK.getIdx()) { // rank 열
+	            RANK rank = recommendedProblemList.get(row).getProblemRank();
+	            ImageIcon rankIcon = new ImageIcon(getClass().getResource("/sources/" + rank.getRankName() + ".png"));
+	            rankIcon = new ImageIcon(rankIcon.getImage().getScaledInstance(ROW_HEIGHT - 5, ROW_HEIGHT - 5, Image.SCALE_SMOOTH)); // 이미지 사이즈 변경
+	            setIcon(rankIcon); // 아이콘 추가
+			}			
 			return this;
 		}
 	}
@@ -139,7 +149,7 @@ public class ProblemTable extends JTable{
 				// 해당 열에 맞는 문제 정보 조회 프레임 생성
 				Problem selectedProblem = recommendedProblemList.get(row);
 				System.out.println("문제 선택됨\n" + selectedProblem);
-				//				new ProblemViewerFrame(selectedProblem, user); // 클래스 완성시 코드 추가
+				//	new ProblemViewerFrame(selectedProblem, user); // 클래스 완성시 코드 추가
 			}
 		}
 	}
@@ -147,6 +157,8 @@ public class ProblemTable extends JTable{
 
 	//  문제리스트로 테이블 업데이트
 	public void updateProblemListToTable( List<Problem> recommendedProblemList) throws ClassCastException{
+		long start = System.currentTimeMillis();
+		
 		tableModel.setNumRows(0); // 기존에 입력된 테이블 행 초기화
 		this.recommendedProblemList = new ArrayList<>(recommendedProblemList);
 		Iterator<Problem> it = recommendedProblemList.iterator();
@@ -160,6 +172,8 @@ public class ProblemTable extends JTable{
 			tableRowValues[TABLE_HEADER.URL.getIdx()] = problem.getProblemURL();	
 			tableModel.addRow(tableRowValues); // row 데이터 테이블에 추가
 		}
+		
+		System.out.println(System.currentTimeMillis() - start);
 	}
 
 

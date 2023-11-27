@@ -37,8 +37,8 @@ public enum RANK {
     }
 
 	// 현재 열거 타입이 전체 열거타입 길이보다 작은 경우 다음 열거형을 반환, 그렇지 않으면 현재 열거 타입이 마지막 타입이므로 그대로 마지막 타입을 반환함
-    public RANK getNextRank() {
-        return ordinal() < values().length - 1 ? values()[ordinal() + 1] : values()[-1];
+    public RANK getNextRank() {    	
+        return ordinal() < values().length - 1 ? values()[ordinal() + 1] : this;
     }
     
     public static int getMaxRequireRankPoint() { // 모을 수 있는 랭크 포인트 최대치

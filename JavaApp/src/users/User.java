@@ -20,7 +20,7 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
     private String email;
     private String password_hashed; 
     private String selfIntroduction = "";
-    private RANK rank = RANK.RANK5; // 가장 낮은 랭크부터 시작
+    private RANK rank = RANK.RANK1; // 가장 낮은 랭크부터 시작
     private int rankPoint = 0; // 티어를 올리는데 필요한 포인트(경험치)
     private int consecutiveActivityDate = 0; // 연속 출석일
 

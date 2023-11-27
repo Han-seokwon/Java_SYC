@@ -41,7 +41,7 @@ public class RateProblemFrame extends DesignedJFrame {
 	private Problem problem;
 	
     public RateProblemFrame(User user, Problem problem) {
-    	super();
+    	super("문제 난이도 기여");
     	this.user = user; // 현재 로그인된 유저데이터 가져오기
     	this.problem = problem; // 현재 선택된 문제데이터 가져오기
     	

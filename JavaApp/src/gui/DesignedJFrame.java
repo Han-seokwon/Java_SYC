@@ -20,6 +20,9 @@ public class DesignedJFrame extends JFrame{
 	public DesignedJFrame() {
 		this(defalutWidth, defalutHeight, defalutSiteName);
 	}
+	public DesignedJFrame(String siteName) {
+		this(defalutWidth, defalutHeight, siteName);
+	}
 	public DesignedJFrame(int width, int height) {
 		this(width, height, defalutSiteName);
 	}

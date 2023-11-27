@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,9 +18,11 @@ import file.FileManager;
 import users.AccountManager;
 import users.ResistrationFormat;
 import users.User;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 // 계정 생성을 진행하는 페이지
-public class AccountCreateFrame extends JFrame{
+public class AccountCreateFrame extends DesignedJFrame{
 
 	// 컴포넌트 선언
 	private JTextField nameField, solvedNameField, emailField, resetPwAnswerField;
@@ -29,16 +32,34 @@ public class AccountCreateFrame extends JFrame{
 	private MainFrame mainFrame;
 	// 생성자
 	public AccountCreateFrame(MainFrame mainFrame) {
+		super(900, 900, "회원가입");
 		this.mainFrame = mainFrame;
 		
+		DesignedContentPane contentPane = new DesignedContentPane(this);
+		contentPane.setBorder(new EmptyBorder(50, 50, 50, 50));
+		setContentPane(contentPane);		
+		
 		// 컴포넌트 생성 및 초기화
-		JLabel nameLabel = new JLabel("<html>*성명: <br> (특수 문자 입력 불가)<html>");
+		JLabel nameLabel = new JLabel("*성명(특수 문자 입력 불가): ");
+		nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		JLabel emailLabel = new JLabel("*이메일:");
+		emailLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		JLabel solvedNameLabel = new JLabel("*solved.ac 프로필 이름:");
-		JLabel passwordLabel = new JLabel("<html>*비밀번호: <br> (문자, 숫자 포함 8자리 이상)<html>");
+		solvedNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JLabel passwordLabel = new JLabel("*비밀번호(문자, 숫자 포함 8자리 이상): ");
+		passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		JLabel passwordConfirmLabel = new JLabel("*비밀번호 확인:");
+		passwordConfirmLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		JLabel resetPwQuestionLabel = new JLabel("*비밀번호 초기화 질문:");
+		resetPwQuestionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		JLabel resetPwAnswerLabel = new JLabel("*답변 : "); 
+		resetPwAnswerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		
 		nameField = new JTextField(20);
@@ -47,42 +68,40 @@ public class AccountCreateFrame extends JFrame{
 		passwordField = new JPasswordField(20);
 		passwordConfirmField = new JPasswordField(20);
 
-		String filepath = "\\users\\resetPwQuestions.txt";
 		// 질문이 저장된 텍스트 파일에서 List<String>형태로 각 질문들을 받아오고 이를 배열로 변환
-		resetPwQuestionList = FileManager.readLinesFromFile(filepath).toArray(new String[0]);
+		String formatFilepath = "\\users\\resetPwQuestions.txt";
+		resetPwQuestionList = FileManager.readLinesFromFile(formatFilepath).toArray(new String[0]);
 		resetPwQuestionComboBox = new JComboBox<>(resetPwQuestionList);
 
 		resetPwAnswerField = new JTextField(20);
-		JButton submitButton = new JButton("등록");
+		JButton submitButton = new DesignedButton("등록", COLOR.SUNFLOWER);
 		// 등록 버튼에 이벤트 핸들러 적용
 		submitButton.addActionListener( new SubmitButtonListener());
 
 		// 레이아웃
-		setLayout(new GridLayout(8, 2, 50, 50));
+		getContentPane().setLayout(new GridLayout(8, 2, 50, 50));
 
 		// 각 컴포넌트 프레임에 추가
-		add(nameLabel);
-		add(nameField);
-		add(solvedNameLabel);
-		add(solvedNameField);
-		add(emailLabel);
-		add(emailField);
-		add(passwordLabel);
-		add(passwordField);
-		add(passwordConfirmLabel);
-		add(passwordConfirmField);
+		contentPane.add(nameLabel);
+		contentPane.add(nameField);
+		contentPane.add(solvedNameLabel);
+		contentPane.add(solvedNameField);
+		contentPane.add(emailLabel);
+		contentPane.add(emailField);
+		contentPane.add(passwordLabel);
+		contentPane.add(passwordField);
+		contentPane.add(passwordConfirmLabel);
+		contentPane.add(passwordConfirmField);
 
-		add(resetPwQuestionLabel);
-		add(resetPwQuestionComboBox);   
-		add(resetPwAnswerLabel);
-		add(resetPwAnswerField);   
+		contentPane.add(resetPwQuestionLabel);
+		contentPane.add(resetPwQuestionComboBox);   
+		contentPane.add(resetPwAnswerLabel);
+		contentPane.add(resetPwAnswerField);   
 
-		add(submitButton);		add(new CancelButton()); // 취소버튼 추가
+		contentPane.add(new CancelButton()); // 취소버튼 추가
+		contentPane.add(submitButton); 
 
-		// 프레임 속성 설정
-		setTitle("회원 가입");
-		setSize(1000, 700);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+		contentPane.applyFontAndBackgroundToAllComponents(); // 전체 폰트 적용 및 패널 배경색 투명하게 적용
 		setVisible(true);
 	}
 
@@ -124,19 +143,18 @@ public class AccountCreateFrame extends JFrame{
 			}	
 		}
 	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AccountCreateFrame frame = new AccountCreateFrame(new MainFrame());
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
