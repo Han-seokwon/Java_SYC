@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,50 +9,105 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import users.User;
 import users.UserDBManager;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.SwingConstants;
 
 // 비밀번호 초기화 과정 1단계 : 유저이름, 이메일 확인 -> 2단계 : 초기화 질문에 대한 답변 확인 -> 3 단계 : 새롭게 변경할 비밀번호 입력
 
 // << 비밀번호 초기화 과정 1단계 >>
 // 유저이름, 이메일를 입력하여 비밀번호를 초기화할 사용자를 찾는 프레임
-public class PasswordResetUsernameEmailCheckFrame extends JFrame {
- 
+public class PasswordResetUsernameEmailCheckFrame extends DesignedJFrame {
+
 
 	private JTextField usernameField;
 	private JTextField emailField;
 	private User user;
 	public PasswordResetUsernameEmailCheckFrame() {
-		
-		// 컴포넌트 생성 및 초기화
-		JLabel usernameLabel = new JLabel("유저 이름:");
-		usernameField = new JTextField();
-		JLabel emailLabel = new JLabel("이메일:");
-		emailField = new JTextField();
-		JButton nextButton = new JButton("다음");
-		// 다음 버튼에 이벤트 핸들러 적용
-		nextButton.addActionListener(new CheckNameEmailListener());
-		
-		
-		// 레이아웃
-		setLayout(new GridLayout(3, 2, 70, 70));
-		
-		// 각 컴포넌트 프레임에 추가
-		add(usernameLabel);
-		add(usernameField);
-		add(emailLabel);
-		add(emailField);
-		add(new CancelButton()); 		
-		add(nextButton);	
+		super(500, 500, "비밀번호 초기화");
 
-		// 프레임 속성 설정
-		setTitle("비밀번호 초기화");
-		setSize(500, 500);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+
+		// 컨텐트팬 생성
+		DesignedContentPane contentPane = new DesignedContentPane(this);
+		setContentPane(contentPane);
+		// 컨텐트팬  레이아웃
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[] {50, 200, 200};
+		gbl_contentPane.rowHeights = new int[] {100, 100, 50, 50};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+		contentPane.setLayout(gbl_contentPane);
+
+		// 유저이름 라벨
+		JLabel usernameLabel = new JLabel("유저 이름:");
+		usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// 유저이름 라벨 레이아웃
+		GridBagConstraints gbc_usernameLabel = new GridBagConstraints();
+		gbc_usernameLabel.fill = GridBagConstraints.BOTH;
+		gbc_usernameLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_usernameLabel.gridx = 1;
+		gbc_usernameLabel.gridy = 0;
+		getContentPane().add(usernameLabel, gbc_usernameLabel);
+		
+		// 유저이름 입력 필드
+		usernameField = new JTextField();
+		// 유저이름 입력 필드 레이아웃
+		GridBagConstraints gbc_usernameField = new GridBagConstraints();
+		gbc_usernameField.fill = GridBagConstraints.BOTH;
+		gbc_usernameField.insets = new Insets(0, 0, 5, 0);
+		gbc_usernameField.gridx = 2;
+		gbc_usernameField.gridy = 0;
+		getContentPane().add(usernameField, gbc_usernameField);
+		
+		// 이메일 라벨
+		JLabel emailLabel = new JLabel("이메일:");
+		// 이메일 라벨 레이아웃
+		emailLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_emailLabel = new GridBagConstraints();
+		gbc_emailLabel.fill = GridBagConstraints.BOTH;
+		gbc_emailLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_emailLabel.gridx = 1;
+		gbc_emailLabel.gridy = 1;
+		getContentPane().add(emailLabel, gbc_emailLabel);
+		
+		// 이메일 입력 필드
+		emailField = new JTextField();
+		// 이메일 입력 필드 레이아웃
+		GridBagConstraints gbc_emailField = new GridBagConstraints();
+		gbc_emailField.fill = GridBagConstraints.BOTH;
+		gbc_emailField.insets = new Insets(0, 0, 5, 0);
+		gbc_emailField.gridx = 2;
+		gbc_emailField.gridy = 1;
+		getContentPane().add(emailField, gbc_emailField);
+		
+		
+		// 취소 버튼 레이아웃
+		GridBagConstraints gbc_cancleButton = new GridBagConstraints();
+		gbc_cancleButton.fill = GridBagConstraints.BOTH;
+		gbc_cancleButton.insets = new Insets(0, 0, 5, 5);
+		gbc_cancleButton.gridx = 1;
+		gbc_cancleButton.gridy = 3;
+		// 취소 버튼 생성 및 추가
+		getContentPane().add(new CancelButton(), gbc_cancleButton); 		
+
+		// 다음 버튼 생성
+		JButton nextButton = new DesignedButton("다음", COLOR.SUNFLOWER);
+		nextButton.addActionListener(new CheckNameEmailListener());	// 다음 버튼에 이벤트 핸들러 적용
+		// 다음 버튼 레이아웃
+		GridBagConstraints gbc_nextButton = new GridBagConstraints();
+		gbc_nextButton.insets = new Insets(0, 0, 5, 0);
+		gbc_nextButton.fill = GridBagConstraints.BOTH;
+		gbc_nextButton.gridx = 2;
+		gbc_nextButton.gridy = 3;
+		getContentPane().add(nextButton, gbc_nextButton);	
+
+		contentPane.applyFontAndBackgroundToAllComponents();  // 전체 폰트 적용 및 패널 배경색 투명하게 적용
 		setVisible(true);
 
 	}
@@ -77,5 +132,17 @@ public class PasswordResetUsernameEmailCheckFrame extends JFrame {
 
 		}
 
+	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PasswordResetUsernameEmailCheckFrame frame = new PasswordResetUsernameEmailCheckFrame();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

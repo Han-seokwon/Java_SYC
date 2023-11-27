@@ -107,7 +107,7 @@ public class LoginFrame extends DesignedJFrame{
 		// 컨텐트 팬에 추가
 		contentPane.add(resetPasswordButton, gbc_resetPasswordButton);
 		
-		
+		contentPane.applyFontAndBackgroundToAllComponents(); // 전체 폰트 적용 및 패널 배경색 투명하게 적용
 		setVisible(true);
 	}
 

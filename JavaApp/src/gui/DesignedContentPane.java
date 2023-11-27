@@ -12,6 +12,9 @@ import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
 import file.FileManager;
@@ -79,8 +82,8 @@ public class DesignedContentPane extends JPanel{
 	private void applyFontAndBackgroundToAllComponents(Container container) {
         for (Component component : container.getComponents()) {
             if (component instanceof JLabel ||  // 해당 컴포넌트가 다른 하위 컴포넌트 객체인 경우
-            		component instanceof JTextComponent ||
-            		component instanceof AbstractButton) { 
+            		component instanceof AbstractButton ||
+            		(component instanceof JTextComponent  && !(component instanceof JPasswordField))){ 
 	                ((JComponent) component).setFont(font); // 폰트 적용
 	                
             } else if (component instanceof JComponent) { // 해당 컴포넌트가 다른 컴포넌트를 포함하는 경우(Container 인 경우)

@@ -83,16 +83,16 @@ public class Main {
 //		JsonFetcher.updateProblemDB_FromSolvedAC();	
 
 		// < 2. DB 초기화 >
-//		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
+		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
 //		testSurveyData();
 		// < 3. 메인 프레임 생성>
 		// 메인 프레임 
-//		new MainFrame();
+		new MainFrame();
 		
 		// <  기타 프레임 테스트 >
-		new SurveyFrame(null);
+//		new SurveyFrame(null);
 //		new RecommendProblemFrame(null); // 문제 추천 프레임
-		new RateProblemFrame(null, null);		
+//		new RateProblemFrame(null, null);		
 	
 							
 

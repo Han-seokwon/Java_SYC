@@ -14,6 +14,7 @@ import users.User;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import javax.swing.SwingConstants;
 //비밀번호 초기화 과정 1단계 : 유저이름, 이메일 확인 -> 2단계 : 초기화 질문에 대한 답변 확인 -> 3 단계 : 새롭게 변경할 비밀번호 입력
 
 // << 비밀번호 초기화 과정 2단계 >>
@@ -29,58 +30,63 @@ public class PasswordResetAnswerCheckFrame extends DesignedJFrame {
 	public PasswordResetAnswerCheckFrame(User user) {   
 		super(500, 500, "비밀번호 초기화");
 		this.user = user; 
-		
+
 		DesignedContentPane contentPane = new DesignedContentPane(this);
 		setContentPane(contentPane);
 
+		// 컨텐트팬 레이아웃
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[] {20, 200, 200};
+		gridBagLayout.rowHeights = new int[] {100, 50, 50};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0};
+		contentPane.setLayout(gridBagLayout);
+		
 		resetQuestion = user.getPwResetQuestion(); // 등록된 질문을 가져옴
 		resetAnswer = user.getPwResetAnswer(); // 등록된 답변 가져옴
-		System.out.println(user.toString());
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{207, 70, 207, 0};
-		gridBagLayout.rowHeights = new int[]{107, 70, 107, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gridBagLayout);
-				
-						// 컴포넌트 생성 및 초기화
-						JLabel resetQuestionJLabel = new JLabel("질문: " + resetQuestion);
-						
-								// 각 컴포넌트 프레임에 추가
-								GridBagConstraints gbc_resetQuestionJLabel = new GridBagConstraints();
-								gbc_resetQuestionJLabel.fill = GridBagConstraints.BOTH;
-								gbc_resetQuestionJLabel.insets = new Insets(0, 0, 5, 5);
-								gbc_resetQuestionJLabel.gridx = 0;
-								gbc_resetQuestionJLabel.gridy = 0;
-								contentPane.add(resetQuestionJLabel, gbc_resetQuestionJLabel);
-		
-				answerField = new JTextField();
-				GridBagConstraints gbc_answerField = new GridBagConstraints();
-				gbc_answerField.fill = GridBagConstraints.BOTH;
-				gbc_answerField.insets = new Insets(0, 0, 5, 0);
-				gbc_answerField.gridx = 2;
-				gbc_answerField.gridy = 0;
-				contentPane.add(answerField, gbc_answerField);
-		
-		
-				GridBagConstraints gbc = new GridBagConstraints();
-				gbc.fill = GridBagConstraints.BOTH;
-				gbc.insets = new Insets(0, 0, 5, 5);
-				gbc.gridx = 0;
-				gbc.gridy = 1;
-				CancelButton cancelButton = new CancelButton();
-				contentPane.add(cancelButton, gbc); 
-		nextButton = new JButton("다음");
-		// 등록 버튼에 이벤트 핸들러 적용
-		nextButton.addActionListener(new CheckAnswerListener());
+
+		// 질문 라벨 
+		JLabel resetQuestionJLabel = new JLabel("질문: " + resetQuestion);
+		// 질문 라벨 레이아웃
+		resetQuestionJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_resetQuestionJLabel = new GridBagConstraints();
+		gbc_resetQuestionJLabel.fill = GridBagConstraints.BOTH;
+		gbc_resetQuestionJLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_resetQuestionJLabel.gridx = 1;
+		gbc_resetQuestionJLabel.gridy = 0;
+		contentPane.add(resetQuestionJLabel, gbc_resetQuestionJLabel);
+
+		// 답변 필드
+		answerField = new JTextField();
+		// 답변 필드 레이아웃
+		GridBagConstraints gbc_answerField = new GridBagConstraints();
+		gbc_answerField.fill = GridBagConstraints.BOTH;
+		gbc_answerField.insets = new Insets(0, 0, 5, 0);
+		gbc_answerField.gridx = 2;
+		gbc_answerField.gridy = 0;
+		contentPane.add(answerField, gbc_answerField);
+
+		// 취소 버튼
+		CancelButton cancelButton = new CancelButton();
+		// 취소 버튼 레이아웃
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(0, 0, 0, 5);
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		contentPane.add(cancelButton, gbc); 
+
+		// 다음 버튼
+		nextButton = new DesignedButton("다음", COLOR.SUNFLOWER);
+		nextButton.addActionListener(new CheckAnswerListener()); // 다음 버튼에 이벤트 핸들러 적용
+		// 다음 버튼 레이아웃
 		GridBagConstraints gbc_nextButton = new GridBagConstraints();
-		gbc_nextButton.insets = new Insets(0, 0, 5, 0);
 		gbc_nextButton.fill = GridBagConstraints.BOTH;
 		gbc_nextButton.gridx = 2;
-		gbc_nextButton.gridy = 1;
+		gbc_nextButton.gridy = 2;
 		contentPane.add(nextButton, gbc_nextButton);
 
-
+		contentPane.applyFontAndBackgroundToAllComponents();  // 전체 폰트 적용 및 패널 배경색 투명하게 적용
 		setVisible(true);
 	}
 
@@ -104,7 +110,7 @@ public class PasswordResetAnswerCheckFrame extends DesignedJFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PasswordResetAnswerCheckFrame frame = new PasswordResetAnswerCheckFrame(null);
+					PasswordResetAnswerCheckFrame frame = new PasswordResetAnswerCheckFrame(new User("qwer", "hoh9170", "qwr@na.com", "d1dd", "1. 좋아하는 동물은?", "사자"));
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
