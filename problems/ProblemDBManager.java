@@ -412,6 +412,29 @@ public class ProblemDBManager {
 		return ProblemSearch;
 	}
 	
+	/*
+	 *  문제 랭크를 통해 문제를 반환하는 함수
+	 *  매개변수로 받은 랭크에 해당하는 문제를 반환
+	 *  rank : 문제 랭크
+	 */
+	public static ArrayList<Problem> findProblemRank(RANK rank){
+		ArrayList<Problem> ProblemSearch = new ArrayList<>();
+		int rankvalue = rank.getRequireRankPoint();
+		
+		/*
+		 *  ProblemDBMap에서 Problem 객체를 가져온다.
+		 *  이후, 문제 랭크가 매개변수로 받은 랭크와 같으면 ProblemSearch 리스트에 저장한다	  
+		 */ 
+		for (Problem problem : ProblemDBMap.values()) {
+			int value = problem.getProblemRank().getRequireRankPoint();
+			if (rankvalue == value) {
+				ProblemSearch.add(problem);
+			}
+		}
+		
+		return ProblemSearch;
+	}
+	
 	// ProblemDB에 저장된 문제들을 불러 ProblemDBMap 해시맵에 추가하는 함수
 	public static void init() {
 		String dirpath = String.format("\\problems\\ProblemDB"); // 경로 지정
