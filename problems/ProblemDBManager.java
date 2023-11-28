@@ -432,7 +432,16 @@ public class ProblemDBManager {
 			}
 		}
 		
-		return ProblemSearch;
+		List<Problem> list = new ArrayList<>(ProblemSearch);
+		
+		Collections.sort(list, new Comparator<Problem>() {
+            @Override
+            public int compare(Problem o1, Problem o2) {
+            	return Integer.compare(o1.getProblemRankPoint(), o2.getProblemRankPoint());
+            }
+        });
+        
+        return new ArrayList<Problem>(list);
 	}
 	
 	// ProblemDB에 저장된 문제들을 불러 ProblemDBMap 해시맵에 추가하는 함수
