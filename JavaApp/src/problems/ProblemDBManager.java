@@ -390,9 +390,58 @@ public class ProblemDBManager {
         return A.containsAll(B);
     }
 	
-	// 문제 랭크 포인트를 통해 문제를 반환하는 함수
+	/*
+	 *  문제 랭크 포인트를 통해 문제를 반환하는 함수
+	 *  매개변수로 받은 문제포인트를 기준으로 +- 25에 해당하는 문제만 반환
+	 *  RankPoint : 문제 포인트
+	 */
 	public static ArrayList<Problem> findProblemRankPoint(int RankPoint){
-		return null;
+		ArrayList<Problem> ProblemSearch = new ArrayList<>();
+		
+		/*
+		 *  ProblemDBMap에서 Problem 객체를 가져온다.
+		 *  이후, 문제 랭크 포인트가 매개변수로 받은 점수 범위 이내에 있으면 ProblemSearch 리스트에 저장한다	  
+		 */ 
+		for (Problem problem : ProblemDBMap.values()) {
+			int point = problem.getProblemRankPoint();
+			if (point > RankPoint - 25 && point < RankPoint + 25) {
+				ProblemSearch.add(problem);
+			}
+		}
+		
+		return ProblemSearch;
+	}
+	
+	/*
+	 *  문제 랭크를 통해 문제를 반환하는 함수
+	 *  매개변수로 받은 랭크에 해당하는 문제를 반환
+	 *  rank : 문제 랭크
+	 */
+	public static ArrayList<Problem> findProblemRank(RANK rank){
+		ArrayList<Problem> ProblemSearch = new ArrayList<>();
+		int rankvalue = rank.getRequireRankPoint();
+		
+		/*
+		 *  ProblemDBMap에서 Problem 객체를 가져온다.
+		 *  이후, 문제 랭크가 매개변수로 받은 랭크와 같으면 ProblemSearch 리스트에 저장한다	  
+		 */ 
+		for (Problem problem : ProblemDBMap.values()) {
+			int value = problem.getProblemRank().getRequireRankPoint();
+			if (rankvalue == value) {
+				ProblemSearch.add(problem);
+			}
+		}
+		
+		List<Problem> list = new ArrayList<>(ProblemSearch);
+		
+		Collections.sort(list, new Comparator<Problem>() {
+            @Override
+            public int compare(Problem o1, Problem o2) {
+            	return Integer.compare(o1.getProblemRankPoint(), o2.getProblemRankPoint());
+            }
+        });
+        
+        return new ArrayList<Problem>(list);
 	}
 	
 	// ProblemDB에 저장된 문제들을 불러 ProblemDBMap 해시맵에 추가하는 함수
