@@ -11,10 +11,10 @@ import file.FileManager;
 
 public class ProblemDBManager {
 	
-	// Key = ë¬¸ì œ ID, Value = Problem ê°ì²´
+	// Key = ¹®Á¦ ID, Value = Problem °´Ã¼
 	private static HashMap<Integer, Problem> ProblemDBMap = new HashMap<>();
 
-	// ë””ë²„ê¹…ìš©
+	// µğ¹ö±ë¿ë
 	public static void PrintProblemDBMap() {
 		for (Map.Entry<Integer, Problem> entry : ProblemDBMap.entrySet()) {
             Integer key = entry.getKey();
@@ -24,9 +24,9 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  ë¬¸ì œë¥¼ í•´ì‹œë§µ ProblemDBMapì— ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜
-	 *  ID : ë¬¸ì œ ë²ˆí˜¸, problem : Problem ê°ì²´ ë³€ìˆ˜
-	 *  ProblemDB í´ë”ì—ì„œ ë¬¸ì œë¥¼ ê°€ì ¸ì˜¬ ë•Œ ì‚¬ìš©í•œë‹¤.
+	 *  ¹®Á¦¸¦ ÇØ½Ã¸Ê ProblemDBMap¿¡ Ãß°¡ÇÏ´Â ÇÔ¼ö
+	 *  ID : ¹®Á¦ ¹øÈ£, problem : Problem °´Ã¼ º¯¼ö
+	 *  ProblemDB Æú´õ¿¡¼­ ¹®Á¦¸¦ °¡Á®¿Ã ¶§ »ç¿ëÇÑ´Ù.
 	 */
 	public static boolean addProblem(int ID, Problem problem) {
 		if (!problem.isValid()) {
@@ -39,9 +39,9 @@ public class ProblemDBManager {
 	}
 	
 	/* 
-	 *  ë¬¸ì œë¥¼ .txtë¡œ ë³€í™˜í•˜ì—¬ ProblemDB í´ë”ì— ì €ì¥ í›„ ProblemDBMap í•´ì‹œë§µì— ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜
-	 *  problem : Problem ê°ì²´ ë³€ìˆ˜
-	 *  ìƒˆë¡­ê²Œ ìƒì„±ëœ Problem ê°ì²´ ë³€ìˆ˜ë¥¼ ProblemDB í´ë”ì— ì¶”ê°€í•  ë•Œ ì‚¬ìš©í•œë‹¤.
+	 *  ¹®Á¦¸¦ .txt·Î º¯È¯ÇÏ¿© ProblemDB Æú´õ¿¡ ÀúÀå ÈÄ ProblemDBMap ÇØ½Ã¸Ê¿¡ Ãß°¡ÇÏ´Â ÇÔ¼ö
+	 *  problem : Problem °´Ã¼ º¯¼ö
+	 *  »õ·Ó°Ô »ı¼ºµÈ Problem °´Ã¼ º¯¼ö¸¦ ProblemDB Æú´õ¿¡ Ãß°¡ÇÒ ¶§ »ç¿ëÇÑ´Ù.
 	 */
 	public static boolean createProblem(Problem problem) {
 		if (!problem.isValid()) {
@@ -50,15 +50,15 @@ public class ProblemDBManager {
 		else {
 			String filename = Integer.toString(problem.getProblemID());
 			String filepath = String.format("\\problems\\ProblemDB\\%s.txt", filename);
-			FileManager.createUpdateObjectFile(problem, filepath);     // .txt íŒŒì¼ ì €ì¥
-			ProblemDBMap.put(problem.getProblemID(), problem);		   // í•´ì‹œë§µì— ì¶”ê°€
+			FileManager.createUpdateObjectFile(problem, filepath);     // .txt ÆÄÀÏ ÀúÀå
+			ProblemDBMap.put(problem.getProblemID(), problem);		   // ÇØ½Ã¸Ê¿¡ Ãß°¡
 			return true;
 		}
 	}
 	
 	/* 
-	 *  ProblemDB í´ë”ì— ì €ì¥ëœ ë¬¸ì œì™€ ProblemDBMap í•´ì‹œë§µì— ì €ì¥ëœ ë¬¸ì œë¥¼ ìµœì‹ í™”í•˜ëŠ” í•¨ìˆ˜
-	 *  ID : ë¬¸ì œ ë²ˆí˜¸, problem : Problem ê°ì²´ ë³€ìˆ˜
+	 *  ProblemDB Æú´õ¿¡ ÀúÀåµÈ ¹®Á¦¿Í ProblemDBMap ÇØ½Ã¸Ê¿¡ ÀúÀåµÈ ¹®Á¦¸¦ ÃÖ½ÅÈ­ÇÏ´Â ÇÔ¼ö
+	 *  ID : ¹®Á¦ ¹øÈ£, problem : Problem °´Ã¼ º¯¼ö
 	 */
 	public static boolean changeProblem(int ID, Problem problem) {
 		if (!problem.isValid()) {
@@ -66,10 +66,10 @@ public class ProblemDBManager {
 		}
 		else {
 			if(ProblemDBMap.containsKey(ID)) {
-				ProblemDBMap.put(ID, problem);		   // í•´ì‹œë§µì— ì¶”ê°€
+				ProblemDBMap.put(ID, problem);		   // ÇØ½Ã¸Ê¿¡ Ãß°¡
 				String filename = Integer.toString(ID);
 				String filepath = String.format("\\problems\\ProblemDB\\%s.txt", filename);
-				FileManager.createUpdateObjectFile(problem, filepath);     // .txt íŒŒì¼ ì €ì¥
+				FileManager.createUpdateObjectFile(problem, filepath);     // .txt ÆÄÀÏ ÀúÀå
 				return true;
 			}
 			else {
@@ -79,8 +79,8 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  ë¬¸ì œê°€ ProblemDBMap í•´ì‹œë§µì— ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
-	 *  ID : ë¬¸ì œ ë²ˆí˜¸
+	 *  ¹®Á¦°¡ ProblemDBMap ÇØ½Ã¸Ê¿¡ ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+	 *  ID : ¹®Á¦ ¹øÈ£
 	 */
 	public static boolean containProblem(int ID) {
 		if (ProblemDBMap.containsKey(ID)) {
@@ -93,8 +93,8 @@ public class ProblemDBManager {
 	
 	
 	/*
-	 *  ë¬¸ì œ IDë¥¼ í†µí•´ ProblemDBMap í•´ì‹œë§µì—ì„œ ë¬¸ì œë¥¼ ì°¾ëŠ” í•¨ìˆ˜
-	 *  ID - ë¬¸ì œ ë²ˆí˜¸
+	 *  ¹®Á¦ ID¸¦ ÅëÇØ ProblemDBMap ÇØ½Ã¸Ê¿¡¼­ ¹®Á¦¸¦ Ã£´Â ÇÔ¼ö
+	 *  ID - ¹®Á¦ ¹øÈ£
 	 */
 	public static Problem findProblem(int ID) {
 		Problem pblm = new Problem();
@@ -109,18 +109,18 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  ë¬¸ì œ IDë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì˜¤ë¦„ì°¨ìˆœ, ë‚´ë¦¼ì°¨ìˆœìœ¼ë¡œ ì •ë ¬í•´ì„œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-	 *  true - ì˜¤ë¦„ì°¨ìˆœ, false - ë‚´ë¦¼ì°¨ìˆœ
+	 *  ¹®Á¦ ID¸¦ ±âÁØÀ¸·Î ¿À¸§Â÷¼ø, ³»¸²Â÷¼øÀ¸·Î Á¤·ÄÇØ¼­ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	 *  true - ¿À¸§Â÷¼ø, false - ³»¸²Â÷¼ø
 	 */
 	public static ArrayList<Problem> findProblemToID(boolean sort){
 		/*
-		 *  Keys : ProblemDBMap í•´ì‹œë§µì— ì €ì¥ëœ ëª¨ë“  í‚¤ ê°’
-		 *  ProblemSortID : ì •ë ¬ëœ Problem ê°ì²´ê°€ ì €ì¥ë  ë¦¬ìŠ¤íŠ¸
+		 *  Keys : ProblemDBMap ÇØ½Ã¸Ê¿¡ ÀúÀåµÈ ¸ğµç Å° °ª
+		 *  ProblemSortID : Á¤·ÄµÈ Problem °´Ã¼°¡ ÀúÀåµÉ ¸®½ºÆ®
 		 */
 		ArrayList<Integer> Keys = new ArrayList<>(ProblemDBMap.keySet());
 		ArrayList<Problem> ProblemSortID = new ArrayList<>();
 		
-		// ë§¤ê°œë³€ìˆ˜ë¥¼ ë°”íƒ•ìœ¼ë¡œ Keys ë¦¬ìŠ¤íŠ¸ë¥¼ ì˜¤ë¦„ì°¨ìˆœ í˜¹ì€ ë‚´ë¦¼ì°¨ìˆœìœ¼ë¡œ ì •ë ¬í•œë‹¤.
+		// ¸Å°³º¯¼ö¸¦ ¹ÙÅÁÀ¸·Î Keys ¸®½ºÆ®¸¦ ¿À¸§Â÷¼ø È¤Àº ³»¸²Â÷¼øÀ¸·Î Á¤·ÄÇÑ´Ù.
 		if (sort) {
 			Collections.sort(Keys);
 		}
@@ -128,7 +128,7 @@ public class ProblemDBManager {
 			Collections.sort(Keys, Collections.reverseOrder());
 		}
 		
-		// ì •ë ¬í•œ í‚¤ ê°’ì„ ë°”íƒ•ìœ¼ë¡œ ProblemDBMapì—ì„œ Problem ê°ì²´ë¥¼ ë¶ˆëŸ¬ì™€ ProblemSortID ë¦¬ìŠ¤íŠ¸ì— ì €ì¥í•œë‹¤.
+		// Á¤·ÄÇÑ Å° °ªÀ» ¹ÙÅÁÀ¸·Î ProblemDBMap¿¡¼­ Problem °´Ã¼¸¦ ºÒ·¯¿Í ProblemSortID ¸®½ºÆ®¿¡ ÀúÀåÇÑ´Ù.
 		for (Integer key : Keys) {
 			ProblemSortID.add(ProblemDBMap.get(key));
 		}
@@ -137,15 +137,15 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  ë¬¸ì œ ê²€ìƒ‰ì„ í†µí•´ ì–»ì€ ë¬¸ì œë¥¼ ë¬¸ì œ ID ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬í•˜ëŠ” í•¨ìˆ˜
-	 *  plbm : ë¬¸ì œ ê²€ìƒ‰ìœ¼ë¡œ ì–»ì€ Problem ë¦¬ìŠ¤íŠ¸
+	 *  ¹®Á¦ °Ë»öÀ» ÅëÇØ ¾òÀº ¹®Á¦¸¦ ¹®Á¦ ID ±âÁØÀ¸·Î Á¤·ÄÇÏ´Â ÇÔ¼ö
+	 *  plbm : ¹®Á¦ °Ë»öÀ¸·Î ¾òÀº Problem ¸®½ºÆ®
 	 */
 	public static ArrayList<Problem> findProblemToID(ArrayList<Problem> plbm, boolean sort){ 
 		List<Problem> list = new ArrayList<>(plbm);
 		
 		/*
-		 *  Comparator í´ë˜ìŠ¤ë¥¼ ì‚¬ìš©
-		 *  Collections.sort()ë¥¼ ì˜¤ë²„ë¼ì´ë”©í•˜ì—¬ ë¬¸ì œ ID ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬ì´ ë˜ë„ë¡ í•¨
+		 *  Comparator Å¬·¡½º¸¦ »ç¿ë
+		 *  Collections.sort()¸¦ ¿À¹ö¶óÀÌµùÇÏ¿© ¹®Á¦ ID ±âÁØÀ¸·Î Á¤·ÄÀÌ µÇµµ·Ï ÇÔ
 		 */
         Collections.sort(list, new Comparator<Problem>() {
             @Override
@@ -162,21 +162,21 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  ë¬¸ì œ ì´ë¦„ì„ ê¸°ì¤€ìœ¼ë¡œ ì˜¤ë¦„ì°¨ìˆœ, ë‚´ë¦¼ì°¨ìˆœìœ¼ë¡œ ì •ë ¬í•´ì„œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-	 *  true - ì˜¤ë¦„ì°¨ìˆœ, false - ë‚´ë¦¼ì°¨ìˆœ
+	 *  ¹®Á¦ ÀÌ¸§À» ±âÁØÀ¸·Î ¿À¸§Â÷¼ø, ³»¸²Â÷¼øÀ¸·Î Á¤·ÄÇØ¼­ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	 *  true - ¿À¸§Â÷¼ø, false - ³»¸²Â÷¼ø
 	 */
 	public static ArrayList<Problem> findProblemToName(boolean sort) {
 		/*
-		 *  ProblemName : key - ë¬¸ì œ ë²ˆí˜¸, value - ë¬¸ì œ ì´ë¦„
-		 *  SortProblem : ì •ë ¬ëœ Problem ê°ì²´ê°€ ì €ì¥ë  ë¦¬ìŠ¤íŠ¸
+		 *  ProblemName : key - ¹®Á¦ ¹øÈ£, value - ¹®Á¦ ÀÌ¸§
+		 *  SortProblem : Á¤·ÄµÈ Problem °´Ã¼°¡ ÀúÀåµÉ ¸®½ºÆ®
 		 */
 	    HashMap<Integer, String> ProblemName = new HashMap<>();
 	    ArrayList<Problem> SortProblem = new ArrayList<>();
 	    
 	    /*
-	     * ProblemDBMap í•´ì‹œë§µì—ì„œ ë¬¸ì œ ë²ˆí˜¸(í‚¤ê°’)ê³¼ Problem ê°ì²´ë¥¼ ì¶”ì¶œí•œë‹¤.
-	     * ì¶”ì¶œí•œ Problem ê°ì²´ì—ì„œ ë¬¸ì œ ì´ë¦„ì„ ê°€ì ¸ì˜¨ë‹¤.
-	     * ì¶”ì¶œí•œ ë¬¸ì œ ë²ˆí˜¸ì™€ ë¬¸ì œ ì´ë¦„ì„ ProblemName í•´ì‹œë§µì— ì €ì¥í•œë‹¤.
+	     * ProblemDBMap ÇØ½Ã¸Ê¿¡¼­ ¹®Á¦ ¹øÈ£(Å°°ª)°ú Problem °´Ã¼¸¦ ÃßÃâÇÑ´Ù.
+	     * ÃßÃâÇÑ Problem °´Ã¼¿¡¼­ ¹®Á¦ ÀÌ¸§À» °¡Á®¿Â´Ù.
+	     * ÃßÃâÇÑ ¹®Á¦ ¹øÈ£¿Í ¹®Á¦ ÀÌ¸§À» ProblemName ÇØ½Ã¸Ê¿¡ ÀúÀåÇÑ´Ù.
 	     */
 	    for (Map.Entry<Integer, Problem> entry : ProblemDBMap.entrySet()) {
 	        Integer key = entry.getKey();
@@ -186,13 +186,13 @@ public class ProblemDBManager {
 	        ProblemName.put(key, name);
 	    }
 	    
-	    // list : ProblemNameì˜ Key, Valueë¥¼ ê°€ì§€ê³  ìˆëŠ” ë¦¬ìŠ¤íŠ¸
+	    // list : ProblemNameÀÇ Key, Value¸¦ °¡Áö°í ÀÖ´Â ¸®½ºÆ®
 	    List<Map.Entry<Integer,String>> list = new ArrayList<Map.Entry<Integer,String>>(ProblemName.entrySet());
 	    
 		/*
-		 *  Comparator í´ë˜ìŠ¤ë¥¼ ì‚¬ìš©
-		 *  Collections.sort()ë¥¼ ì˜¤ë²„ë¼ì´ë”©í•˜ì—¬ ë¬¸ì œì´ë¦„ì„ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬ì´ ë˜ë„ë¡ í•¨
-		 *  ì´ë•Œ, í‚¤ ê°’ë„ ê°™ì´ ì •ë ¬ì´ ë¨
+		 *  Comparator Å¬·¡½º¸¦ »ç¿ë
+		 *  Collections.sort()¸¦ ¿À¹ö¶óÀÌµùÇÏ¿© ¹®Á¦ÀÌ¸§À» ±âÁØÀ¸·Î Á¤·ÄÀÌ µÇµµ·Ï ÇÔ
+		 *  ÀÌ¶§, Å° °ªµµ °°ÀÌ Á¤·ÄÀÌ µÊ
 		 */
         Collections.sort(list, new Comparator<>() {
             @Override
@@ -206,7 +206,7 @@ public class ProblemDBManager {
             }
         });
 	    
-        // listì—ì„œ ì •ë ¬ëœ í‚¤ ê°’ì„ í†µí•´ ProblemDBMapì—ì„œ ë¬¸ì œë¥¼ ê°€ì ¸ì˜¤ê³  SortProblemì— ì €ì¥í•œë‹¤.
+        // list¿¡¼­ Á¤·ÄµÈ Å° °ªÀ» ÅëÇØ ProblemDBMap¿¡¼­ ¹®Á¦¸¦ °¡Á®¿À°í SortProblem¿¡ ÀúÀåÇÑ´Ù.
         for(Map.Entry<Integer, String> entry : list) {
         	SortProblem.add(ProblemDBMap.get(entry.getKey()));
         }
@@ -215,15 +215,15 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  ë¬¸ì œ ê²€ìƒ‰ì„ í†µí•´ ì–»ì€ ë¬¸ì œë¥¼ ë¬¸ì œ ì´ë¦„ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬í•˜ëŠ” í•¨ìˆ˜
-	 *  plbm : ë¬¸ì œ ê²€ìƒ‰ìœ¼ë¡œ ì–»ì€ Problem ë¦¬ìŠ¤íŠ¸
+	 *  ¹®Á¦ °Ë»öÀ» ÅëÇØ ¾òÀº ¹®Á¦¸¦ ¹®Á¦ ÀÌ¸§ ±âÁØÀ¸·Î Á¤·ÄÇÏ´Â ÇÔ¼ö
+	 *  plbm : ¹®Á¦ °Ë»öÀ¸·Î ¾òÀº Problem ¸®½ºÆ®
 	 */
 	public static ArrayList<Problem> findProblemToName(ArrayList<Problem> plbm, boolean sort){
 		List<Problem> list = new ArrayList<>(plbm);
 
 		/*
-		 *  Comparator í´ë˜ìŠ¤ë¥¼ ì‚¬ìš©
-		 *  Collections.sort()ë¥¼ ì˜¤ë²„ë¼ì´ë”©í•˜ì—¬ ë¬¸ì œ ì´ë¦„ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬ì´ ë˜ë„ë¡ í•¨
+		 *  Comparator Å¬·¡½º¸¦ »ç¿ë
+		 *  Collections.sort()¸¦ ¿À¹ö¶óÀÌµùÇÏ¿© ¹®Á¦ ÀÌ¸§ ±âÁØÀ¸·Î Á¤·ÄÀÌ µÇµµ·Ï ÇÔ
 		 */
         Collections.sort(list, new Comparator<Problem>() {
             @Override
@@ -241,21 +241,21 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  ë¬¸ì œ ë­í¬ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì˜¤ë¦„ì°¨ìˆœ, ë‚´ë¦¼ì°¨ìˆœì„ í•´ì„œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-	 *  true - ì˜¤ë¦„ì°¨ìˆœ, false - ë‚´ë¦¼ì°¨ìˆœ
+	 *  ¹®Á¦ ·©Å©¸¦ ±âÁØÀ¸·Î ¿À¸§Â÷¼ø, ³»¸²Â÷¼øÀ» ÇØ¼­ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	 *  true - ¿À¸§Â÷¼ø, false - ³»¸²Â÷¼ø
 	 */
 	public static ArrayList<Problem> findProblemToRank(boolean sort){
 		/*
-		 *  ProblemRank : key - ë¬¸ì œ ë²ˆí˜¸, value - ë¬¸ì œ RANK
-		 *  SortProblem : ì •ë ¬ëœ Problem ê°ì²´ê°€ ì €ì¥ë  ë¦¬ìŠ¤íŠ¸
+		 *  ProblemRank : key - ¹®Á¦ ¹øÈ£, value - ¹®Á¦ RANK
+		 *  SortProblem : Á¤·ÄµÈ Problem °´Ã¼°¡ ÀúÀåµÉ ¸®½ºÆ®
 		 */
 		HashMap<Integer, RANK> ProblemRank = new HashMap<>();
 	    ArrayList<Problem> SortProblem = new ArrayList<>();
 	    
 	    /*
-	     * ProblemDBMap í•´ì‹œë§µì—ì„œ ë¬¸ì œ ë²ˆí˜¸(í‚¤ê°’)ê³¼ Problem ê°ì²´ë¥¼ ì¶”ì¶œí•œë‹¤.
-	     * ì¶”ì¶œí•œ Problem ê°ì²´ì—ì„œ ë¬¸ì œ RANKë¥¼ ê°€ì ¸ì˜¨ë‹¤.
-	     * ì¶”ì¶œí•œ ë¬¸ì œ ë²ˆí˜¸ì™€ ë¬¸ì œ RANKë¥¼ ProblemName í•´ì‹œë§µì— ì €ì¥í•œë‹¤.
+	     * ProblemDBMap ÇØ½Ã¸Ê¿¡¼­ ¹®Á¦ ¹øÈ£(Å°°ª)°ú Problem °´Ã¼¸¦ ÃßÃâÇÑ´Ù.
+	     * ÃßÃâÇÑ Problem °´Ã¼¿¡¼­ ¹®Á¦ RANK¸¦ °¡Á®¿Â´Ù.
+	     * ÃßÃâÇÑ ¹®Á¦ ¹øÈ£¿Í ¹®Á¦ RANK¸¦ ProblemName ÇØ½Ã¸Ê¿¡ ÀúÀåÇÑ´Ù.
 	     */
 	    for (Map.Entry<Integer, Problem> entry : ProblemDBMap.entrySet()) {
 	        Integer key = entry.getKey();
@@ -265,13 +265,13 @@ public class ProblemDBManager {
 	        ProblemRank.put(key, Rank);
 	    }
 	    
-	    // list : ProblemRankì˜ Key, Valueë¥¼ ê°€ì§€ê³  ìˆëŠ” ë¦¬ìŠ¤íŠ¸
+	    // list : ProblemRankÀÇ Key, Value¸¦ °¡Áö°í ÀÖ´Â ¸®½ºÆ®
 	    List<Map.Entry<Integer,RANK>> list = new ArrayList<Map.Entry<Integer,RANK>>(ProblemRank.entrySet());
 	    
 		/*
-		 *  Comparator í´ë˜ìŠ¤ë¥¼ ì‚¬ìš©
-		 *  Collections.sort()ë¥¼ ì˜¤ë²„ë¼ì´ë”©í•˜ì—¬ ë¬¸ì œ RANKë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬ì´ ë˜ë„ë¡ í•¨
-		 *  ì´ë•Œ, í‚¤ ê°’ë„ ê°™ì´ ì •ë ¬ì´ ë¨
+		 *  Comparator Å¬·¡½º¸¦ »ç¿ë
+		 *  Collections.sort()¸¦ ¿À¹ö¶óÀÌµùÇÏ¿© ¹®Á¦ RANK¸¦ ±âÁØÀ¸·Î Á¤·ÄÀÌ µÇµµ·Ï ÇÔ
+		 *  ÀÌ¶§, Å° °ªµµ °°ÀÌ Á¤·ÄÀÌ µÊ
 		 */
         Collections.sort(list, new Comparator<>() {
             @Override
@@ -285,7 +285,7 @@ public class ProblemDBManager {
             }
         });
 	    
-        // listì—ì„œ ì •ë ¬ëœ í‚¤ ê°’ì„ í†µí•´ ProblemDBMapì—ì„œ ë¬¸ì œë¥¼ ê°€ì ¸ì˜¤ê³  SortProblemì— ì €ì¥í•œë‹¤.
+        // list¿¡¼­ Á¤·ÄµÈ Å° °ªÀ» ÅëÇØ ProblemDBMap¿¡¼­ ¹®Á¦¸¦ °¡Á®¿À°í SortProblem¿¡ ÀúÀåÇÑ´Ù.
         for(Map.Entry<Integer, RANK> entry : list) {
         	SortProblem.add(ProblemDBMap.get(entry.getKey()));
         }
@@ -294,15 +294,15 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  ë¬¸ì œ ê²€ìƒ‰ì„ í†µí•´ ì–»ì€ ë¬¸ì œë¥¼ ë¬¸ì œ ë­í¬ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬í•˜ëŠ” í•¨ìˆ˜
-	 *  plbm : ë¬¸ì œ ê²€ìƒ‰ìœ¼ë¡œ ì–»ì€ Problem ë¦¬ìŠ¤íŠ¸
+	 *  ¹®Á¦ °Ë»öÀ» ÅëÇØ ¾òÀº ¹®Á¦¸¦ ¹®Á¦ ·©Å© ±âÁØÀ¸·Î Á¤·ÄÇÏ´Â ÇÔ¼ö
+	 *  plbm : ¹®Á¦ °Ë»öÀ¸·Î ¾òÀº Problem ¸®½ºÆ®
 	 */
 	public static ArrayList<Problem> findProblemToRank(ArrayList<Problem> plbm, boolean sort) {
 		List<Problem> list = new ArrayList<>(plbm);
 		
 		/*
-		 *  Comparator í´ë˜ìŠ¤ë¥¼ ì‚¬ìš©
-		 *  Collections.sort()ë¥¼ ì˜¤ë²„ë¼ì´ë”©í•˜ì—¬ ë¬¸ì œ RANK ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬ì´ ë˜ë„ë¡ í•¨
+		 *  Comparator Å¬·¡½º¸¦ »ç¿ë
+		 *  Collections.sort()¸¦ ¿À¹ö¶óÀÌµùÇÏ¿© ¹®Á¦ RANK ±âÁØÀ¸·Î Á¤·ÄÀÌ µÇµµ·Ï ÇÔ
 		 */
         Collections.sort(list, new Comparator<Problem>() {
             @Override
@@ -319,15 +319,15 @@ public class ProblemDBManager {
     }
 	
 	/*
-	 *  ë¬¸ì œ ì´ë¦„ ê²€ìƒ‰ì„ í†µí•´ ë¬¸ì œë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-	 *  num : ì •ë ¬ ê¸°ì¤€ê³¼ ì •ë ¬ ë°©í–¥ì— ë”°ë¼ ë‹¤ë¥´ê²Œ ì „ë‹¬
+	 *  ¹®Á¦ ÀÌ¸§ °Ë»öÀ» ÅëÇØ ¹®Á¦¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	 *  num : Á¤·Ä ±âÁØ°ú Á¤·Ä ¹æÇâ¿¡ µû¶ó ´Ù¸£°Ô Àü´Ş
 	 */
 	public static ArrayList<Problem> findProblemSearch(String Name, int num) {
 	    ArrayList<Problem> ProblemSearch = new ArrayList<>();
 	    
 	    /*
-	     *  ProblemDBMapì—ì„œ Problem ê°ì²´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
-	     *  ì´í›„, ë¬¸ì œ ì´ë¦„ì— ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì€ ë¬¸ìê°€ í¬í•¨ì´ ë˜ì–´ìˆìœ¼ë©´ ProblemSearch ë¦¬ìŠ¤íŠ¸ì— ì €ì¥í•œë‹¤	  
+	     *  ProblemDBMap¿¡¼­ Problem °´Ã¼¸¦ °¡Á®¿Â´Ù.
+	     *  ÀÌÈÄ, ¹®Á¦ ÀÌ¸§¿¡ ¸Å°³º¯¼ö·Î ¹ŞÀº ¹®ÀÚ°¡ Æ÷ÇÔÀÌ µÇ¾îÀÖÀ¸¸é ProblemSearch ¸®½ºÆ®¿¡ ÀúÀåÇÑ´Ù	  
 	     */
 	    for (Problem problem : ProblemDBMap.values()) {
 	        if (problem.getProblemName().toLowerCase().contains(Name.toLowerCase())) {
@@ -335,47 +335,47 @@ public class ProblemDBManager {
 	        }
 	    }
 	    
-	    // ë¬¸ì œë¥¼ ë²ˆí˜¸ ê¸°ì¤€ ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
+	    // ¹®Á¦¸¦ ¹øÈ£ ±âÁØ ¿À¸§Â÷¼øÀ¸·Î Á¤·Ä
 	    if (num == 1) {
 	    	return findProblemToID(ProblemSearch, true);
 	    }
-	    // ë¬¸ì œë¥¼ ë²ˆí˜¸ ê¸°ì¤€ ë‚´ë¦¼ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
+	    // ¹®Á¦¸¦ ¹øÈ£ ±âÁØ ³»¸²Â÷¼øÀ¸·Î Á¤·Ä
 	    else if (num == 2) {
 	    	return findProblemToID(ProblemSearch, false);
 	    }
-	    // ë¬¸ì œë¥¼ ì´ë¦„ ê¸°ì¤€ ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
+	    // ¹®Á¦¸¦ ÀÌ¸§ ±âÁØ ¿À¸§Â÷¼øÀ¸·Î Á¤·Ä
 	    else if (num == 3) {
 	    	return findProblemToName(ProblemSearch, true);
 	    }
-	    // ë¬¸ì œë¥¼ ì´ë¦„ ê¸°ì¤€ ë‚´ë¦¼ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
+	    // ¹®Á¦¸¦ ÀÌ¸§ ±âÁØ ³»¸²Â÷¼øÀ¸·Î Á¤·Ä
 	    else if (num == 4) {
 	    	return findProblemToName(ProblemSearch, false);
 	    }
-	    // ë¬¸ì œë¥¼ ë­í¬ ê¸°ì¤€ ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
+	    // ¹®Á¦¸¦ ·©Å© ±âÁØ ¿À¸§Â÷¼øÀ¸·Î Á¤·Ä
 	    else if (num == 5) {
 	    	return findProblemToRank(ProblemSearch, true);
 	    }
-	    // ë¬¸ì œë¥¼ ë­í¬ ê¸°ì¤€ ë‚´ë¦¼ì°¨ìˆœìœ¼ë¡œ ì •ë ¬
+	    // ¹®Á¦¸¦ ·©Å© ±âÁØ ³»¸²Â÷¼øÀ¸·Î Á¤·Ä
 	    else if (num == 6) {
 	    	return findProblemToRank(ProblemSearch, false);
 	    }
-	    // ì •ë ¬ ê¸°ì¤€ì´ ì—†ì„ ë•Œ ê²€ìƒ‰í•œ ë¬¸ì œë§Œ ë°˜í™˜
+	    // Á¤·Ä ±âÁØÀÌ ¾øÀ» ¶§ °Ë»öÇÑ ¹®Á¦¸¸ ¹İÈ¯
 	    else {
 	    	return ProblemSearch;
 	    }
 	}
 	
 	/*
-	 *  ë¬¸ì œ ì•Œê³ ë¦¬ì¦˜ì„ í†µí•´ ë¬¸ì œë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-	 *  ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì€ ë¦¬ìŠ¤íŠ¸ë¥¼ ëª¨ë‘ í¬í•¨í•˜ê³  ìˆëŠ” ë¬¸ì œë§Œ ë°˜í™˜
-	 *  algorithm : ë¬¸ì œ ì•Œê³ ë¦¬ì¦˜ì´ ì €ì¥ëœ ArrayList
+	 *  ¹®Á¦ ¾Ë°í¸®ÁòÀ» ÅëÇØ ¹®Á¦¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	 *  ¸Å°³º¯¼ö·Î ¹ŞÀº ¸®½ºÆ®¸¦ ¸ğµÎ Æ÷ÇÔÇÏ°í ÀÖ´Â ¹®Á¦¸¸ ¹İÈ¯
+	 *  algorithm : ¹®Á¦ ¾Ë°í¸®ÁòÀÌ ÀúÀåµÈ ArrayList
 	 */
 	public static ArrayList<Problem> findProblemAlgorithm(ArrayList<String> algorithm){
 		 ArrayList<Problem> ProblemSearch = new ArrayList<>();
 		 
 		 /*
-		  *  ProblemDBMapì—ì„œ Problem ê°ì²´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
-		  *  ì´í›„, ë¬¸ì œ ì•Œê³ ë¦¬ì¦˜ì—ì— ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì€ ì•Œê³ ë¦¬ì¦˜ì´ ëª¨ë‘ ìˆìœ¼ë©´ ProblemSearch ë¦¬ìŠ¤íŠ¸ì— ì €ì¥í•œë‹¤	  
+		  *  ProblemDBMap¿¡¼­ Problem °´Ã¼¸¦ °¡Á®¿Â´Ù.
+		  *  ÀÌÈÄ, ¹®Á¦ ¾Ë°í¸®Áò¿¡¿¡ ¸Å°³º¯¼ö·Î ¹ŞÀº ¾Ë°í¸®ÁòÀÌ ¸ğµÎ ÀÖÀ¸¸é ProblemSearch ¸®½ºÆ®¿¡ ÀúÀåÇÑ´Ù	  
 		  */ 
 		 for (Problem problem : ProblemDBMap.values()) {
 			 if (containsAll(problem.getProblemAlgorithm(), algorithm)) {
@@ -391,38 +391,39 @@ public class ProblemDBManager {
     }
 	
 	/*
-	 *  ë¬¸ì œ ë­í¬ í¬ì¸íŠ¸ë¥¼ í†µí•´ ë¬¸ì œë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-	 *  ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì€ ë¬¸ì œí¬ì¸íŠ¸ë¥¼ ê¸°ì¤€ìœ¼ë¡œ +- 25ì— í•´ë‹¹í•˜ëŠ” ë¬¸ì œë§Œ ë°˜í™˜
-	 *  RankPoint : ë¬¸ì œ í¬ì¸íŠ¸
+	 *  ¹®Á¦ ·©Å© Æ÷ÀÎÆ®¸¦ ÅëÇØ ¹®Á¦¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	 *  ¸Å°³º¯¼ö·Î ¹ŞÀº ¹®Á¦Æ÷ÀÎÆ®¸¦ ±âÁØÀ¸·Î +- 25¿¡ ÇØ´çÇÏ´Â ¹®Á¦¸¸ ¹İÈ¯
+	 *  RankPoint : ¹®Á¦ Æ÷ÀÎÆ®
 	 */
 	public static ArrayList<Problem> findProblemRankPoint(int RankPoint){
 		ArrayList<Problem> ProblemSearch = new ArrayList<>();
 		
 		/*
-		 *  ProblemDBMapì—ì„œ Problem ê°ì²´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
-		 *  ì´í›„, ë¬¸ì œ ë­í¬ í¬ì¸íŠ¸ê°€ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì€ ì ìˆ˜ ë²”ìœ„ ì´ë‚´ì— ìˆìœ¼ë©´ ProblemSearch ë¦¬ìŠ¤íŠ¸ì— ì €ì¥í•œë‹¤	  
+		 *  ProblemDBMap¿¡¼­ Problem °´Ã¼¸¦ °¡Á®¿Â´Ù.
+		 *  ÀÌÈÄ, ¹®Á¦ ·©Å© Æ÷ÀÎÆ®°¡ ¸Å°³º¯¼ö·Î ¹ŞÀº Á¡¼ö ¹üÀ§ ÀÌ³»¿¡ ÀÖÀ¸¸é ProblemSearch ¸®½ºÆ®¿¡ ÀúÀåÇÑ´Ù	  
 		 */ 
 		for (Problem problem : ProblemDBMap.values()) {
 			int point = problem.getProblemRankPoint();
-			if (point > RankPoint - 25 && point < RankPoint + 25) {				
+			if (point > RankPoint - 25 && point < RankPoint + 25) {
 				ProblemSearch.add(problem);
 			}
 		}
 		
 		return ProblemSearch;
-    
+	}
+	
 	/*
-	 *  ë¬¸ì œ ë­í¬ë¥¼ í†µí•´ ë¬¸ì œë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
-	 *  ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì€ ë­í¬ì— í•´ë‹¹í•˜ëŠ” ë¬¸ì œë¥¼ ë°˜í™˜
-	 *  rank : ë¬¸ì œ ë­í¬
+	 *  ¹®Á¦ ·©Å©¸¦ ÅëÇØ ¹®Á¦¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	 *  ¸Å°³º¯¼ö·Î ¹ŞÀº ·©Å©¿¡ ÇØ´çÇÏ´Â ¹®Á¦¸¦ ¹İÈ¯
+	 *  rank : ¹®Á¦ ·©Å©
 	 */
 	public static ArrayList<Problem> findProblemRank(RANK rank){
 		ArrayList<Problem> ProblemSearch = new ArrayList<>();
 		int rankvalue = rank.getRequireRankPoint();
 		
 		/*
-		 *  ProblemDBMapì—ì„œ Problem ê°ì²´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
-		 *  ì´í›„, ë¬¸ì œ ë­í¬ê°€ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì€ ë­í¬ì™€ ê°™ìœ¼ë©´ ProblemSearch ë¦¬ìŠ¤íŠ¸ì— ì €ì¥í•œë‹¤	  
+		 *  ProblemDBMap¿¡¼­ Problem °´Ã¼¸¦ °¡Á®¿Â´Ù.
+		 *  ÀÌÈÄ, ¹®Á¦ ·©Å©°¡ ¸Å°³º¯¼ö·Î ¹ŞÀº ·©Å©¿Í °°À¸¸é ProblemSearch ¸®½ºÆ®¿¡ ÀúÀåÇÑ´Ù	  
 		 */ 
 		for (Problem problem : ProblemDBMap.values()) {
 			int value = problem.getProblemRank().getRequireRankPoint();
@@ -443,19 +444,19 @@ public class ProblemDBManager {
         return new ArrayList<Problem>(list);
 	}
 	
-	// ProblemDBì— ì €ì¥ëœ ë¬¸ì œë“¤ì„ ë¶ˆëŸ¬ ProblemDBMap í•´ì‹œë§µì— ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜
+	// ProblemDB¿¡ ÀúÀåµÈ ¹®Á¦µéÀ» ºÒ·¯ ProblemDBMap ÇØ½Ã¸Ê¿¡ Ãß°¡ÇÏ´Â ÇÔ¼ö
 	public static void init() {
-		String dirpath = String.format("\\problems\\ProblemDB"); // ê²½ë¡œ ì§€ì •
-		// í•´ë‹¹ í´ë”ì— ì €ì¥ëœ ëª¨ë“  íŒŒì¼ì„ Objectë¡œ ë³€í™˜í•˜ì—¬ ArrayList<Object>ë¡œ ë³€í™˜ 
+		String dirpath = String.format("\\problems\\ProblemDB"); // °æ·Î ÁöÁ¤
+		// ÇØ´ç Æú´õ¿¡ ÀúÀåµÈ ¸ğµç ÆÄÀÏÀ» Object·Î º¯È¯ÇÏ¿© ArrayList<Object>·Î º¯È¯ 
 		ArrayList<Object> objList = FileManager.readAllObjectFileInDirectory(dirpath);
 		try {
-			// ê° Object ë“¤ì„ Problemë¡œ í˜•ë³€í™˜
+			// °¢ Object µéÀ» Problem·Î Çüº¯È¯
 			for (Object obj : objList) {	
 				if(obj instanceof Problem) {
 					Problem plbm = (Problem)obj;
 					addProblem(plbm.getProblemID(), plbm);				 
 				} else {
-					throw new ClassCastException("Problem ì¸ìŠ¤í„´ìŠ¤ë¡œ ë³€í™˜í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+					throw new ClassCastException("Problem ÀÎ½ºÅÏ½º·Î º¯È¯ÇÒ ¼ö ¾ø½À´Ï´Ù.");
 				}
 			}
 		} catch (ClassCastException e) {
