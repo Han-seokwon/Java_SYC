@@ -1,15 +1,14 @@
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import gui.MainFrame;
-import gui.RateProblemFrame;
+import fetcher.JsonFetcher;
 import gui.RecommendProblemFrame;
 import gui.SurveyFrame;
 import problems.ProblemDBManager;
 import users.AccountManager;
 import users.EvaluationQuestion;
-import users.RANK;
 import users.SurveyQuestion;
 import users.User;
 import users.UserDBManager;
@@ -72,7 +71,7 @@ public class Main {
 		ProblemDBManager.init();		
 		System.out.println("ProblemDB 초기화 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");   
 		
-//		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
+		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
 	}
 	
 	
@@ -84,16 +83,21 @@ public class Main {
 //		JsonFetcher.updateProblemDB_FromSolvedAC();	
 
 		// < 2. DB 초기화 >
-		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
+//		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
 //		testSurveyData();
 		// < 3. 메인 프레임 생성>
 		// 메인 프레임 
 //		new MainFrame();		
 		
+		try {
+			JsonFetcher.sleepForMin(15, 5); //  15분 동안 스레드 정지
+		} catch (IOException ex) { // 인터럽트 발생한 경우
+			System.out.println(ex.getMessage());			
+		}
 		
 		// <  기타 프레임 테스트 >
 //		new SurveyFrame(null);
-		new RecommendProblemFrame(null); // 문제 추천 프레임
+//		new RecommendProblemFrame(null); // 문제 추천 프레임
 //		new RateProblemFrame(null, null);		
 	
 							

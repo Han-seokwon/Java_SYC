@@ -30,7 +30,7 @@ import users.User;
 
 //테이블 헤더 정보를 저장하는 열거형
 enum TABLE_HEADER{ 
-	ID(0, "문제 번호", 100), TITLE(1, "문제 제목", 300), RANK(2, "난이도", 100), URL(3, "URL", 300);
+	ID(0, "문제 번호", 100), TITLE(1, "문제 제목", 250), RANK(2, "난이도", 150), URL(3, "URL", 300);
 
 	private int idx; // 헤더 인덱스
 	private String name; // 헤더 이름
@@ -156,9 +156,7 @@ public class ProblemTable extends JTable{
 
 
 	//  문제리스트로 테이블 업데이트
-	public void updateProblemListToTable( List<Problem> recommendedProblemList) throws ClassCastException{
-		long start = System.currentTimeMillis();
-		
+	public void updateProblemListToTable( List<Problem> recommendedProblemList) throws ClassCastException{		
 		tableModel.setNumRows(0); // 기존에 입력된 테이블 행 초기화
 		this.recommendedProblemList = new ArrayList<>(recommendedProblemList);
 		Iterator<Problem> it = recommendedProblemList.iterator();
@@ -168,15 +166,11 @@ public class ProblemTable extends JTable{
 			// Problem 객체에서 테이블 헤더에 맞게 필요한 데이터만 가져와 행데이터 구성 
 			tableRowValues[TABLE_HEADER.ID.getIdx()] = String.valueOf(problem.getProblemID());
 			tableRowValues[TABLE_HEADER.TITLE.getIdx()] = problem.getProblemName();
-			tableRowValues[TABLE_HEADER.RANK.getIdx()] = problem.getProblemRank().getRankName();
+			tableRowValues[TABLE_HEADER.RANK.getIdx()] = String.format("%s(%d)", problem.getProblemRank(), problem.getProblemRankPoint())  ;
 			tableRowValues[TABLE_HEADER.URL.getIdx()] = problem.getProblemURL();	
 			tableModel.addRow(tableRowValues); // row 데이터 테이블에 추가
 		}
-		
-		System.out.println(System.currentTimeMillis() - start);
 	}
-
-
 }
 
 

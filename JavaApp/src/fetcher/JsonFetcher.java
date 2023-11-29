@@ -22,16 +22,16 @@ import users.RANK;
 // 특정 api에 대해 HTTP GET 요청을 보내 json 데이터를 받아오고 이를 파싱하는 클래스
 public class JsonFetcher {
 	private final static int PROBLEM_CNT_PER_PAGE = 50; // 한 페이지당 최대로 가져올 수 있는 문제 개수
-	
+
 	/*
 	 * URL에 fetch(HTTP GET request)하여 응답받은 JSON 문자열을 JsonElement로 파싱하여 반환
 	 * param : fetch할 URL 문자열
 	 * return : 응답 JSON 데이터를 파싱한 JsonElement
 	 */
-	public static JsonObject fetchJsonElementFromUrl(String urlString) throws IOException, TooManyRequestsException{  // 호출한 쪽에서 예외를 처리하게 함
+	public static JsonObject fetchJsonElementFromUrl(String urlString) throws IOException{  // 호출한 쪽에서 예외를 처리하게 함
 		int httpResponseCode = 0;
 		try {
-			
+
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
@@ -61,12 +61,41 @@ public class JsonFetcher {
 		}
 		catch (IOException e) {
 			if(httpResponseCode == 429) {
-				throw new TooManyRequestsException("429 Too Many Requests : 짧은 시간동안 너무 많은 요청을 보냈습니다."); // 429에러에 대한 예외 생성
+				System.out.println("429에러 발생 지정된 시간 동안 최대 api 호출 가능 횟수를 초과하였습니다. 15분 대기후 자동으로 api 호출이 다시 시작됩니다.");
+				try {
+					sleepForMin(15, 10); //  15분 동안 스레드 정지, 10초마다 타임 스탬프 출력
+				} catch (IOException ex) { // 인터럽트 발생한 경우
+					throw new IOException("다음 api 호출을 위한 대기 과정이 취소 되었습니다.");
+				}
+				// 만약 인터럽트 없이 15분이 경과한 경우 동일한 주소로 api 다시 호출
+				fetchJsonElementFromUrl(urlString); 
 			}
 			throw new IOException("fetching 실패 : " + urlString + " 해당 주소로 sovled api 서버에 연결할 수 없습니다.");
 		}
 	}
-	
+	public static void sleepForMin(int sleepMin, int intervalSec) throws IOException{
+		try {
+			long totalSleepTime = sleepMin * 60 * 1000; // sleepMin(분) 동안 스레드 정지
+			long remainingTime = totalSleepTime; // 남은 시간
+			long elapsedTime = 0; // 경과한 시간
+			long startTime = System.currentTimeMillis(); // 시작한 시간
+			
+			while (System.currentTimeMillis() - startTime < totalSleepTime) { // 총 정지 시간이 지나지 않는 동안
+				elapsedTime = (System.currentTimeMillis() - startTime) / 1000;
+				remainingTime = totalSleepTime - elapsedTime;
+				System.out.println("경과 시간 : " + elapsedTime + " s" + ", 남은 시간: " + remainingTime + " s"); 
+				Thread.sleep(intervalSec * 000); 
+			}
+
+		} catch (InterruptedException ex) { // 인터럽트 발생한 경우
+			Thread.currentThread().interrupt(); // 현재 스레드 인터럽트 상태 True로 설정
+			// InterruptedException이 발생한 경우 해당 쓰레드의 인터럽트 상태는 자동으로 false가 되므로 다시 True로 변경하여 인터럽트 여부를 저장함
+			throw new IOException("쓰레드 정지 취소됨");	
+		}
+	}
+
+
+
 	public static boolean checkUserRegisteredInSolvedAc(String solvedacUsername) {
 		String urlString = "https://solved.ac/api/v3/user/show?handle="; // 사용자 데이터 가져오는 api 주소
 		try {
@@ -78,7 +107,7 @@ public class JsonFetcher {
 		}
 		return true;
 	}
-	
+
 
 	/*
 	 * solved ac에 등록된 유저의 정보를 가져와 해결한 문제개수(solvedCount)를 토대로 해결한 문제데이터를 가져오는데 필요한 총 페이지 개수 리턴
@@ -129,7 +158,7 @@ public class JsonFetcher {
 		}
 		return solvedProblemIdList;
 	}
-	
+
 
 	/*
 	 * solved ac에 등록된 유저이름을 받아 해당 유저가 해결한 문제 데이터를 User 객체의 solvedProblemList에 추가함
@@ -137,10 +166,10 @@ public class JsonFetcher {
 	 */
 	public static void updateUserSolvedProblemList_FromSolvedAC(User user) {
 		long startTime = System.currentTimeMillis(); 
-		
+
 		int problemPageCnt = getUserSolvedProblemPageCnt_FromSolvedAC(user.getSolvedName());
 		ArrayList<Integer> solvedProblemIdList = getSolvedProblemIdList_FromSolvedAC(problemPageCnt, user.getSolvedName());
-//		System.out.println("해결한 문제 ID 리스트  : " + solvedProblemIdList);
+		//		System.out.println("해결한 문제 ID 리스트  : " + solvedProblemIdList);
 		System.out.println("해결한 문제 개수 : " +solvedProblemIdList.size());
 		System.out.println("유저 데이터 업데이트 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");
 		// 가져온 문제들 중에 현재 ProblemDB에 추가되지 않은 문제가 있을 수 있음 따라서 ProblemDBManager에 추가된 문제만 추가함
@@ -150,8 +179,8 @@ public class JsonFetcher {
 				user.addSolvedProblem(problem); // 문제 추가
 			}
 		}
-		
-		
+
+
 	}
 
 	/*
@@ -172,7 +201,7 @@ public class JsonFetcher {
 		}
 		return pageCnt;
 	}
-	
+
 	/*
 	 * 해당 문제에 대한 알고리즘 분류 데이터를 가져와 ArrayList에 저장해서 반환
 	 */
@@ -198,16 +227,16 @@ public class JsonFetcher {
 			}
 		} catch (IOException e) { // api 요청중 문제 발생
 			throw new IOException(e.getMessage()); 
-		} catch (NullPointerException e) { 
+		} catch (NullPointerException e) { // tags, displayNames 등의 알고리즘 분류 키워드(항목)이 없는 경우
 			System.out.println(problemId + "번 문제에 대한 알고리즘 분류 데이터를 가져올 수 없습니다.");
 			System.out.println(urlString);
 			throw new IOException(e.getMessage());
-		}
+		} 
 		// 결과 반환
 		return algorithmTagList;
 	}
-		
-	
+
+
 	/*
 	 * JSON 데이터에서 problemId, titleKo, 알고리즘 분류 데이터를 가져와 Problem 객체를 생성 후 반환
 	 */
@@ -222,9 +251,11 @@ public class JsonFetcher {
 		// 문제 URL
 		String url = BOJ_PROBLEM_PATH + problemId;
 		// 문제 랭크
-		int rankPoint = itemsJsonObj.get("level").getAsInt();
-		// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환하여 그에 맞는 RANK 열거형 설정
-		RANK rank = changeSolvedLevelToRANK(rankPoint);		
+		int level = itemsJsonObj.get("level").getAsInt();
+		// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환
+		int rankPoint = changeSolvedLevelToRankPoint(level);
+		// rankPoint에 맞는 RANK 열거형 반환
+		RANK rank = RANK.getRankForPoint(rankPoint);		
 		// 문제 알고리즘 종류
 		// 알고리즘 정보는 현재 json 파일에 없어, 문제번호를 쿼리로 하는 추가적 api 요청 필요
 		ArrayList<String> algorithmTagList = new ArrayList<>();
@@ -232,19 +263,19 @@ public class JsonFetcher {
 			algorithmTagList = getAlgorithmTagList(problemId);
 		} catch (IOException e) { // api 요청중 문제 발생
 			throw new IOException(e.getMessage()); 
-		}
-		
+		} 
+
 		// 위 데이터들을 가지고 Problem 객체 생성
 		return new Problem(problemName, problemId, url, rank, rankPoint, algorithmTagList);
 	}
-	
-	// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환하여 그에 맞는 RANK 열거형 반환
-	private static RANK changeSolvedLevelToRANK(int level) {
+
+	// 솔브드 랭크 레벨 0~30의 값을 rank point 0~500의 값으로 변환
+	private static int changeSolvedLevelToRankPoint(int level) {
 		final int SOLVED_LEVEL_MAX = 30; 
 		final int RANK_POINT_MAX = RANK.getMaxRequireRankPoint();
-        double percentage = (double)level/SOLVED_LEVEL_MAX; // 0.0 ~ 1.0
-        int rankPoint = (int) (percentage * RANK_POINT_MAX); // 0 ~ RANK max point
-        return RANK.getRankForPoint(rankPoint);
+		double percentage = (double)level/SOLVED_LEVEL_MAX; // 0.0 ~ 1.0
+		int rankPoint = (int) (percentage * RANK_POINT_MAX); // 0 ~ RANK max point
+		return rankPoint;
 	}
 
 	/*
@@ -274,16 +305,6 @@ public class JsonFetcher {
 	}
 }
 
-// 429 에러에 대한 예외 클래스 생성
-// unchecked 예외로 하기위해 RuntimeException 상속
-class TooManyRequestsException extends RuntimeException{ 
-	public TooManyRequestsException() {
-		super();
-	}
-	public TooManyRequestsException(String errMsg) {
-		super(errMsg);
-	}
-}
 
 
 
