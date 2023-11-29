@@ -82,7 +82,7 @@ public class ProblemTable extends JTable{
 		tableModel = new DefaultTableModel(TABLE_HEADER.getHeaderNameList(), 0) { // 테이블 헤더, row 개수
 			private static final long serialVersionUID = 1L;
 			@Override
-			public boolean isCellEditable(int row, int column) { return true; } // 셀 내용 수정할 수 없게 오버라이딩
+			public boolean isCellEditable(int row, int column) { return false; } // 셀 내용 수정할 수 없게 오버라이딩
 		};
 		setModel(tableModel); // 테이블 모델 적용
 
@@ -90,6 +90,7 @@ public class ProblemTable extends JTable{
 		Dimension headerSize = getTableHeader().getPreferredSize();
 		headerSize.height = ROW_HEIGHT;
 		getTableHeader().setPreferredSize(headerSize);
+		
 		// 테이블 높이, 너비, 폰트 설정		
 		for(TABLE_HEADER header : TABLE_HEADER.values()) {
 			TableColumn col = getColumnModel().getColumn(header.getIdx());
@@ -97,7 +98,7 @@ public class ProblemTable extends JTable{
 			col.setCellRenderer(new TableCellRenderer()); // 지정한 텍스트 폰트 적용해주는 TableCellRenderer 생성 후 적용
 		}		
 		
-		setRowHeight(ROW_HEIGHT); // 행 높이 설정		
+		setRowHeight(ROW_HEIGHT); // 기본 행 높이 설정		
 		addMouseListener(new tableClickListener()); // 테이블 클릭에 대한 이벤트 리스너 등록
 
 		try { // 폰트 설정

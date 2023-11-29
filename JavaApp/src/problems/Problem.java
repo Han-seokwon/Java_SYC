@@ -28,7 +28,9 @@ public class Problem implements Serializable {
 	private List<String> ProblemReferences = new ArrayList<>();
 	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();
 	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();
-	private ArrayList<Integer> ProblemMemory = new ArrayList<>();	
+	private ArrayList<Integer> ProblemMemory = new ArrayList<>();
+	// 해당 문제를 해결한 유저 수
+	private int ProblemSolvedPeople;
 	
 	private static final long serialVersionUID = 1L;	
 	// 생성자
@@ -107,8 +109,11 @@ public class Problem implements Serializable {
 	public ArrayList<String> getProblemAlgorithm(){
 		return this.ProblemAlgorithm;
 	}
+	public int getProblemSolvedPeople() {
+		return this.ProblemSolvedPeople;
+	}
 	// 평균 런타임과 평균 메모리 사용량을 반환하는 함수
-	public int getProblemAvgRunTime() {
+	public double getProblemAvgRunTime() {
 		int sum = 0;
 	    
 		for(int i = 0; i < this.ProblemRunTime.size(); i++) {
@@ -118,7 +123,7 @@ public class Problem implements Serializable {
 		return sum / this.ProblemRunTime.size();
 	}
 	
-	public int getProblemAvgMemory() {
+	public double getProblemAvgMemory() {
 		int sum = 0;
 	    
 		for(int i = 0; i < this.ProblemMemory.size(); i++) {
@@ -173,6 +178,44 @@ public class Problem implements Serializable {
 	public void addProblemMemory(int Memory) {
 		this.ProblemMemory.add(Memory);
 		ProblemDBManager.changeProblem(this.getProblemID(), this);
+	}
+	
+	/*
+	 *  Problem에 사용자가 얻은 메모리 사용량, 런타임 정보를 추가하는 함수
+	 *  Memory : 사용자가 얻은 메모리 사용량 값
+	 *  RunTime : 사용자가 얻은 런타임 값
+	 *  매개변수로 받은 Memory를 ProblemMemory 리스트에 추가
+	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화 
+	 */
+	public void addProblemefficiency(int RunTime, int Memory) {
+		this.ProblemRunTime.add(RunTime);
+		this.ProblemMemory.add(Memory);
+		this.ProblemSolvedPeople += 1;
+		ProblemDBManager.changeProblem(this.getProblemID(), this);
+	}
+	
+	// 런타임의 표준편차를 계산하는 메서드
+	public double getProblemStdDevRunTime() {
+	    double sum = 0;
+	    double mean = getProblemAvgRunTime();
+
+	    for (int i = 0; i < this.ProblemRunTime.size(); i++) {
+	        sum += Math.pow(this.ProblemRunTime.get(i) - mean, 2);
+	    }
+
+	    return Math.sqrt(sum / this.ProblemRunTime.size());
+	}
+
+	// 메모리 사용량의 표준편차를 계산하는 메서드
+	public double getProblemStdDevMemory() {
+	    double sum = 0;
+	    double mean = getProblemAvgMemory();
+
+	    for (int i = 0; i < this.ProblemMemory.size(); i++) {
+	        sum += Math.pow(this.ProblemMemory.get(i) - mean, 2);
+	    }
+
+	    return Math.sqrt(sum / this.ProblemMemory.size());
 	}
 	
 	// 유효한 Problem인지 확인하는 함수
