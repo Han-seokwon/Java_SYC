@@ -24,6 +24,7 @@ import javax.swing.border.LineBorder;
 
 import problems.Problem;
 import problems.ProblemDBManager;
+import users.RANK;
 import users.User;
 
 
@@ -162,23 +163,20 @@ public class RecommendProblemFrame extends DesignedJFrame {
 			List<Problem> recommendedProblemList = new ArrayList<>();
 
 			JButton selectedButton = (JButton)e.getSource(); 
-			if(selectedButton== recommendByAlgorithmTypeButton) {
-				
-				System.out.println("알고리즘별 추천 버튼  clicked!");
-				// 테스트용 -> 추후 삭제
-				ArrayList<String> temp = new ArrayList<>(Arrays.asList("정렬"));
+			if(selectedButton== recommendByAlgorithmTypeButton) {				
+				System.out.println("알고리즘별 추천 버튼  clicked!");				
+				ArrayList<String> temp = new ArrayList<>(Arrays.asList("정렬")); // 테스트용 -> 추후 삭제
 				recommendedProblemList = ProblemDBManager.findProblemAlgorithm(temp);
 				// recommendedProblemList = RecommendProblem.메서드이름 // 클래스 완성시 추가
 				
 			} else if(selectedButton == recommendByRankButton) {				
 				System.out.println("난이도별 추천 버튼 clicked!");
-				// 테스트용 -> 추후 삭제
-				ArrayList<String> temp = new ArrayList<>(Arrays.asList("수"));
-				recommendedProblemList = ProblemDBManager.findProblemAlgorithm(temp);			
+				recommendedProblemList = ProblemDBManager.findProblemRankPoint(RANK.RANK4.getRequireRankPoint()); // 테스트용 -> 추후 삭제					 
 				// recommendedProblemList = RecommendProblem.메서드이름(user) // 클래스 완성시 추가
 			}
 			seletedBtnDisplayLabel.setText(selectedButton.getText()); // 클릭된 버튼에 맞게 라벨 내용을 변경
 			recommendedProblemTable.updateProblemListToTable(recommendedProblemList); // 추천된 문제리스트를 테이블에 추가
+
 		}
 	}
 

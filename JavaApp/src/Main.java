@@ -1,15 +1,14 @@
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import gui.MainFrame;
-import gui.RateProblemFrame;
+import fetcher.JsonFetcher;
 import gui.RecommendProblemFrame;
 import gui.SurveyFrame;
 import problems.ProblemDBManager;
 import users.AccountManager;
 import users.EvaluationQuestion;
-import users.RANK;
 import users.SurveyQuestion;
 import users.User;
 import users.UserDBManager;
@@ -72,7 +71,7 @@ public class Main {
 		ProblemDBManager.init();		
 		System.out.println("ProblemDB 초기화 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");   
 		
-//		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
+		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
 	}
 	
 	
@@ -81,10 +80,10 @@ public class Main {
 		// < 1. 데이터 생성 >
 //		createTestUserData(); // 테스트 유저 데이터 생성
 		// SolvedAC에서 문제 데이터 가져와서 ProblemDB에 추가하기 (900개쯤 가져오면 429에러 발생)
-//		JsonFetcher.updateProblemDB_FromSolvedAC();	
+		JsonFetcher.updateProblemDB_FromSolvedAC();	
 
 		// < 2. DB 초기화 >
-		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
+//		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
 //		testSurveyData();
 		// < 3. 메인 프레임 생성>
 		// 메인 프레임 
@@ -93,7 +92,7 @@ public class Main {
 		
 		// <  기타 프레임 테스트 >
 //		new SurveyFrame(null);
-		new RecommendProblemFrame(null); // 문제 추천 프레임
+//		new RecommendProblemFrame(null); // 문제 추천 프레임
 //		new RateProblemFrame(null, null);		
 	
 							
