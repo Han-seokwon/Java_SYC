@@ -22,7 +22,7 @@ import users.RANK;
 // 특정 api에 대해 HTTP GET 요청을 보내 json 데이터를 받아오고 이를 파싱하는 클래스
 public class JsonFetcher {
 	private final static int PROBLEM_CNT_PER_PAGE = 50; // 한 페이지당 최대로 가져올 수 있는 문제 개수
-
+	private static int totalProblemCnt_SolvedAC =0; // solved.ac에 저장된 총 문제 개수
 	/*
 	 * URL에 fetch(HTTP GET request)하여 응답받은 JSON 문자열을 JsonElement로 파싱하여 반환
 	 * param : fetch할 URL 문자열
@@ -61,30 +61,41 @@ public class JsonFetcher {
 		}
 		catch (IOException e) {
 			if(httpResponseCode == 429) {
-				System.out.println("429에러 발생 지정된 시간 동안 최대 api 호출 가능 횟수를 초과하였습니다. 15분 대기후 자동으로 api 호출이 다시 시작됩니다.");
+				int sleepMin = 15; // 쓰레드 정지할 시간(분) -> 평균적으로 429에러 발생시 15분 후에 다시 호출이 가능했음
+				System.out.println("429에러 발생 지정된 시간 동안 최대 api 호출 가능 횟수를 초과하였습니다. " + sleepMin + " 분 대기후 자동으로 api 호출이 다시 시작됩니다.");
 				try {
-					sleepForMin(15, 10); //  15분 동안 스레드 정지, 10초마다 타임 스탬프 출력
+					sleepForMin(sleepMin, 10); //  sleepMin분 동안 스레드 정지, 10초마다 타임 스탬프 출력
 				} catch (IOException ex) { // 인터럽트 발생한 경우
+					System.out.println(ex.getMessage()); // 에러 메시지 출력
 					throw new IOException("다음 api 호출을 위한 대기 과정이 취소 되었습니다.");
 				}
-				// 만약 인터럽트 없이 15분이 경과한 경우 동일한 주소로 api 다시 호출
-				fetchJsonElementFromUrl(urlString); 
+				// 만약 인터럽트 없이 정지시간이 모두 경과한 경우 동일한 주소로 api 다시 호출
+				return fetchJsonElementFromUrl(urlString); // 재귀 호출
+				
+			} else { // 429 에러가 아닌 경우 -> 다른 이유로 현재 api를 요청할 수 없음
+				throw new IOException("fetching 실패 : " + urlString + " 해당 주소로 sovled api 서버에 연결할 수 없습니다.");				
 			}
-			throw new IOException("fetching 실패 : " + urlString + " 해당 주소로 sovled api 서버에 연결할 수 없습니다.");
 		}
 	}
+	
+	/*
+	 * 지정된 시간동안 쓰레드를 정지시키며, intervalSec 마다 경과시간, 남은시간을 출력함
+	 * sleepMin : 정지할 시간(분)
+	 * intervalSec : 경과시간, 남은시간을 출력할 간격(초)
+	 * */
+	// 지정된 시간동안 쓰레드를 정지시키며, intervalSec 마다 경과시간, 남은시간을 출력함
 	public static void sleepForMin(int sleepMin, int intervalSec) throws IOException{
 		try {
-			long totalSleepTime = sleepMin * 60 * 1000; // sleepMin(분) 동안 스레드 정지
-			long remainingTime = totalSleepTime; // 남은 시간
-			long elapsedTime = 0; // 경과한 시간
-			long startTime = System.currentTimeMillis(); // 시작한 시간
+			long totalSleepTime_ms = sleepMin * 60 * 1000; // sleepMin(분) 동안 스레드 정지
+			long remainingTime_sec = totalSleepTime_ms; // 남은 시간
+			long elapsedTime_sec = 0; // 경과한 시간
+			long startTime_ms = System.currentTimeMillis(); // 시작한 시간
 			
-			while (System.currentTimeMillis() - startTime < totalSleepTime) { // 총 정지 시간이 지나지 않는 동안
-				elapsedTime = (System.currentTimeMillis() - startTime) / 1000;
-				remainingTime = totalSleepTime - elapsedTime;
-				System.out.println("경과 시간 : " + elapsedTime + " s" + ", 남은 시간: " + remainingTime + " s"); 
-				Thread.sleep(intervalSec * 000); 
+			while (System.currentTimeMillis() - startTime_ms < totalSleepTime_ms) { // 총 정지 시간이 지나지 않는 동안
+				elapsedTime_sec = (System.currentTimeMillis() - startTime_ms) / 1000; // 경과 시간 계산
+				remainingTime_sec = (totalSleepTime_ms/1000) - elapsedTime_sec; // 남은 시간 계산
+				System.out.println("경과 시간 : " + elapsedTime_sec + " s" + ", 남은 시간: " + remainingTime_sec + " s"); 
+				Thread.sleep(intervalSec * 1000); // intervalSec 간격으로 쓰레드 정지
 			}
 
 		} catch (InterruptedException ex) { // 인터럽트 발생한 경우
@@ -92,10 +103,12 @@ public class JsonFetcher {
 			// InterruptedException이 발생한 경우 해당 쓰레드의 인터럽트 상태는 자동으로 false가 되므로 다시 True로 변경하여 인터럽트 여부를 저장함
 			throw new IOException("쓰레드 정지 취소됨");	
 		}
+		// 쓰레드 정지시간이 모두 끝남
+		System.out.println("쓰레드를 다시 작동시킵니다.");		
 	}
 
 
-
+	// 해당 유저가 SolvedAc에 등록되었는지 확인
 	public static boolean checkUserRegisteredInSolvedAc(String solvedacUsername) {
 		String urlString = "https://solved.ac/api/v3/user/show?handle="; // 사용자 데이터 가져오는 api 주소
 		try {
@@ -193,7 +206,9 @@ public class JsonFetcher {
 			JsonObject solvedACStatistics = fetchJsonElementFromUrl(urlString);	
 			int totalProblemCnt = solvedACStatistics.get("problemCount").getAsInt();
 			System.out.println("solved.ac에 현재 등록된 총 문제 개수 : " + totalProblemCnt);
-			pageCnt = totalProblemCnt/PROBLEM_CNT_PER_PAGE + 1;
+			totalProblemCnt_SolvedAC = totalProblemCnt;
+			
+			pageCnt = totalProblemCnt/PROBLEM_CNT_PER_PAGE + 1; // 가져올 페이지 개수 = 총 문제 개수 / 페이지당 문제 개수 + 1
 			System.out.println("solved.ac에서 가져올 문제리스트 page 개수 : " + pageCnt);
 
 		} catch (IOException e) {
@@ -282,19 +297,25 @@ public class JsonFetcher {
 	 * solved에 등록된 문제데이터를 가져와 Problem 객체로 변환한 다음 ProblemDBManager와 ProblemDB 폴더에에 추가
 	 */
 	public static void updateProblemDB_FromSolvedAC() {
+		int problemSavedCnt = 0; // 저장된 문제 개수
 		try {
 			String urlString = "https://solved.ac/api/v3/search/problem?query&page="; // solved에 등록된 문제 데이터 가져오는 api 주소	
-			int problemPageCnt = getProblemPageCnt_FromSolvedAC();
-			for( int pageIdx=1 ; pageIdx < problemPageCnt ; pageIdx++) {
+			int problemPageCnt = getProblemPageCnt_FromSolvedAC(); // 가져올 문제가 몇 페이지에 결쳐 존재하는지 확인
+			
+			for( int pageIdx=1 ; pageIdx < problemPageCnt ; pageIdx++) { // 페이지 개수만큼 반복
+				
 				JsonObject problemPage = fetchJsonElementFromUrl(urlString + pageIdx); // throws IOException	
 				// 파싱한 JsonObject을 'items' 키에 해당하는 항목들만 요소로 가지는 JsonArray 배열로 변환
 				JsonArray itemsArray = problemPage.getAsJsonArray("items");
 				// 배열을 순회하며 Problem을 생성하는데 필요한 값만 JSON에서 추출하여 Problem 객체 생성
-				for( JsonElement items : itemsArray) {
-					Problem problem = createProblemFromJsonElement(items);
+				for( JsonElement items : itemsArray) { 	// 해당 페이지에 저장된 문제 개수 만큼 반복
+					Problem problem = createProblemFromJsonElement(items); // 문제 객체 생성
 					// 생성된 Problem 인스턴스 ProblemDBManager의 ProblemDBMap에 추가하고 ProblemDB 폴더에 저장
-					System.out.println(problem);
 					ProblemDBManager.createProblem(problem);
+					problemSavedCnt++;
+					System.out.println("현재 까지 가져온 문제 개수 : " + problemSavedCnt + ", 총 문제 개수 : " + totalProblemCnt_SolvedAC);
+					
+//					System.out.println(problem);  // 저장된 문제 출력
 				}
 			}			
 

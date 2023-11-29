@@ -80,7 +80,7 @@ public class Main {
 		// < 1. 데이터 생성 >
 //		createTestUserData(); // 테스트 유저 데이터 생성
 		// SolvedAC에서 문제 데이터 가져와서 ProblemDB에 추가하기 (900개쯤 가져오면 429에러 발생)
-//		JsonFetcher.updateProblemDB_FromSolvedAC();	
+		JsonFetcher.updateProblemDB_FromSolvedAC();	
 
 		// < 2. DB 초기화 >
 //		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
@@ -89,11 +89,6 @@ public class Main {
 		// 메인 프레임 
 //		new MainFrame();		
 		
-		try {
-			JsonFetcher.sleepForMin(15, 5); //  15분 동안 스레드 정지
-		} catch (IOException ex) { // 인터럽트 발생한 경우
-			System.out.println(ex.getMessage());			
-		}
 		
 		// <  기타 프레임 테스트 >
 //		new SurveyFrame(null);
