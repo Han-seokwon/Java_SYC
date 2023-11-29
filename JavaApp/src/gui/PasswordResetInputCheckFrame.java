@@ -51,7 +51,7 @@ public class PasswordResetInputCheckFrame extends DesignedJFrame{
 		gbc_newPasswordLabel.gridx = 1;
 		gbc_newPasswordLabel.gridy = 0;
 		contentPane.add(newPasswordLabel, gbc_newPasswordLabel);
-		
+
 		// 새로운 비밀번호 입력 필드
 		newPasswordField = new JPasswordField();
 		GridBagConstraints gbc_newPasswordField = new GridBagConstraints();
@@ -81,8 +81,8 @@ public class PasswordResetInputCheckFrame extends DesignedJFrame{
 		gbc_passwordConfirmField.gridx = 2;
 		gbc_passwordConfirmField.gridy = 1;
 		contentPane.add(passwordConfirmField, gbc_passwordConfirmField);
-		
-		
+
+
 		// 취소버튼 레이아웃
 		GridBagConstraints gbc_cancelButton = new GridBagConstraints();
 		gbc_cancelButton.fill = GridBagConstraints.BOTH;
@@ -92,7 +92,7 @@ public class PasswordResetInputCheckFrame extends DesignedJFrame{
 
 		// 취소 버튼 추가
 		contentPane.add(new CancelButton(), gbc_cancelButton);
-		
+
 		// 초기화 버튼
 		GridBagConstraints gbc_resetButton = new GridBagConstraints();
 		gbc_resetButton.insets = new Insets(0, 0, 0, 5);
@@ -105,42 +105,33 @@ public class PasswordResetInputCheckFrame extends DesignedJFrame{
 		setVisible(true);
 
 	}
-
+	
+	// 새롭게 입력된 비밀번호 확인
 	class CheckNewPasswordListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			boolean isValidPw = true;
 			String newPassword = new String(newPasswordField.getPassword());
 			String newPasswordConfirm = new String(passwordConfirmField.getPassword());
 
 			try {// 초기화 비밀번호 유효성 확인
-				AccountManager.checkPasswordVaildity(newPassword, newPasswordConfirm);
-			} catch (IOException err) {
-				JOptionPane.showMessageDialog(null, err.getMessage(), "비밀번호 초기화 실패", JOptionPane.WARNING_MESSAGE);
-				isValidPw = false;
-			} 
-			if(isValidPw) {
-				//				 비밀번호 초기화과 완료되었다는 팝업창을 띄우고 비밀번호를 업데이트함
-				JOptionPane.showMessageDialog(null, "비밀번호가 초기화되었습니다.", "비밀번호 초기화 성공", JOptionPane.INFORMATION_MESSAGE);
-				PasswordManager.updatePassword(user, newPassword);// 비밀번호 업데이트
-				dispose(); 
+				PasswordManager.checkPasswordVaildity(newPassword, newPasswordConfirm);
+			} catch (IOException err) { // 입력한 비밀번호가 유효하지 않은 경우
+				Dialog.showAlertDialog("비밀번호 초기화 실패", err.getMessage());
+				return; // 리스너 종료
 			}
+			// 입력한 비밀번호가 유효한 경우
+			try {
+				PasswordManager.updatePassword(user, newPassword);// 비밀번호 업데이트					
+			} catch (Exception e2) { // 유저 파일 업데이트에 실패한 경우				
+				System.out.println(e2.getMessage()); // 에러 메시지 출력
+				Dialog.showAlertDialog("비밀번호 초기화 실패", Dialog.USER_FILE_SAVING_ERROR);
+				return;// 리스너 종료
+			}
+			// 비밀번호 업데이트에 성공한 경우
+			JOptionPane.showMessageDialog(null, "비밀번호가 초기화되었습니다.", "비밀번호 초기화 성공", JOptionPane.INFORMATION_MESSAGE);
+			dispose(); 
 		}
 	}
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PasswordResetInputCheckFrame frame = new PasswordResetInputCheckFrame(new User("qwer", "hoh9170", "qwr@na.com", "d1dd", "1. 좋아하는 동물은?", "사자"));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 }
 
 

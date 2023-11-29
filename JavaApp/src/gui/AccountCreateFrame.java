@@ -115,46 +115,40 @@ public class AccountCreateFrame extends DesignedJFrame{
 					new String(passwordField.getPassword()), new String(passwordConfirmField.getPassword()),
 					resetPwQuestionList[resetPwQuestionComboBox.getSelectedIndex()], resetPwAnswerField.getText());
 
-			// 디버깅용 추후 삭제
-			System.out.println(format.toString());
-
-
-			boolean isVaildInput = true;
-			String dialogMsg = "정상적으로 회원등록되었습니다.\n 곧 설문조사가 진행되니 잠시만 기다려주세요.";
 			try {
-				// 회원가입 정보 유효성 확인
-				AccountManager.registerInputCheck(format);
-			} catch (IOException err) {
-				dialogMsg = err.getMessage();		
-				isVaildInput = false;
+				format.isVaildFormat(); // 회원가입 정보 유효성 확인
+			} catch (IOException err) { // 회원가입 정보가 유효하지 않은 경우 (유저 원인)
+				Dialog.showAlertDialog("회원가입 실패", err.getMessage());
+				return; // 리스너 종료
 			} 
-			
-			int msgType = isVaildInput ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE;
-			String title =  isVaildInput ? "회원가입 성공" : "회원가입 실패";
-			JOptionPane.showMessageDialog(null, dialogMsg, title, msgType);	
-			
-			if(isVaildInput) {	// 회원 정보가 유효한 경우 
-				// TODO : UserDB 폴더, 유저 해시맵 저장 실패에 대한 예외 처리하기 
-				User newUser = new User(format); // 새로운 User 객체 생성
-				AccountManager.createAccount(newUser);
-				mainFrame.logInComponents(newUser); // 메인 프레임 로그인 컴포넌트 업데이트
-				dispose(); // 창 닫음
-				new SurveyFrame(newUser);// 설문 조사 프레임 생성
-			}	
-		}
-	}
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AccountCreateFrame frame = new AccountCreateFrame(new MainFrame());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			// 회원 가입 정보가 유효한 경우
+			User newUser; // 생성된 유저
+			try {
+				newUser = AccountManager.createAccount(format); // 유저 생성 및 DB에 저장
+			} catch (IOException e2) { // 시스템 상에서 유저를 생성하지 못하거나 DB에 저장하지 못하는 경우 (시스템 원인)
+				System.out.println(e2.getMessage()); // 에러 메시지 출력	
+				Dialog.showAlertDialog("회원가입 실패", Dialog.USER_FILE_SAVING_ERROR);
+				return; // 리스너 종료
 			}
-		});
-	}
-	
+			// 유저 정보가 정상적으로 DB에 저장된 경우
+			Dialog.showInfoDialog("회원가입 성공", "정상적으로 회원등록되었습니다.\n 해결한 문제를 업데이트 하고 설문조사를 시작합니다."); // 다일로그 생성
+			mainFrame.logInComponents(newUser); // 메인 프레임 로그인 컴포넌트 업데이트
+			
+			int solvedProblemCnt_added = 0;
+			try { // 백준에서 해결한 문제 업데이트
+				solvedProblemCnt_added = newUser.updateSolvedProblemList(); 				
+			} catch (IOException e2) { // 시스템 상에서 유저 데이터를 DB에 저장하지 못하는 경우 (시스템 원인)
+				System.out.println(e2.getMessage()); // 에러 메시지 출력	
+				Dialog.showAlertDialog("유저 데이터 최신화 실패", Dialog.USER_FILE_SAVING_ERROR);					
+			}
+			if(solvedProblemCnt_added > 0) { // 해결한 문제가 있는 경우
+				Dialog.showInfoDialog("해결한 문제 업데이트 성공", String.format("%d개의 해결한 문제가 업데이트 되었습니다.", solvedProblemCnt_added));
+			} 			
+			
+			new SurveyFrame(newUser);// 설문 조사 프레임 생성
+			dispose(); // 창 닫음
+				
+		}
+	}	
 }
 

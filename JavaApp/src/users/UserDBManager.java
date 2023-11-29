@@ -53,15 +53,12 @@ public class UserDBManager {
 	
 	/*
 	 *  유저 데이터의 유효성을 검사하고 email을 key로 하여 해시맵에 추가함
-	 *  return : 정상적으로 추가되었는지 여부를 반환
 	 */
-	public static boolean addUser(String email, User user) {
+	public static void addUser(User user) throws IllegalArgumentException{
 		if(!User.isVaild(user)) { // 전달된 유저객체가 유효한지 확인
-			return false;
+			throw new IllegalArgumentException("유저 객체가 유효하지 않아 userDBMap에 저장할 수 없습니다..");
 		}
-		// TODO : 기존에 같은 email가 있는 경우 예외 처리
-		userDBMap.put(email, user);
-		return true;
+		userDBMap.put(user.getEmail(), user); // 이메일을 key, user를 value로 저장
 	}
 	
 	// UserDB 폴더에 저장된 객체 파일들을 해시맵에 저장하여 초기화, 프로그램 시작시 한 번만 실행
@@ -74,7 +71,7 @@ public class UserDBManager {
 			for (Object obj : objList) {			 
 				if(obj instanceof User) {
 					User user = (User)obj;
-					addUser(user.getEmail(), user);				 
+					addUser(user);				 
 				} else {
 					throw new ClassCastException("User 인스턴스로 변환할 수 없습니다.");
 				}

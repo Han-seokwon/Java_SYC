@@ -11,6 +11,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
@@ -44,6 +47,7 @@ public class DesignedButton extends JButton{
             @Override
             public void mousePressed(MouseEvent e) { // 버튼 눌렸을 때
             	setBackground(backgroundColor.brighter());
+            	playButtonClickSound(); // 버튼 클릭 사운드 재생
             }
             @Override
             public void mouseEntered(MouseEvent e) { // 마우스가 버튼 위에 있을 때
@@ -87,6 +91,20 @@ public class DesignedButton extends JButton{
 		graphics.dispose(); // 닫기 
 		super.paintComponent(g); 
 	}
+	
+	// 버튼 클릭 사운드 재생
+    private static void playButtonClickSound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream( // 오디오 파일 가져오기
+            		DesignedButton.class.getResourceAsStream("/sources/btn_click_sound.wav")
+            );
+            Clip clip = AudioSystem.getClip(); // 사운드 파일 재생을 위한 Clip 객체 생성
+            clip.open(audioInputStream); // 사운드 파일 오픈
+            clip.start(); // 재생
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

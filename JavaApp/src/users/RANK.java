@@ -22,16 +22,20 @@ public enum RANK {
         this.rankName = rankName;
     }
     
+    // 각 랭크 당 포인트 차이 반환
     public static int getRankPointGap() {
     	return RANK_POINT_GAP;
     }
     
+    // 해당 랭크를 달성하기 위해 요구되는 랭크포인트
     public int getRequireRankPoint() {
         return requireRankPoint;
     }
+    // 해당 랭크 문제를 해결할 경우 얻을 수 있는 랭크포인트
     public int getPointGain() {
         return pointGain;
     }
+    // 해당 랭크의 문자열 이름
     public String getRankName() {
         return rankName;
     }
@@ -41,7 +45,8 @@ public enum RANK {
         return ordinal() < values().length - 1 ? values()[ordinal() + 1] : this;
     }
     
-    public static int getMaxRequireRankPoint() { // 모을 수 있는 랭크 포인트 최대치
+    // 모을 수 있는 랭크 포인트 최대치 
+    public static int getMaxRequireRankPoint() {
         return RANK5.getRequireRankPoint() + RANK_POINT_GAP;
     }
     

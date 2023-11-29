@@ -19,6 +19,7 @@ import problems.ProblemDBManager;
 import users.RANK;
 import users.User;
 import users.RANK;
+
 // 특정 api에 대해 HTTP GET 요청을 보내 json 데이터를 받아오고 이를 파싱하는 클래스
 public class JsonFetcher {
 	private final static int PROBLEM_CNT_PER_PAGE = 50; // 한 페이지당 최대로 가져올 수 있는 문제 개수

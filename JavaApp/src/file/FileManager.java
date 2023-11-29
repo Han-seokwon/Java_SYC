@@ -38,7 +38,7 @@ public class FileManager {
 	 *  기존에 동일한 파일이 없으면 파일 생성, 기존에 동일한 파일이 있으면 덮어쓰기(업데이트)
 	 * param : 1. 저장할 Object 객체
 	 * 		   2. 저장할 경로 (문자열) ( 소스파일 하위경로로 어디 패키지 어디 폴더에 어떤 파일이름으로 저장할지 명시 )
-	 * 			 예시 :  "//패키지//DB폴더//파일명.확장자", "//user//UserDB//user1.txt"
+	 * 			 예시 :  "\\패키지\\DB폴더\\파일명.확장자", "\\user\\UserDB\\user1.txt"
 	 * return : 파일이 정상적으로 저장되었는지 여부 리턴
 	 */
 	public static boolean createUpdateObjectFile(Object obj, String filepath) {	

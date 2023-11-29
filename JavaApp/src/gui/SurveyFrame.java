@@ -211,9 +211,7 @@ public class SurveyFrame extends DesignedJFrame {
         	questionPanel.add(choiceListPanel); // 질문 패널에 선택지버튼리스트 추가
         	evalQuestionListPanel.add(questionPanel); // 질문리스트패널에 각 질문패널 추가
         }        
-	}
-	
- 
+	} 
     
 	class SubmitButtonListener implements ActionListener{
 		@Override
@@ -221,23 +219,28 @@ public class SurveyFrame extends DesignedJFrame {
 			int totalPoint = 0;
 			try {
 				totalPoint = gradeEvaluationResult();
-			} catch (IOException err) {
-				JOptionPane.showMessageDialog(null, err.getMessage(), "제출 오류", JOptionPane.WARNING_MESSAGE);
+			} catch (IOException err) { // 평가 문제 중 답변되지 않은 항목이 있는 경우
+				Dialog.showAlertDialog("제출 실패", err.getMessage());
 				return; // 리스너 종료
 			}
+			// 모든 문제에 답변한 경우
+			
 			// 유저의 얻은 포인트만큼 랭크 포인트를 올림
 			user.addRankPoint(totalPoint);
 			System.out.println("RankPoint : "+user.getRankPoint());
-			JOptionPane.showMessageDialog(null, String.format("감사합니다.\n %d만큼 랭크포인트가 증가되었습니다.", totalPoint), "제출 성공", JOptionPane.INFORMATION_MESSAGE);
 			
 			// 유저가 선택한 선호하는 알고리즘 종류를 유저데이터에 추가
 			addPreferredAlgorithmType_ToUser(learningStyleCheckBtnGroupList.get(0));
-			System.out.println("AlgorithmType : "+ user.getPreferredAlgorithmTypeSet());
 			
-			user.updateUserFile(); // 수정된 유저 정보를 DB 유저 파일에 적용
+			try {
+				user.createUpdateUserFile(); // 수정된 유저 정보를 DB 유저 파일에 적용				
+			} catch (IOException e2) {  // 시스템 상에서 유저 데이터를 DB에 저장하지 못하는 경우 (시스템 원인)
+				Dialog.showAlertDialog("제출 실패", Dialog.USER_FILE_SAVING_ERROR);
+				return;  // 리스너 종료
+			}
+			// 유저 데이터가 DB에 정상적으로 저장된 경우			
+			Dialog.showInfoDialog("제출 성공", String.format("감사합니다.\n %d만큼 랭크포인트가 증가되었습니다.", totalPoint));
 			dispose(); // 창 닫음
-			System.out.println("설문조사 완료");
-			System.out.println(user);
 		}
 	}	
 	

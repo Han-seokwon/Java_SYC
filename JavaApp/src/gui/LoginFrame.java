@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,10 +27,10 @@ public class LoginFrame extends DesignedJFrame{
 	private MainFrame mainFrame;  
 	public LoginFrame(MainFrame mainFrame) {
 		super(500, 500, "로그인");
-		
+
 		DesignedContentPane contentPane = new DesignedContentPane(this);
 		setContentPane(contentPane);
-		
+
 		// 메인 프레임 객체로 업데이트
 		this.mainFrame = mainFrame; 
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -52,7 +53,7 @@ public class LoginFrame extends DesignedJFrame{
 		gbc_emailLabel.gridx = 0;
 		gbc_emailLabel.gridy = 0;
 		contentPane.add(emailLabel, gbc_emailLabel);
-		
+
 		// 이메일 입력 필드 생성
 		emailField = new JTextField(20);
 		// 이메일 입력 필드 레이아웃
@@ -73,7 +74,7 @@ public class LoginFrame extends DesignedJFrame{
 		gbc_passwordLabel.gridx = 0;
 		gbc_passwordLabel.gridy = 1;
 		contentPane.add(passwordLabel, gbc_passwordLabel);
-		
+
 		// 비밀번호 입력 필드 레이아웃
 		passwordField = new JPasswordField(20);
 		// 비밀번호 입력 필드 레이아웃
@@ -83,7 +84,7 @@ public class LoginFrame extends DesignedJFrame{
 		gbc_passwordField.gridx = 1;
 		gbc_passwordField.gridy = 1;
 		contentPane.add(passwordField, gbc_passwordField);
-		
+
 		// 로그인 버튼 생성
 		JButton loginButton = new DesignedButton("로그인", COLOR.AQUA_ISLAND);
 		loginButton.addActionListener(new LoginButtonListener()); // 로그인 리스너 등록
@@ -94,7 +95,7 @@ public class LoginFrame extends DesignedJFrame{
 		gbc_loginButton.gridx = 0;
 		gbc_loginButton.gridy = 3;
 		contentPane.add(loginButton, gbc_loginButton);
-		
+
 		// 비번 초기화 버튼 생성
 		JButton resetPasswordButton = new DesignedButton("비밀번호 초기화", COLOR.SUNFLOWER);
 		resetPasswordButton.addActionListener(new ResetButtonListener()); // 비번 초기화 리스너 등록
@@ -103,10 +104,10 @@ public class LoginFrame extends DesignedJFrame{
 		gbc_resetPasswordButton.fill = GridBagConstraints.BOTH;
 		gbc_resetPasswordButton.gridx = 1;
 		gbc_resetPasswordButton.gridy = 3;
-		
+
 		// 컨텐트 팬에 추가
 		contentPane.add(resetPasswordButton, gbc_resetPasswordButton);
-		
+
 		contentPane.applyFontAndBackgroundToAllComponents(); // 전체 폰트 적용 및 패널 배경색 투명하게 적용
 		setVisible(true);
 	}
@@ -116,25 +117,31 @@ public class LoginFrame extends DesignedJFrame{
 		public void actionPerformed(ActionEvent e) {
 			String email = emailField.getText();
 			String password = new String(passwordField.getPassword());
-			boolean loginSuccess = true;
-			String dialogMsg = "로그인 성공";	
-			User userLoggedIn = new User();
+			User userLoggedIn;
 			try {
 				userLoggedIn = AccountManager.checklogin(email, password);	// 로그인 정보 유효성 확인					
 			} catch (NullPointerException err) {					
-				dialogMsg = err.getMessage();
-				loginSuccess = false;					
-			}	                
-			JOptionPane.showMessageDialog(null, dialogMsg); // 로그인 실패, 성공 여부를 알려주는 팝업창 오픈
-			if(loginSuccess) { // 로그인 성공한 경우	
-				long startTime = System.currentTimeMillis(); 
-				userLoggedIn.updateSolvedProblemList(); // 백준 해결한 문제 업데이트				
-				mainFrame.logInComponents(userLoggedIn); // 메인 프레임 로그인관련 컴포넌트 업데이트 및 유저 인스턴스 전달
-				dispose(); // 로그인 창 닫기				
-				System.out.println(userLoggedIn.getUsername() + " 로그인 완료");				
-				System.out.println(userLoggedIn);
-				System.out.println("로그인 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");
+				Dialog.showAlertDialog("로그인 실패", err.getMessage());	
+				return;
 			}
+
+			long startTime = System.currentTimeMillis();  // 로그인 시간 측정 (테스트용 -> 추후 삭제 )		
+			
+			int solvedProblemCnt_added = 0;
+			try { // 백준에서 해결한 문제 업데이트
+				solvedProblemCnt_added = userLoggedIn.updateSolvedProblemList(); 				
+			} catch (IOException e2) { // 시스템 상에서 유저 데이터를 DB에 저장하지 못하는 경우 (시스템 원인)
+				System.out.println(e2.getMessage()); // 에러 메시지 출력	
+				Dialog.showAlertDialog("유저 데이터 최신화 실패", Dialog.USER_FILE_SAVING_ERROR);					
+			}
+			if(solvedProblemCnt_added > 0) { // 해결한 문제가 늘은 경우
+				Dialog.showInfoDialog("로그인 성공", String.format("%d개의 추가로 해결한 문제가 모두 업데이트 되었습니다.", solvedProblemCnt_added));
+			} else {
+				Dialog.showInfoDialog("로그인 성공", String.format("정상적으로 로그인 되었습니다.", solvedProblemCnt_added));
+			}
+			mainFrame.logInComponents(userLoggedIn); // 메인 프레임 로그인관련 컴포넌트 업데이트 및 유저 인스턴스 전달
+			dispose(); // 로그인 창 닫기				
+			System.out.println("로그인 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");
 		}
 	}
 
@@ -145,24 +152,5 @@ public class LoginFrame extends DesignedJFrame{
 			new PasswordResetUsernameEmailCheckFrame(); 
 		}
 	}
-
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginFrame frame = new LoginFrame(new MainFrame());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-
 }
 

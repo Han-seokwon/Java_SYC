@@ -73,6 +73,7 @@ public class ProblemTable extends JTable{
 	private ArrayList<Problem> recommendedProblemList = new ArrayList<>(); // 추천된 문제 리스트
 	private User user;// 현재 로그인된 유저
 
+	public ProblemTable() {}
 	public ProblemTable(User user) {
 		super();// JTable 멤버 상속받기
 		
@@ -101,26 +102,26 @@ public class ProblemTable extends JTable{
 		setRowHeight(ROW_HEIGHT); // 기본 행 높이 설정		
 		addMouseListener(new tableClickListener()); // 테이블 클릭에 대한 이벤트 리스너 등록
 
-		try { // 폰트 설정
+		try { // 테이블 폰트 지정
 			Font font = FileManager.createFontFromFile("contentFont");
-			getTableHeader().setFont(font.deriveFont(20f));
-			setFont(font.deriveFont(17f));
-		} catch (IOException e) { 
+			getTableHeader().setFont(font.deriveFont(20f)); // 테이블 헤더 폰트 지정
+			setFont(font.deriveFont(17f)); // 테이블 셀 폰트 지정
+		} catch (IOException e) {  // 폰트를 가져오지 못한 경우
 			System.out.println(e.getMessage());				
 		}
+		// 테이블헤더 배경색 지정
 		getTableHeader().setBackground(COLOR.AQUA_ISLAND.getColor());
 		
 	}
 	
-	// 지정한 텍스트 폰트 적용해주는 CellRenderer 생성 
+	// 테이블 셀을 렌더링하는 방식을 결정 
 	class TableCellRenderer extends DefaultTableCellRenderer{
 		public TableCellRenderer() {
 			super();
-			setHorizontalAlignment(JLabel.CENTER);
+			setHorizontalAlignment(JLabel.CENTER); // 모든 글은 가운데 정렬
 		}
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-			Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);              
 			if(column == TABLE_HEADER.URL.getIdx()) { // url 열
 				setText("<html><u>" + value + "</u></html>");// 밑줄 적용
 	            setForeground(Color.BLUE);// 파란색 적용
@@ -129,7 +130,7 @@ public class ProblemTable extends JTable{
 	            RANK rank = recommendedProblemList.get(row).getProblemRank();
 	            ImageIcon rankIcon = new ImageIcon(getClass().getResource("/sources/" + rank.getRankName() + ".png"));
 	            rankIcon = new ImageIcon(rankIcon.getImage().getScaledInstance(ROW_HEIGHT - 5, ROW_HEIGHT - 5, Image.SCALE_SMOOTH)); // 이미지 사이즈 변경
-	            setIcon(rankIcon); // 아이콘 추가
+	            setIcon(rankIcon); // 랭크 아이콘 추가
 			}			
 			return this;
 		}
@@ -146,18 +147,21 @@ public class ProblemTable extends JTable{
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-			} else if(col != -1 && row != -1 ){ // url 열이 아니고 클릭된 열과 행값이 유효한 경우 
+			} else if(col != -1 && row != -1 ){ // url 열이 아니고 클릭된 열과 행값이 유효한 경우				
+				Problem selectedProblem = recommendedProblemList.get(row); // 선택된 행의 문제 인스턴스를 가져옴
+				System.out.println("문제 선택됨\n" + selectedProblem); // 선택된 문제 정보 출력
 				// 해당 열에 맞는 문제 정보 조회 프레임 생성
-				Problem selectedProblem = recommendedProblemList.get(row);
-				System.out.println("문제 선택됨\n" + selectedProblem);
 				//	new ProblemViewerFrame(selectedProblem, user); // 클래스 완성시 코드 추가
 			}
 		}
 	}
 
 
-	//  문제리스트로 테이블 업데이트
-	public void updateProblemListToTable( List<Problem> recommendedProblemList) throws ClassCastException{		
+	/*
+	 * 전달받은 문제 리스트로 테이블을 구성함
+	 * @param recommendedProblemList : 추천된 문제 리스트 
+	 * */
+	public void updateProblemListToTable( List<Problem> recommendedProblemList){		
 		tableModel.setNumRows(0); // 기존에 입력된 테이블 행 초기화
 		this.recommendedProblemList = new ArrayList<>(recommendedProblemList);
 		Iterator<Problem> it = recommendedProblemList.iterator();
@@ -167,7 +171,7 @@ public class ProblemTable extends JTable{
 			// Problem 객체에서 테이블 헤더에 맞게 필요한 데이터만 가져와 행데이터 구성 
 			tableRowValues[TABLE_HEADER.ID.getIdx()] = String.valueOf(problem.getProblemID());
 			tableRowValues[TABLE_HEADER.TITLE.getIdx()] = problem.getProblemName();
-			tableRowValues[TABLE_HEADER.RANK.getIdx()] = String.format("%s(%d)", problem.getProblemRank(), problem.getProblemRankPoint())  ;
+			tableRowValues[TABLE_HEADER.RANK.getIdx()] = String.format("%s(%d)", problem.getProblemRank(), problem.getProblemRankPoint()); // 랭크(포인트)
 			tableRowValues[TABLE_HEADER.URL.getIdx()] = problem.getProblemURL();	
 			tableModel.addRow(tableRowValues); // row 데이터 테이블에 추가
 		}
