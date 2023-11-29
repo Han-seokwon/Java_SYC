@@ -34,6 +34,7 @@ public class DesignedJFrame extends JFrame{
 		setSize(width, height);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null); // 창 가운데 위치
+		setResizable(false); // 창 크기 변경 못하게 설정
 		try {
 			Image icon = ImageIO.read(getClass().getResource("/sources/icon.png"));
 			setIconImage(icon);
