@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -93,10 +94,10 @@ public class ProblemTable extends JTable{
 		getTableHeader().setPreferredSize(headerSize);
 		
 		// 테이블 높이, 너비, 폰트 설정		
-		for(TABLE_HEADER header : TABLE_HEADER.values()) {
-			TableColumn col = getColumnModel().getColumn(header.getIdx());
+		for(TABLE_HEADER header : TABLE_HEADER.values()) { // 헤더로 각 열 순회
+			TableColumn col = getColumnModel().getColumn(header.getIdx()); // 현재 열 가져오기
 			col.setPreferredWidth(header.getWidth()); // 너비 설정
-			col.setCellRenderer(new TableCellRenderer()); // 지정한 텍스트 폰트 적용해주는 TableCellRenderer 생성 후 적용
+			col.setCellRenderer(new TableCellRenderer()); // 열다마 셀 렌더링 설정 -> url 폰트 및 랭크 아이콘 추가
 		}		
 		
 		setRowHeight(ROW_HEIGHT); // 기본 행 높이 설정		
@@ -122,6 +123,7 @@ public class ProblemTable extends JTable{
 		}
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); // 셀 렌더링 부모 생성자 호출
 			if(column == TABLE_HEADER.URL.getIdx()) { // url 열
 				setText("<html><u>" + value + "</u></html>");// 밑줄 적용
 	            setForeground(Color.BLUE);// 파란색 적용
@@ -129,7 +131,7 @@ public class ProblemTable extends JTable{
 			if(column == TABLE_HEADER.RANK.getIdx()) { // rank 열
 	            RANK rank = recommendedProblemList.get(row).getProblemRank();
 	            ImageIcon rankIcon = new ImageIcon(getClass().getResource("/sources/" + rank.getRankName() + ".png"));
-	            rankIcon = new ImageIcon(rankIcon.getImage().getScaledInstance(ROW_HEIGHT - 5, ROW_HEIGHT - 5, Image.SCALE_SMOOTH)); // 이미지 사이즈 변경
+	            rankIcon = new ImageIcon(rankIcon.getImage().getScaledInstance(ROW_HEIGHT - 5, ROW_HEIGHT - 5, Image.SCALE_AREA_AVERAGING)); // 이미지 사이즈 변경
 	            setIcon(rankIcon); // 랭크 아이콘 추가
 			}			
 			return this;
@@ -164,6 +166,7 @@ public class ProblemTable extends JTable{
 	public void updateProblemListToTable( List<Problem> recommendedProblemList){		
 		tableModel.setNumRows(0); // 기존에 입력된 테이블 행 초기화
 		this.recommendedProblemList = new ArrayList<>(recommendedProblemList);
+		System.out.println(this.recommendedProblemList);
 		Iterator<Problem> it = recommendedProblemList.iterator();
 		String[] tableRowValues = new String[TABLE_HEADER.length()];
 		while(it.hasNext()) {
@@ -172,7 +175,7 @@ public class ProblemTable extends JTable{
 			tableRowValues[TABLE_HEADER.ID.getIdx()] = String.valueOf(problem.getProblemID());
 			tableRowValues[TABLE_HEADER.TITLE.getIdx()] = problem.getProblemName();
 			tableRowValues[TABLE_HEADER.RANK.getIdx()] = String.format("%s(%d)", problem.getProblemRank(), problem.getProblemRankPoint()); // 랭크(포인트)
-			tableRowValues[TABLE_HEADER.URL.getIdx()] = problem.getProblemURL();	
+			tableRowValues[TABLE_HEADER.URL.getIdx()] = problem.getProblemURL();			
 			tableModel.addRow(tableRowValues); // row 데이터 테이블에 추가
 		}
 	}
