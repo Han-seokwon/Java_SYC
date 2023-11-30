@@ -3,7 +3,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import gui.MainFrame;
+import gui.RecommendProblemFrame;
 import gui.SurveyFrame;
 import problems.ProblemDBManager;
 import users.AccountManager;
@@ -73,6 +73,7 @@ public class Main {
 		System.out.println("ProblemDB 초기화 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");   
 		
 //		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
+		
 	}
 	
 	
@@ -92,7 +93,7 @@ public class Main {
 		
 		// <  기타 프레임 테스트 >
 //		new SurveyFrame(null);
-//		new RecommendProblemFrame(null); // 문제 추천 프레임
+		new RecommendProblemFrame(null); // 문제 추천 프레임
 //		new RateProblemFrame(null, null);		
 	
 							

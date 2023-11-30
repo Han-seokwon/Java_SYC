@@ -161,12 +161,19 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 
 	// 유저의 랭크 포인트를 증가하고 다음 티어 진급을 위한 포인트를 넘기면 티어 상승
 	// addSolvedProblem() <- updateSolvedProbleList_FromSolvedAC() 에서 호출
-	public void addRankPoint( int rankPoint) {
-		this.rankPoint += rankPoint;
-		RANK nextRank = rank.getNextRank();
-		if (this.rankPoint >= nextRank.getRequireRankPoint()) {
-			rank = nextRank;
-			System.out.println(rank + "로 랭크 진급");
+	public void addRankPoint( int rankPoint) {		
+		RANK nextRank = rank.getNextRank(); 
+		System.out.println("Rank : " + rank + ", nextRank :" + nextRank );
+		this.rankPoint += rankPoint; // 포인트 추가
+		if(rank == nextRank ) { // 최고 랭크인 경우
+			if(this.rankPoint > RANK.getMaxRequireRankPoint()) { // 최대 축적 가능 포인트를 초과한 경우
+				this.rankPoint = RANK.getMaxRequireRankPoint(); // 최대 포인트로 함
+			}
+		} else { // 최고 랭크가 아닌 경우
+			if (this.rankPoint >= nextRank.getRequireRankPoint()) { // 진급 가능한 경우
+				rank = nextRank;
+				System.out.println(rank + "로 랭크 진급");
+			}
 		}
 	}
 

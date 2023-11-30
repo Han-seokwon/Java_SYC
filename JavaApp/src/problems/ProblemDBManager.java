@@ -97,8 +97,7 @@ public class ProblemDBManager {
 	 *  ID - 문제 번호
 	 */
 	public static Problem findProblem(int ID) {
-		Problem pblm = new Problem();
-		
+		Problem pblm = new Problem();		
 		if (ProblemDBMap.containsKey(ID)) {
 			pblm = ProblemDBMap.get(ID);
 			return pblm;
