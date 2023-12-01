@@ -21,10 +21,9 @@ import javax.swing.SwingConstants;
 // 유저이름, 이메일을 토대로 확인된 사용자의 비번 초기화 질문을 가져와 답변을 입력받는 프레임
 public class PasswordResetAnswerCheckFrame extends DesignedJFrame {
 
-	private String resetQuestion, resetAnswer;
-	private JTextField answerField;
-	private JButton nextButton;
-	private User user;
+	private String resetQuestion, resetAnswer; // 초기화 질문, 답변
+	private JTextField answerField; // 답변을 입력받는 필드
+	private User user; // 인증된 유저
 	
 	// 현재 비밀번호를 초기화하려는 User 인스턴스를 인자로 받음
 	public PasswordResetAnswerCheckFrame(User user) {   
@@ -77,7 +76,7 @@ public class PasswordResetAnswerCheckFrame extends DesignedJFrame {
 		contentPane.add(cancelButton, gbc); 
 
 		// 다음 버튼
-		nextButton = new DesignedButton("다음", COLOR.SUNFLOWER);
+		JButton nextButton = new DesignedButton("다음", COLOR.SUNFLOWER);
 		nextButton.addActionListener(new CheckAnswerListener()); // 다음 버튼에 이벤트 핸들러 적용
 		// 다음 버튼 레이아웃
 		GridBagConstraints gbc_nextButton = new GridBagConstraints();

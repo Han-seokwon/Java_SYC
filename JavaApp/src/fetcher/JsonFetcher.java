@@ -22,8 +22,10 @@ import users.RANK;
 
 // 특정 api에 대해 HTTP GET 요청을 보내 json 데이터를 받아오고 이를 파싱하는 클래스
 public class JsonFetcher {
+	
 	private final static int PROBLEM_CNT_PER_PAGE = 50; // 한 페이지당 최대로 가져올 수 있는 문제 개수
-	private static int totalProblemCnt_SolvedAC =0; // solved.ac에 저장된 총 문제 개수
+	private static int totalProblemCnt_SolvedAC = 0; // solved.ac에 저장된 총 문제 개수
+	
 	/*
 	 * URL에 fetch(HTTP GET request)하여 응답받은 JSON 문자열을 JsonElement로 파싱하여 반환
 	 * param : fetch할 URL 문자열

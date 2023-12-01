@@ -12,6 +12,7 @@ public enum COLOR {
 	WHITE(new Color(255,255,255));
 	
 	private Color color;
+	
 	private COLOR(Color color) {
         this.color = color;
     }

@@ -8,7 +8,8 @@ import file.FileManager;
 
 // User 인스턴스를 해시맵에 저장하고 유저 데이터의 조회 및 추가 기능을 수행
 public class UserDBManager {
-
+	
+	// 각 유저 인스턴스를 저장하는 해시맵으로 이메일을 key, 유저 인스턴스를 value로 한다.
 	private static HashMap<String, User> userDBMap = new HashMap<>();	
 	
 	public static void printUserDBMap() { // 디버깅용

@@ -11,12 +11,14 @@ import javax.swing.JPanel;
 import file.FileManager;
 
 public class DesignedJFrame extends JFrame{
+	
 	private static int defalutWidth = 1300;
 	private static int defalutHeight = 900;
 	private static String defalutSiteName = "Core";
-	private int width;
-	private int height;
-	private String title;
+	private int width; // 윈도우 너비
+	private int height; // 윈도우 높이
+	private String title; // // 윈도우 타이틀
+	
 	public DesignedJFrame() {
 		this(defalutWidth, defalutHeight, defalutSiteName);
 	}

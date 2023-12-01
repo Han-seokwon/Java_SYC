@@ -21,9 +21,11 @@ public class FileManager {
 	 * User 객체를 파일로 저장할 때 사용
 	 * return : 변환된 파일명
 	 */
+	
 	public static String emailToFilename(String email) {
 		return email.replace('@','0').replace('.', '1');
 	}
+	
 	/* 
 	 * 현재 프로젝트 소스 폴더의 절대 경로를 가져오는 메서드 ~~경로//프로젝트//src까지 가져옴
 	 * 각 DB에서 파일을 가져올 때 파일경로를 설정하기 위해 사용
@@ -41,11 +43,13 @@ public class FileManager {
 	 * 			 예시 :  "\\패키지\\DB폴더\\파일명.확장자", "\\user\\UserDB\\user1.txt"
 	 * return : 파일이 정상적으로 저장되었는지 여부 리턴
 	 */
+	
 	public static boolean createUpdateObjectFile(Object obj, String filepath) {	
 		filepath = getPackageRootDir() + filepath;
+		// 파일을 ObjectOutputStream으로 변환
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filepath))) {
-			oos.writeObject(obj);
-		} catch (IOException e) {
+			oos.writeObject(obj); // 직렬화한 후 저장  
+		} catch (IOException e) { // 직렬화 과정 중 에러 발생 시
 			e.printStackTrace();           
 			return false;
 		}
@@ -60,8 +64,9 @@ public class FileManager {
 	public static Object readObjectFile(String filepath) {
 		filepath = getPackageRootDir() + filepath;
 		Object obj = new Object();
+		// 파일을 ObjectInputStream으로 변환
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filepath))) {
-			obj = ois.readObject();
+			obj = ois.readObject(); // 역질렬화를 통해 Object로 변환
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}

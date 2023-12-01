@@ -25,7 +25,7 @@ public class SurveyQuestion {
 
 	@Override
 	public String toString() {
-		return "EvaluationQuestion [question=" + question + ",\n choiceList=" + choiceList + "]\n";
+		return "SurveyQuestion [question=" + question + ",\n choiceList=" + choiceList + "]\n";
 	}
 	
 	public String getQuestion() {
@@ -42,16 +42,19 @@ public class SurveyQuestion {
 	}
 	
 	/*
-	 * json 데이터를 Question으로 변환하여 반환
+	 * json 데이터를 SurveyQuestion으로 변환하여 반환
 	 */	
 	protected static SurveyQuestion createQuestionFromJson(JsonObject questionJsonObj) {
-		String question = questionJsonObj.get("question").getAsString();
-		JsonArray choiceListJsonArray = questionJsonObj.get("choiceList").getAsJsonArray();
-		ArrayList<String> choiceList = new ArrayList<>();
+		// question 항목의 데이터를 문자열로 가져옴
+		String question = questionJsonObj.get("question").getAsString(); 
+		// choiceList 항목의 데이터를 JsonArray로 가져옴
+		JsonArray choiceListJsonArray = questionJsonObj.get("choiceList").getAsJsonArray();		
+		ArrayList<String> choiceList = new ArrayList<>(); // 객관식 선택지를 저장할 배열
+		// JsonArray을 순회하며 JsonElement를 String으로 변환하여 배열에 저장
 		for(JsonElement choiceListJson : choiceListJsonArray) {
 			choiceList.add(choiceListJson.getAsString());
 		}
-		return new SurveyQuestion(question, choiceList);		
+		return new SurveyQuestion(question, choiceList);	
 	}
 	
 	/*

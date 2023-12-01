@@ -14,7 +14,7 @@ public class LearningMaterialsHintAdd {
         this.Material = material;
         this.problem = problem;
         // 학습자료 추가
-//        problem.addProblemReferences(Material);
+        problem.addProblemReferences(Material);
     }
 
     // 생성자(힌트 추가용)
@@ -24,7 +24,7 @@ public class LearningMaterialsHintAdd {
         this.Key = key;
         this.problem = problem;
         // 힌트 추가
-//        problem.addProblemHint(Key, Name, Hint);
+        problem.addProblemHint(Key, Name, Hint);
     }
 
     

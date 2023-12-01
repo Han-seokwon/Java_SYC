@@ -25,12 +25,12 @@ import javax.swing.SwingConstants;
 public class PasswordResetUsernameEmailCheckFrame extends DesignedJFrame {
 
 
-	private JTextField usernameField;
-	private JTextField emailField;
-	private User user;
+	private JTextField usernameField; // 유저이름 입력 필드
+	private JTextField emailField; // 이메일 입력 필드
+	private User user; /// 확인된 유저 
+	
 	public PasswordResetUsernameEmailCheckFrame() {
 		super(500, 500, "비밀번호 초기화");
-
 
 		// 컨텐트팬 생성
 		DesignedContentPane contentPane = new DesignedContentPane(this);

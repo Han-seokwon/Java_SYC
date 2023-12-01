@@ -29,6 +29,7 @@ import users.RANK;
 import users.User;
 // 사용자가 문제의 랭크, 랭크 포인트, 그에 대한 코멘트를 입력하면 해당 데이터를 관련 클래스로 전달하는 클래스
 public class RateProblemFrame extends DesignedJFrame {
+	
 	private JPanel centerPanel; // 프레임의 컴포넌트들을 배치할 컨텐트팬
 	private JComboBox<RANK> rankComboBox; // 랭크 선택 콤보박스
 	private JLabel rankPointLabel; // 랭크 포인트 라벨 ( 랭크 선택에 따라 입력 가능 최대, 최소 포인트 안내문을 출력하기 위해 별도 필드로 설정)
@@ -36,9 +37,8 @@ public class RateProblemFrame extends DesignedJFrame {
 	private int minRankPoint = 0; 	// 입력할 수 있는 최소 랭크 포인트
 	private int maxRankPoint = RANK.getMaxRequireRankPoint(); 	// 입력할 수 있는 최대 랭크 포인트
 	private JTextField commentField; // 코멘트를 입력받는 필드
-	private JButton submitButton; 
-	private User user;
-	private Problem problem;
+	private User user; // 로그인된 유저
+	private Problem problem; // 난이도 기여를 할 문제
 	
     public RateProblemFrame(User user, Problem problem) {
     	super("문제 난이도 기여");
@@ -73,7 +73,8 @@ public class RateProblemFrame extends DesignedJFrame {
         rankPointField = new JTextField();
         rankPointField.setHorizontalAlignment(SwingConstants.CENTER);
         rankPointField.setColumns(20);       
-        rankPointField.addKeyListener(new IntegerInputKeyListener());  // 정수 이외 값 입력 및 최대값 초과 자릿수 입력 제한 리스너 등록
+        // 정수 이외 값 입력 및 최대값 초과 자릿수 입력 제한 리스너 등록
+        rankPointField.addKeyListener(new IntegerInputKeyListener());  
         
         rankPointLabel = new JLabel("랭크 포인트");
         addRowPanelToContentPane(1, rankPointLabel, rankPointField);
@@ -97,7 +98,7 @@ public class RateProblemFrame extends DesignedJFrame {
         // 취소 버튼 패널에 추가
         buttonPanel.add(new CancelButton());
         // 제출 버튼 패널에 추가
-        submitButton = new DesignedButton("제출", COLOR.SUNFLOWER); 
+        JButton submitButton = new DesignedButton("제출", COLOR.SUNFLOWER); 
         submitButton.addActionListener(new SubmitButtonListener()); // 리스너 등록
         buttonPanel.add(submitButton);
 
@@ -139,8 +140,7 @@ public class RateProblemFrame extends DesignedJFrame {
         gbc_label.gridx = 0;
         gbc_label.gridy = 0;
         // 라벨 패널에 추가
-        rowPanel.add(label, gbc_label);
-        
+        rowPanel.add(label, gbc_label);        
         
         // 컴포넌트 사이즈 설정
         component.setPreferredSize(new Dimension(160, 30));
@@ -180,6 +180,7 @@ public class RateProblemFrame extends DesignedJFrame {
 		}		
     }
     
+    // 랭크 콤보박스를 선택할 경우 발생하는 리스너로, 선택된 랭크(RANK)에 맞게 랭크 포인트 입력 라벨에 입력 가능한 최소, 최대 포인트를 정보를 추가함
     class RankComboBoxListener implements ActionListener {    	
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -192,7 +193,7 @@ public class RateProblemFrame extends DesignedJFrame {
     }
     
     
- // 정수 이외 값 입력 및 최대값 초과 자릿수 입력 제한 리스너
+ // 정수 이외 값 입력 및 자릿수 입력 제한 리스너
     class IntegerInputKeyListener extends KeyAdapter {
         @Override
         public void keyTyped(KeyEvent ke) {
@@ -211,18 +212,21 @@ public class RateProblemFrame extends DesignedJFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				inputCheck();	
+				inputCheck();// 입력값 유효성 확인
 			} catch (IOException err) {
-				JOptionPane.showMessageDialog(null, err.getMessage(), "입력 오류",  JOptionPane.WARNING_MESSAGE);
+				Dialog.showAlertDialog("입력 오류", err.getMessage()); 
 				return; // 리스너 종료
 			}
+			// 입력값이 유효한 경우
+			// 콤보 박스에서 선택된 RANK 가져오기
 			RANK selectedRANK =  (RANK)rankComboBox.getSelectedItem();
+			// 랭크 입력 필드에서 입력된 랭크 포인트값 정수로 가져오기
 			int rankPoint = Integer.valueOf(rankPointField.getText().trim());
+			// 입력한 코멘트 양 끝 공백 제거 후 가져오기
 			String comment = commentField.getText().trim();
 			// 입력값을 토대로 문제 랭크 데이터 생성
 			ProblemRank problemRank = new ProblemRank(problem.getProblemID(), user, selectedRANK, rankPoint, comment); //rankPoint 필드는 추가예정 
-			System.out.println(problemRank + String.format(" rankPoint = %d", rankPoint));	
-			
+			System.out.println(problemRank + String.format(" rankPoint = %d", rankPoint));			
 			ProblemRankManager.addRank(problem.getProblemID(), problemRank); // 생성된 문제 랭크 데이터 추가
 			
 		}

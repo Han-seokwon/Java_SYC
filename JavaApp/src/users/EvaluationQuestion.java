@@ -47,7 +47,7 @@ public class EvaluationQuestion extends SurveyQuestion{
 	 * json데이터를 EvaluationQuestion로 변환하여 반환
 	 * */
 	private static EvaluationQuestion createEvaluationQuestionFromJson(JsonObject questionJsonObj) {
-		SurveyQuestion question = createQuestionFromJson(questionJsonObj);
+		SurveyQuestion question = createQuestionFromJson(questionJsonObj); // json 파일을 파싱하여 SurveyQuestion로 변환
 		int answerNum = questionJsonObj.get("answerNum").getAsInt();
 		int point = questionJsonObj.get("point").getAsInt();
 		return new EvaluationQuestion(question.getQuestion(), question.getChoiceList(), answerNum, point);

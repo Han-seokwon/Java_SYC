@@ -28,8 +28,13 @@ public class ResistrationFormat {
 
     @Override
 	public String toString() {
-		return "ResisterationFormat [name=" + name + ",\n solvedName=" + solvedName + ",\n email=" + email + ",\n password="
-				+ password + ",\n passwordConfirm=" + passwordConfirm + ",\n resetPwQuestion : "+ resetPwQuestion +",\n resetPwAnswer=" + resetPwAnswer + "]";
+		return "ResisterationFormat [name=" + name +
+				",\n solvedName=" + solvedName + 
+				",\n email=" + email + 
+				",\n password=" + password 
+				+ ",\n passwordConfirm=" + passwordConfirm + 
+				",\n resetPwQuestion : "+ resetPwQuestion +
+				",\n resetPwAnswer=" + resetPwAnswer + "]";
 	}
     
 	public String getName() {

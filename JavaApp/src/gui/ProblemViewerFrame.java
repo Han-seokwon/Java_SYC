@@ -278,7 +278,7 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
             if (selectedRow != -1) {
                 Object selectedID = table.getValueAt(selectedRow, 0);
             	System.out.println(selectedID);
-            	new ProblemInfoFrame(ProblemDBManager.findProblem(Integer.parseInt(String.valueOf(selectedID))));
+            	new ProblemInfoFrame(ProblemDBManager.findProblem(Integer.parseInt(String.valueOf(selectedID))), user);
             	} 
             
 

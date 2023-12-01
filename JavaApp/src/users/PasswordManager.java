@@ -39,8 +39,7 @@ public class PasswordManager {
 	 */
 	public static void updatePassword(User user, String newPassWord) throws IOException{
 		String newPassword_hashed = hashPassword(newPassWord, user.getEmail());
-		user.setPassword_hashed(newPassword_hashed);	
-		user.createUpdateUserFile(); 	// 해당 객체 파일 업데이트		
+		user.setPassword_hashed(newPassword_hashed);		
 	}
 	
 	/* 비밀번호를 해싱하는 메서드, 이메일을 솔트로 이용함

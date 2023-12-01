@@ -1,9 +1,11 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,134 +17,207 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import users.User;
+import file.FileManager;
+import problems.Problem;
 
-//평균값을 어떤식으로 저장하고 불러올지 생각하지 못 함
-public class CodeEficiency extends JFrame {
+public class CodeEficiency extends DesignedJFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField RunTime_textField;
-	private JTextField Memory_textField;
-	private JLabel ResultGuide;
-	private int enteredRunTime;
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField RunTime_textField;
+    private JTextField Memory_textField;
+    private JLabel ResultGuide;
+
+    private int enteredRunTime;
     private int enteredMemory;
     private int averageRunTime = 168;
     private int averageMemory = 2048;
-	
-	public CodeEficiency(/*MainFrame mainFrame, User user*/) {
-		//this.mainFrame = mainFrame;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 860, 571);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    private Problem problem = new Problem();
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		JLabel ProblemName = new JLabel("문제 이름");
-		ProblemName.setFont(new Font("굴림", Font.PLAIN, 30));
-		ProblemName.setHorizontalAlignment(SwingConstants.CENTER);
-		ProblemName.setBounds(112, 10, 620, 100);
-		ProblemName.setBorder(new LineBorder(UIManager.getColor("Black") ,2));
-		contentPane.add(ProblemName);
-		
-		JLabel Ave_Runtime = new JLabel("평균 런타임 : " + "165ms");
-		Ave_Runtime.setHorizontalAlignment(SwingConstants.CENTER);
-		Ave_Runtime.setFont(new Font("굴림", Font.PLAIN, 30));
-		Ave_Runtime.setBorder(new LineBorder(UIManager.getColor("Black") ,2));
-		Ave_Runtime.setBounds(112, 116, 305, 60);
-		contentPane.add(Ave_Runtime);
-		
-		JLabel Ave_Memory = new JLabel("평균 메모리 : " + "2048kb");
-		Ave_Memory.setHorizontalAlignment(SwingConstants.CENTER);
-		Ave_Memory.setFont(new Font("굴림", Font.PLAIN, 30));
-		Ave_Memory.setBorder(new LineBorder(UIManager.getColor("Black") ,2));
-		Ave_Memory.setBounds(429, 116, 305, 60);
-		contentPane.add(Ave_Memory);
-		
-		////
-		JPanel panel = new JPanel();
-		panel.setBounds(112, 196, 620, 186);
-		contentPane.add(panel);
-		panel.setLayout(null);
-		
-		JLabel Guide = new JLabel("해결한 코드의 런타임, 메모리를 입력해주세요");
-		Guide.setBounds(12, 10, 596, 39);
-		Guide.setHorizontalAlignment(SwingConstants.CENTER);
-		Guide.setFont(new Font("굴림", Font.PLAIN, 25));
-		Guide.setBorder(new LineBorder(UIManager.getColor("Black") ,2));
-		panel.add(Guide);
-		
-		JLabel RunTime = new JLabel("런타임");
-		RunTime.setHorizontalAlignment(SwingConstants.CENTER);
-		RunTime.setFont(new Font("굴림", Font.PLAIN, 30));
-		RunTime.setBounds(127, 59, 146, 39);
-		panel.add(RunTime);
-		
-		JLabel Memory = new JLabel("메모리");
-		Memory.setHorizontalAlignment(SwingConstants.CENTER);
-		Memory.setFont(new Font("굴림", Font.PLAIN, 30));
-		Memory.setBounds(127, 108, 146, 39);
-		panel.add(Memory);
-		////
-		
-		// 런타임 입력란
+    public CodeEficiency(/*Problem problem*/) {
+        super();
+        this.problem = problem;
+        setBounds(100, 100, 1300, 900);
+        contentPane = new DesignedContentPane();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        // 문제 이름 패널
+        ProblemNamePanel();
+
+        // 코드 메인 패널
+        CodeMainPanel();
+
+        // 결과 패널
+        ResultPanel();
+    }
+
+    // 문제 이름 패널
+    private void ProblemNamePanel() {
+        try
+        {
+        	Font font = FileManager.createFontFromFile("contentFont");
+        	JLabel ProblemName = new JLabel(problem.getProblemName());
+            ProblemName.setFont(font.deriveFont(30f));
+            ProblemName.setHorizontalAlignment(SwingConstants.CENTER);
+            ProblemName.setBounds(251, 59, 821, 100);
+            ProblemName.setBorder(new LineBorder(UIManager.getColor("Black"), 2));
+            contentPane.add(ProblemName);
+        }
+        catch (IOException e) { 
+            System.out.println(e.getMessage());             
+        }
+    }
+
+    // 코드 메인 패널
+    private void CodeMainPanel() {
+        JPanel Mainpanel = new JPanel();
+        Mainpanel.setBackground(new Color(255, 255, 255));
+        Mainpanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+        Mainpanel.setBounds(251, 156, 821, 467);
+        contentPane.add(Mainpanel);
+        Mainpanel.setLayout(null);
+
+        // 안내 문구
+        try
+        {
+        	Font font = FileManager.createFontFromFile("contentFont");
+        	JLabel Guide = new JLabel("해결한 코드의 런타임, 메모리를 입력해주세요");
+            Guide.setBounds(96, 21, 622, 39);
+            Guide.setHorizontalAlignment(SwingConstants.CENTER);
+            Guide.setFont(font.deriveFont(25f));
+            //Guide.setBorder(new LineBorder(UIManager.getColor("Black"), 2));
+            Mainpanel.add(Guide);
+         // 런타임 입력 레이블
+            JLabel RunTime = new JLabel("런타임");
+            RunTime.setHorizontalAlignment(SwingConstants.CENTER);
+            RunTime.setFont(font.deriveFont(30f));
+            RunTime.setBounds(181, 208, 146, 39);
+            Mainpanel.add(RunTime);
+
+            // 메모리 입력 레이블
+            JLabel Memory = new JLabel("메모리");
+            Memory.setHorizontalAlignment(SwingConstants.CENTER);
+            Memory.setFont(font.deriveFont(30f));
+            Memory.setBounds(181, 278, 146, 39);
+            Mainpanel.add(Memory);
+        }
+        catch (IOException e) { 
+            System.out.println(e.getMessage());             
+        }
+
+        
+
+        // 런타임 입력 필드
         RunTime_textField = new JTextField();
-        RunTime_textField.setBounds(270, 59, 213, 39);
-        panel.add(RunTime_textField);
+        RunTime_textField.setBounds(335, 208, 213, 39);
+        Mainpanel.add(RunTime_textField);
         RunTime_textField.setColumns(10);
 
-        // 메모리 입력란
+        // 메모리 입력 필드
         Memory_textField = new JTextField();
         Memory_textField.setColumns(10);
-        Memory_textField.setBounds(270, 108, 213, 39);
-        panel.add(Memory_textField);
+        Memory_textField.setBounds(335, 278, 213, 39);
+        Mainpanel.add(Memory_textField);
 
-        // 비교하는 버튼
-        JButton CmpButton = new JButton("비교하기");
-        CmpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 사용자가 입력한 런타임과 메모리 값을 가져와서 변수에 저장
-                try {
-                    enteredRunTime = Integer.parseInt(RunTime_textField.getText());
-                    enteredMemory = Integer.parseInt(Memory_textField.getText());
+        // 비교하기 버튼
+        JButton CmpButton = new DesignedButton("비교하기");
+        CmpButton.addActionListener(new CompareButtonActionListener());
+        CmpButton.setBounds(640, 410, 169, 47);
+        Mainpanel.add(CmpButton);
 
-                    // 평균과 비교하여 결과 계산
-                    double runtimePercentage = ((double) enteredRunTime / averageRunTime) * 100;
-                    double memoryPercentage = ((double) enteredMemory / averageMemory) * 100;
+        // 평균 런타임 레이블
+        JLabel Ave_Runtime = new JLabel();
+        Ave_Runtime.setHorizontalAlignment(SwingConstants.CENTER);
+        Ave_Runtime.setFont(new Font("굴림", Font.PLAIN, 30));
+        Ave_Runtime.setBorder(new LineBorder(UIManager.getColor("Black"), 2));
+        Ave_Runtime.setBounds(96, 70, 305, 60);
+        Mainpanel.add(Ave_Runtime);
 
-                    String runtimeComparison = (enteredRunTime == averageRunTime) ? "같습" : (enteredRunTime < averageRunTime) ? "빠르" : "느립니다";
+        // 평균 메모리 레이블
+        JLabel Ave_Memory = new JLabel();
+        Ave_Memory.setHorizontalAlignment(SwingConstants.CENTER);
+        Ave_Memory.setFont(new Font("굴림", Font.PLAIN, 30));
+        Ave_Memory.setBorder(new LineBorder(UIManager.getColor("Black"), 2));
+        Ave_Memory.setBounds(413, 70, 305, 60);
+        Mainpanel.add(Ave_Memory);
 
-                    String memoryComparison = (enteredMemory == averageMemory) ? "같습" : (enteredMemory < averageMemory) ? "적" : "많습니다";
+        // 메인화면 버튼
+        JButton MainMenuButton = new DesignedButton("메인화면", COLOR.AQUA_ISLAND);
+        MainMenuButton.addActionListener(new MainMenuButtonActionListener());
+        MainMenuButton.setBounds(12, 410, 169, 47);
+        Mainpanel.add(MainMenuButton);
+    }
 
-                    String resultMessage = String.format("<html>런타임이 평균보다 %.2f%% %s.<br/>메모리 사용량이 평균보다 %.2f%% %s.</html>", runtimePercentage, runtimeComparison, memoryPercentage, memoryComparison);
+    // 결과 패널
+    private void ResultPanel() {
+        ResultGuide = new JLabel();
+        ResultGuide.setHorizontalAlignment(SwingConstants.CENTER);
+        ResultGuide.setFont(new Font("굴림", Font.PLAIN, 20));
+        ResultGuide.setBorder(new LineBorder(UIManager.getColor("Black"), 2));
+        ResultGuide.setBackground(Color.WHITE);
+        ResultGuide.setBounds(251, 619, 821, 199);
+        contentPane.add(ResultGuide);
+    }
 
-                    ResultGuide.setText(resultMessage);
+    // 비교하기 버튼 액션 리스너
+    class CompareButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                int runTime = Integer.parseInt(RunTime_textField.getText());
+                int memory = Integer.parseInt(Memory_textField.getText());
+                
+                double runTimePercentile = getRunTimePercentile(runTime);
+                double runTimeTopPercentage = getRunTimeTopPercentage(runTime);
+                double memoryPercentile = getMemoryPercentile(memory);
+                double memoryTopPercentage = getMemoryTopPercentage(memory);
 
-                } catch (NumberFormatException ex) {
-                    // 사용자가 숫자가 아닌 값을 입력한 경우에 대한 예외 처리
-                    ResultGuide.setText("숫자를 입력해주세요.");
-                }
+                String resultMessage = String.format(
+                    "런타임 백분위: %.2f%% (상위 %.2f%%), 메모리 백분위: %.2f%% (상위 %.2f%%)",
+                    runTimePercentile, runTimeTopPercentage, memoryPercentile, memoryTopPercentage
+                );
+
+                ResultGuide.setText(resultMessage);
+            } catch (NumberFormatException ex) {
+                ResultGuide.setText("숫자를 입력해주세요.");
             }
-        });
-        CmpButton.setBounds(511, 153, 97, 23);
-        panel.add(CmpButton);
-		
-		
-		//비교 결과 출력 안내
-		JLabel ResultGuide = new JLabel();
-		ResultGuide.setHorizontalAlignment(SwingConstants.CENTER);
-		ResultGuide.setFont(new Font("굴림", Font.PLAIN, 20));
-		ResultGuide.setBorder(new LineBorder(UIManager.getColor("Black") ,2));
-		ResultGuide.setBounds(112, 392, 620, 100);
-		contentPane.add(ResultGuide);
-		
-		JButton btnNewButton = new JButton("메인 화면");
-//	    btnNewButton.addActionListener(new ButtonActionListener(mainFrame));
-		btnNewButton.setBounds(735, 502, 97, 23);
-		contentPane.add(btnNewButton);
-	}
+        }
+    }
 
+    // 메인화면 버튼 액션 리스너
+    class MainMenuButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+        }
+    }
+ // 런타임 백분위 및 상위 퍼센트 계산
+    public double getRunTimePercentile(int myRunTime){
+        double meanRunTime = problem.getProblemAvgRunTime();
+        double stdDevRunTime = problem.getProblemStdDevRunTime();
+        int numPeople = problem.getProblemSolvedPeople();
+        double zScoreRunTime = (myRunTime - meanRunTime) / stdDevRunTime;
+        int rankRunTime = (int)(zScoreRunTime * numPeople);
+        return (double)rankRunTime / numPeople * 100;
+    }
+
+    public double getRunTimeTopPercentage(int myRunTime){
+        return 100 - getRunTimePercentile(myRunTime);
+    }
+
+    // 메모리 사용량 백분위 및 상위 퍼센트 계산
+    public double getMemoryPercentile(int myMemory){
+        double meanMemory = problem.getProblemAvgMemory();
+        double stdDevMemory = problem.getProblemStdDevMemory();
+        int numPeople = problem.getProblemSolvedPeople();
+        double zScoreMemory = (myMemory - meanMemory) / stdDevMemory;
+        int rankMemory = (int)(zScoreMemory * numPeople);
+        return (double)rankMemory / numPeople * 100;
+    }
+
+    public double getMemoryTopPercentage(int myMemory){
+        return 100 - getMemoryPercentile(myMemory);
+    }
 }

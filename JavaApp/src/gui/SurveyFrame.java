@@ -32,15 +32,18 @@ import users.User;
 public class SurveyFrame extends DesignedJFrame {
 
 	private static final long serialVersionUID = 1L;
-	private DesignedContentPane contentPane;
 	
-	// 현재는 학습 성향 확인용 문제가 1개 밖에 없지만 확장성을 위해 문제를 저장하는 ArrayList로 선언
-	private ArrayList<SurveyQuestion> learningStyleCheckQuestions = new ArrayList<>(); 
+	private DesignedContentPane contentPane; // 컨텐트 팬	
+	// 학습 성향 확인용 설문조사 질문을 저장하는 리스트
+	private ArrayList<SurveyQuestion> learningStyleCheckQuestions = new ArrayList<>();
+	// 학습 성향 확인용 설문조사의 각 질문에 대한 체크박스 배열을 담는 리스트(중복 응답 가능)
 	private ArrayList<JCheckBox[]> learningStyleCheckBtnGroupList = new ArrayList<>();
-	
+
+	// 개념 테스트 질문을 저장하는 리스트
 	private ArrayList<EvaluationQuestion> evalQuestions = new ArrayList<>();
+	// 개념 테스트의 각 질문에 객관식 버튼( 라디오 버튼 ) 선택지를 저장하는 리스트 ( 정답이 정해져 있어 중복 응답 불가능 )
     private ArrayList<ButtonGroup> evalChoiceRadioBtnGroupList = new ArrayList<>();   
-    private User user;
+    private User user; // 로그인한 유저
     
 	public SurveyFrame(User user) {	
 		super();
@@ -63,8 +66,7 @@ public class SurveyFrame extends DesignedJFrame {
 		gbc_contentPane.fill = GridBagConstraints.BOTH;
 		contentPane.setLayout(gbl_contentPane);		
 
-		// < 학습성향 확인 >		
-		
+		// < 학습성향 확인 >	
 		// 학습성향확인 항목을 담을 패널
 		JPanel learningStyleCheckPanel = new JPanel();
 		learningStyleCheckPanel.setLayout(null);		
@@ -94,8 +96,7 @@ public class SurveyFrame extends DesignedJFrame {
 		JScrollPane learningStyleCheckContentScrollPane = new JScrollPane();
 		learningStyleCheckContentScrollPane.setBounds(0, 95, panelWidth, 200); // 팬 사이즈 조정
 		learningStyleCheckContentScrollPane.getVerticalScrollBar().setUnitIncrement(12); // 스크롤바 속도 설정
-		learningStyleCheckPanel.add(learningStyleCheckContentScrollPane);
-		
+		learningStyleCheckPanel.add(learningStyleCheckContentScrollPane);		
 		
 		// 학습성향확인용 질문들을 담은 패널
 		JPanel learningStyleQeustionListPanel = new JPanel();
@@ -106,8 +107,7 @@ public class SurveyFrame extends DesignedJFrame {
 		learningStyleCheckContentScrollPane.setViewportView(learningStyleQeustionListPanel);
 		
 
-		// < 개념 테스트 >		
-		
+		// < 개념 테스트 >			
 		// 개념 테스트를 담을 패널
 		JPanel evalPanel = new JPanel();
 		GridBagConstraints gbc_evalPanel = new GridBagConstraints();

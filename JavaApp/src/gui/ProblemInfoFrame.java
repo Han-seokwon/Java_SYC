@@ -36,7 +36,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 	private JLabel purl;
 	
 
-	public ProblemInfoFrame(Problem problem) {
+	public ProblemInfoFrame(Problem problem, User user) {
 		
 		pproblem = problem;
 		

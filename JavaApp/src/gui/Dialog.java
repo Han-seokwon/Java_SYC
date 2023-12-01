@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 // 다이얼로그 생성하는 클래스
 public class Dialog {
-	static final int DEFALUT_POPUP_SOUND = 0;
+	static final int DEFALUT_POPUP_SOUND = 0; 
 	static final int ALERT_SOUND = 1;
 	
 	static final int USER_FILE_SAVING_ERROR = 0;
@@ -30,7 +30,7 @@ public class Dialog {
 	}
 	
 	
-	// 버튼 클릭 사운드 재생
+	// 지정된 사운드를 재생한다.
     private static void playEffectSound(int soundType) {
     	InputStream soundFileStream;
     	if(soundType == DEFALUT_POPUP_SOUND) {

@@ -13,7 +13,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,12 +23,14 @@ import javax.swing.border.LineBorder;
 
 import problems.Problem;
 import problems.ProblemDBManager;
+import problems.RecommendProblems;
 import users.RANK;
 import users.User;
 
 
 public class RecommendProblemFrame extends DesignedJFrame {
 	private static final long serialVersionUID = 1L;
+	
 	private DesignedContentPane contentPane;
 	private JButton recommendByRankButton, recommendByAlgorithmTypeButton ; // 난이도별 추천 버튼, 알고리즘별 추천 버튼
 	private JLabel seletedBtnDisplayLabel; 	// 선택된 추천방식 버튼 결과를 보여주는 라벨
@@ -55,7 +56,7 @@ public class RecommendProblemFrame extends DesignedJFrame {
 		gbc_recommendMenuPanel.fill = GridBagConstraints.BOTH;
 		contentPane.add(recommendMenuPanel, gbc_recommendMenuPanel);
 		GridBagLayout gbl_recommendMenuPanel = new GridBagLayout();
-		final int MENU_PANEL_WIDTH = 300;
+		final int MENU_PANEL_WIDTH = 300; // 메뉴 패널 너비
 		gbl_recommendMenuPanel.columnWidths = new int[] {MENU_PANEL_WIDTH, MENU_PANEL_WIDTH, MENU_PANEL_WIDTH};
 		gbl_recommendMenuPanel.rowHeights = new int[] {MENU_PANEL_WIDTH/2};
 		recommendMenuPanel.setLayout(gbl_recommendMenuPanel);
@@ -152,7 +153,7 @@ public class RecommendProblemFrame extends DesignedJFrame {
 
 	// 경계선 설정
 	private CompoundBorder createCompoundBorder(int borderWidth, int borderPadding) {
-		return new CompoundBorder(new LineBorder(new Color(0, 0, 0), borderWidth, true),
+		return new CompoundBorder(new LineBorder(COLOR.CHET_WODE_BLUE.getColor(), borderWidth, true),
 				new EmptyBorder(borderPadding, borderPadding, borderPadding, borderPadding));
 	}
 
@@ -164,15 +165,12 @@ public class RecommendProblemFrame extends DesignedJFrame {
 
 			JButton selectedButton = (JButton)e.getSource(); 
 			if(selectedButton== recommendByAlgorithmTypeButton) {				
-				System.out.println("알고리즘별 추천 버튼  clicked!");				
-				ArrayList<String> temp = new ArrayList<>(Arrays.asList("정렬")); // 테스트용 -> 추후 삭제
-				recommendedProblemList = ProblemDBManager.findProblemAlgorithm(temp);
-				// recommendedProblemList = RecommendProblem.메서드이름 // 클래스 완성시 추가
+				// 유저가 선호하는 알고리즘에 맞추어 문제 추천
+				 recommendedProblemList = RecommendProblems.recommendProblemsByAlgorithm(user);  
 				
 			} else if(selectedButton == recommendByRankButton) {				
-				System.out.println("난이도별 추천 버튼 clicked!");
-				recommendedProblemList = ProblemDBManager.findProblemRankPoint(RANK.RANK4.getRequireRankPoint()); // 테스트용 -> 추후 삭제					 
-				// recommendedProblemList = RecommendProblem.메서드이름(user) // 클래스 완성시 추가
+				// 유저의 랭크 포인트에 맞게 문제 추천
+				 recommendedProblemList = RecommendProblems.recommendProblemsByRank(user);
 			}
 			seletedBtnDisplayLabel.setText(selectedButton.getText()); // 클릭된 버튼에 맞게 라벨 내용을 변경
 			recommendedProblemTable.updateProblemListToTable(recommendedProblemList); // 추천된 문제리스트를 테이블에 추가

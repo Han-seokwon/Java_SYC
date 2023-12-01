@@ -22,7 +22,7 @@ import users.User;
 // 프로그램 홈페이지
 public class MainFrame extends DesignedJFrame{
 	// 컴포넌트 선언
-	private JLabel usernameLabel;
+	private JLabel usernameLabel; // 로그인한 경우 유저 이름을 표시하는 라벨
 	private JButton accountCreateButton, loginButton, problemListButton, problemRecommendButton, myPageButton;
 	private User user = new User();
 	private boolean isLoggedin = false;

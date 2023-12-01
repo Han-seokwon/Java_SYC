@@ -20,10 +20,11 @@ import users.User;
 
 //	 비밀번호 초기화 과정 3단계로 유저이름, 이메일, 비번 초기화 답변이 모두 인증된 사용자가 최종적으로 새롭게 변경할 비밀번호를 입력하는 프레임
 public class PasswordResetInputCheckFrame extends DesignedJFrame{	
-	private JPasswordField newPasswordField;
-	private JPasswordField passwordConfirmField;
-	private JButton resetButton;
-	private User user;
+	
+	private JPasswordField newPasswordField; // 비번 입력 필드
+	private JPasswordField passwordConfirmField; // 비번 확인 입력 필드
+	private User user; // 비번을 초기화할 유저
+	
 	// 현재 비밀번호를 초기화하려는 User 인스턴스를 인자로 받음
 	public PasswordResetInputCheckFrame(User user) {
 		super(500, 500, "비밀번호 초기화");
@@ -39,7 +40,6 @@ public class PasswordResetInputCheckFrame extends DesignedJFrame{
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
 		contentPane.setLayout(gbl_contentPane);
-
 
 		// 새로운 비밀번호 라벨
 		JLabel newPasswordLabel = new JLabel("새로운 비밀번호:");
@@ -71,7 +71,7 @@ public class PasswordResetInputCheckFrame extends DesignedJFrame{
 		gbc_confirmPasswordLabel.gridy = 1;
 		contentPane.add(confirmPasswordLabel, gbc_confirmPasswordLabel);
 
-		resetButton = new DesignedButton("비밀번호 초기화", COLOR.SUNFLOWER);
+		JButton resetButton = new DesignedButton("비밀번호 초기화", COLOR.SUNFLOWER);
 		// 초기화 버튼에 이벤트 핸들러 적용
 		resetButton.addActionListener(new CheckNewPasswordListener());
 		passwordConfirmField = new JPasswordField();

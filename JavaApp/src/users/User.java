@@ -126,8 +126,10 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	public HashSet<Problem> getSolvedProblemSet() {
 		return new HashSet<Problem>(solvedProblemSet);// 복사 객체 반환
 	}	
-	public ArrayList<Problem> getSolvedProblemListSorted() { // SolvedProblemSet(HashSet)을 순서를 정렬시킨 ArrayList로 반환
-		return ProblemDBManager.findProblemToID(new ArrayList<Problem>(solvedProblemSet), true); //복사 객체
+	 // SolvedProblemSet(HashSet)을 순서를 정렬시킨 ArrayList로 반환
+	public ArrayList<Problem> getSolvedProblemListSorted() {
+		//복사 객체 반환
+		return ProblemDBManager.findProblemToID(new ArrayList<Problem>(solvedProblemSet), true); 
 	}
 	public List<Date> getActivityDateList() {
 		return List.of(activityDateList.toArray(new Date[0])); // 불변 리스트 반환
@@ -135,10 +137,18 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ",\n solvedName=" + solvedName + ",\n email=" + email + ",\n password_hashed=" + password_hashed + ",\n rank="
-				+ rank + ",\n rankPoint=" + rankPoint + ",\nconsecutiveActivityDate = " + consecutiveActivityDate + ",\n pwResetQuestion=" + pwResetQuestion + ",\n pwResetAnswer="
-				+ pwResetAnswer + ",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet + ",\n solvedProblemSet="
-				+ solvedProblemSet + ",\n activityDateList=" + activityDateList + "]\n";
+		return "User [username=" + username + 
+				",\n solvedName=" + solvedName + 
+				",\n email=" + email + 
+				",\n password_hashed=" + password_hashed +
+				",\n rank="	+ rank + 
+				",\n rankPoint=" + rankPoint + 
+				",\nconsecutiveActivityDate = " + consecutiveActivityDate 
+				+ ",\n pwResetQuestion=" + pwResetQuestion +
+				",\n pwResetAnswer=" + pwResetAnswer + 
+				",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet +
+				",\n solvedProblemSet="	+ solvedProblemSet +
+				",\n activityDateList=" + activityDateList + "]\n";
 	}
 
 	// 유저 인스턴스가 유효한지 확인
@@ -216,7 +226,6 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 
 	// (테스트용) 활동날짜리스트에 해당 날짜 추가
 	// 특정 일자를 입력하게 하면 리스트 내에서 날짜 순서가 바뀔 수 있음, 
-	// 따라서 addTodayAttendance()만 남기고 이 메서드는 추후 삭제
 	public void addActivityDate(Date date) { 
 		if(!activityDateList.contains(date)) {
 			updateConsecutiveDate(date); // 연속 출석일 업데이트

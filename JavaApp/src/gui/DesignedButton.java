@@ -21,8 +21,8 @@ import file.FileManager;
 
 public class DesignedButton extends JButton{
 	
-	private static int defalutWidth = 200;
-	private static int defalutHeight = 50;
+	private static int defalutWidth = 200; // 기본 버튼 너비
+	private static int defalutHeight = 50; // 기본 버튼 높이
 	
 	public DesignedButton() {
 		this("버튼", defalutWidth, defalutHeight, COLOR.MEDIUM_SLATE_BLUE);

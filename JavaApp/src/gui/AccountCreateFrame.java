@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 public class AccountCreateFrame extends DesignedJFrame{
 
 	// 컴포넌트 선언
-	private JTextField nameField, solvedAcField, emailField, resetPwAnswerField;
+	private JTextField nameField, solvedAcNameField, emailField, resetPwAnswerField;
 	private JPasswordField passwordField, passwordConfirmField;
 	private JComboBox<String> resetPwQuestionComboBox; 
 	private String[] resetPwQuestionList; // 비번 초기화용 질문을 저장할 리스트 -> 콤보박스로 변환
@@ -40,6 +40,7 @@ public class AccountCreateFrame extends DesignedJFrame{
 		setContentPane(contentPane);		
 		
 		// 컴포넌트 생성 및 초기화
+		// 라벨 생성
 		JLabel nameLabel = new JLabel("*성명(특수 문자 입력 불가): ");
 		nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -61,9 +62,9 @@ public class AccountCreateFrame extends DesignedJFrame{
 		JLabel resetPwAnswerLabel = new JLabel("*답변 : "); 
 		resetPwAnswerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		
+		// 입력 필드 생성
 		nameField = new JTextField(20);
-		solvedAcField = new JTextField(20); // solved.ac에 등록된 프로필 이름
+		solvedAcNameField = new JTextField(20); // solved.ac에 등록된 프로필 이름
 		emailField = new JTextField(20);
 		passwordField = new JPasswordField(20);
 		passwordConfirmField = new JPasswordField(20);
@@ -79,13 +80,13 @@ public class AccountCreateFrame extends DesignedJFrame{
 		submitButton.addActionListener( new SubmitButtonListener());
 
 		// 레이아웃
-		getContentPane().setLayout(new GridLayout(8, 2, 50, 50));
+		contentPane.setLayout(new GridLayout(8, 2, 50, 50));
 
 		// 각 컴포넌트 프레임에 추가
 		contentPane.add(nameLabel);
 		contentPane.add(nameField);
 		contentPane.add(solvedNameLabel);
-		contentPane.add(solvedAcField);
+		contentPane.add(solvedAcNameField);
 		contentPane.add(emailLabel);
 		contentPane.add(emailField);
 		contentPane.add(passwordLabel);
@@ -111,7 +112,7 @@ public class AccountCreateFrame extends DesignedJFrame{
 		public void actionPerformed(ActionEvent e) {
 			// 입력된 필드의 데이터를 토대로 회원가입정보 클래스 생성
 			ResistrationFormat format = new ResistrationFormat( // 이름, solvedac이름, 이메일, 비번, 비번확인, 비번초기화질문, 답변
-					nameField.getText(), solvedAcField.getText(), emailField.getText(),
+					nameField.getText(), solvedAcNameField.getText(), emailField.getText(),
 					new String(passwordField.getPassword()), new String(passwordConfirmField.getPassword()),
 					resetPwQuestionList[resetPwQuestionComboBox.getSelectedIndex()], resetPwAnswerField.getText());
 

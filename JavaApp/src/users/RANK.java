@@ -61,7 +61,7 @@ public enum RANK {
         }
         return matchingRank;
     }
-    
+    // 모든 랭크의 문자열 이름을 벡터로 반환한다.
     public static Vector<String> getRankNameList() {
     	Vector<String>  rankNames = new Vector<>();
     	for(RANK rank : RANK.values()) {
