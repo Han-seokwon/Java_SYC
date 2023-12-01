@@ -124,25 +124,12 @@ public class PasswordResetUsernameEmailCheckFrame extends DesignedJFrame {
 					// 비밀번호 초기화용 질문, 답변 확인 프레임 생성
 					new PasswordResetAnswerCheckFrame(user); 				
 				} else {
-					JOptionPane.showMessageDialog(null, "유저 이름이 일치하지 않습니다.", "인증 실패", JOptionPane.WARNING_MESSAGE);
+					Dialog.showAlertDialog( "인증 실패", "유저 이름이 일치하지 않습니다.");
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "해당 유저가 존재하지 않습니다.", "인증 실패", JOptionPane.WARNING_MESSAGE);
-			}
+				Dialog.showAlertDialog( "인증 실패", "해당 유저가 존재하지 않습니다.");			}
 
 		}
 
-	}
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PasswordResetUsernameEmailCheckFrame frame = new PasswordResetUsernameEmailCheckFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 }

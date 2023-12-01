@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -152,8 +151,9 @@ public class ProblemTable extends JTable{
 			} else if(col != -1 && row != -1 ){ // url 열이 아니고 클릭된 열과 행값이 유효한 경우				
 				Problem selectedProblem = recommendedProblemList.get(row); // 선택된 행의 문제 인스턴스를 가져옴
 				System.out.println("문제 선택됨\n" + selectedProblem); // 선택된 문제 정보 출력
-				// 해당 열에 맞는 문제 정보 조회 프레임 생성
-				//	new ProblemViewerFrame(selectedProblem, user); // 클래스 완성시 코드 추가
+				// 해당 행에 맞는 문제 정보 조회 프레임 생성
+//				new ProblemViewerFrame(selectedProblem, user); // 클래스 완성시 코드 추가
+				new ProblemInfoFrame(selectedProblem); // 클래스 완성시 코드 추가
 			}
 		}
 	}

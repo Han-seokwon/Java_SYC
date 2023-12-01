@@ -128,7 +128,7 @@ public class PasswordResetInputCheckFrame extends DesignedJFrame{
 				return;// 리스너 종료
 			}
 			// 비밀번호 업데이트에 성공한 경우
-			JOptionPane.showMessageDialog(null, "비밀번호가 초기화되었습니다.", "비밀번호 초기화 성공", JOptionPane.INFORMATION_MESSAGE);
+			Dialog.showInfoDialog("비밀번호 초기화 성공", "비밀번호가 초기화되었습니다.");
 			dispose(); 
 		}
 	}

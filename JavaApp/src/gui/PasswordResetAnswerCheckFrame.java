@@ -101,8 +101,7 @@ public class PasswordResetAnswerCheckFrame extends DesignedJFrame {
 			} else {
 				System.out.println(resetAnswer);
 				System.out.println(answerField.getText());
-
-				JOptionPane.showMessageDialog(null, "답변이 틀립니다.", "인증 실패", JOptionPane.WARNING_MESSAGE);
+				Dialog.showAlertDialog("인증 실패", "답변이 틀립니다.");
 			}
 		}
 	}

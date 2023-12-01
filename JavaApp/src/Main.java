@@ -3,7 +3,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import gui.RecommendProblemFrame;
+import gui.MainFrame;
 import gui.SurveyFrame;
 import problems.ProblemDBManager;
 import users.AccountManager;
@@ -80,7 +80,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// < 1. 데이터 생성 >
-//		createTestUserData(); // 테스트 유저 데이터 생성
+		createTestUserData(); // 테스트 유저 데이터 생성
 		// SolvedAC에서 문제 데이터 가져와서 ProblemDB에 추가하기 (900개쯤 가져오면 429에러 발생)
 //		JsonFetcher.updateProblemDB_FromSolvedAC();	
 
@@ -88,12 +88,12 @@ public class Main {
 		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
 		// < 3. 메인 프레임 생성>
 		// 메인 프레임 
-//		new MainFrame();		
+		new MainFrame();		
 		
 		
 		// <  기타 프레임 테스트 >
 //		new SurveyFrame(null);
-		new RecommendProblemFrame(null); // 문제 추천 프레임
+//		new RecommendProblemFrame(null); // 문제 추천 프레임
 //		new RateProblemFrame(null, null);		
 	
 							

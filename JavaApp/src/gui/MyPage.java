@@ -150,6 +150,7 @@ public class MyPage extends JFrame {
 		lblNewLabel.setBounds(479, 256, 192, 196);
 		contentPane.add(lblNewLabel);
 		
+		setVisible(true);
 		
 	}
 	 class SaveButtonActionListener implements ActionListener {

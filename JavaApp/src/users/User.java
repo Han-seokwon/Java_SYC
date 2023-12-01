@@ -163,7 +163,6 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	// addSolvedProblem() <- updateSolvedProbleList_FromSolvedAC() 에서 호출
 	public void addRankPoint( int rankPoint) {		
 		RANK nextRank = rank.getNextRank(); 
-		System.out.println("Rank : " + rank + ", nextRank :" + nextRank );
 		this.rankPoint += rankPoint; // 포인트 추가
 		if(rank == nextRank ) { // 최고 랭크인 경우
 			if(this.rankPoint > RANK.getMaxRequireRankPoint()) { // 최대 축적 가능 포인트를 초과한 경우

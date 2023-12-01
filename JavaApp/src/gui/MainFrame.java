@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -14,11 +13,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import file.FileManager;
 import users.User;
-import javax.swing.SwingConstants;
 
 // 프로그램 홈페이지
 public class MainFrame extends DesignedJFrame{
@@ -157,13 +156,18 @@ public class MainFrame extends DesignedJFrame{
 			} else { // 로그인 된 경우
 				if (e.getSource() == loginButton) { // 로그아웃 버튼 클릭
 					logOutComponents(); // 로그아웃
+					
 				} else if (e.getSource() == problemListButton) { // 문제 리스트 조회 버튼 클릭
 					System.out.println("problemListButton clicked!");
+					new ProblemViewerFrame(user);
+					
 				} else if (e.getSource() == problemRecommendButton) {  // 문제 추천 버튼 클릭
 					System.out.println("problemRecommendButton clicked!");
 					new RecommendProblemFrame(user); // 문제 추천 프레임 생성
+					
 				} else if (e.getSource() == myPageButton) { // 마이 페이지 버튼 클릭
 					System.out.println("myPageButton clicked!");
+					new MyPage(mainFrame, user);
 				}
 			}
 		}
