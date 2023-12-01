@@ -72,7 +72,7 @@ public class ResistrationFormat {
 		}
 		
 		// solved.ac에 등록된 회원이름인지 확인				
-		if(!JsonFetcher.checkUserRegisteredInSolvedAc(solvedName)) { // solved api로 유저를 확인했을 때, 유저를 찾지 못한 경우
+		if(!JsonFetcher.checkUserRegistered_InSolvedAC(solvedName)) { // solved api로 유저를 확인했을 때, 유저를 찾지 못한 경우
 			errMsg += String.format("경고: %s 이름으로 solved.ac에 등록된 계정이 없습니다.\n", solvedName);
 		}		
         

@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 public class AccountCreateFrame extends DesignedJFrame{
 
 	// 컴포넌트 선언
-	private JTextField nameField, solvedNameField, emailField, resetPwAnswerField;
+	private JTextField nameField, solvedAcField, emailField, resetPwAnswerField;
 	private JPasswordField passwordField, passwordConfirmField;
 	private JComboBox<String> resetPwQuestionComboBox; 
 	private String[] resetPwQuestionList; // 비번 초기화용 질문을 저장할 리스트 -> 콤보박스로 변환
@@ -63,7 +63,7 @@ public class AccountCreateFrame extends DesignedJFrame{
 		
 		
 		nameField = new JTextField(20);
-		solvedNameField = new JTextField(20); // solved.ac에 등록된 프로필 이름
+		solvedAcField = new JTextField(20); // solved.ac에 등록된 프로필 이름
 		emailField = new JTextField(20);
 		passwordField = new JPasswordField(20);
 		passwordConfirmField = new JPasswordField(20);
@@ -85,7 +85,7 @@ public class AccountCreateFrame extends DesignedJFrame{
 		contentPane.add(nameLabel);
 		contentPane.add(nameField);
 		contentPane.add(solvedNameLabel);
-		contentPane.add(solvedNameField);
+		contentPane.add(solvedAcField);
 		contentPane.add(emailLabel);
 		contentPane.add(emailField);
 		contentPane.add(passwordLabel);
@@ -111,7 +111,7 @@ public class AccountCreateFrame extends DesignedJFrame{
 		public void actionPerformed(ActionEvent e) {
 			// 입력된 필드의 데이터를 토대로 회원가입정보 클래스 생성
 			ResistrationFormat format = new ResistrationFormat( // 이름, solvedac이름, 이메일, 비번, 비번확인, 비번초기화질문, 답변
-					nameField.getText(), solvedNameField.getText(), emailField.getText(),
+					nameField.getText(), solvedAcField.getText(), emailField.getText(),
 					new String(passwordField.getPassword()), new String(passwordConfirmField.getPassword()),
 					resetPwQuestionList[resetPwQuestionComboBox.getSelectedIndex()], resetPwAnswerField.getText());
 

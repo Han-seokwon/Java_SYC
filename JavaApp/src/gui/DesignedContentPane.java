@@ -78,7 +78,7 @@ public class DesignedContentPane extends JPanel{
 		
 	
 	// Container 하위요소에 폰트를 적용하고 배경을 투명하게 함
-	private void applyFontAndBackgroundToAllComponents(Container container) {
+	public void applyFontAndBackgroundToAllComponents(Container container) {
         for (Component component : container.getComponents()) {
             if (component instanceof JLabel ||  // 해당 컴포넌트가 다른 하위 컴포넌트 객체인 경우
             		component instanceof AbstractButton ||

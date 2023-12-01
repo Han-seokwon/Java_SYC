@@ -101,7 +101,7 @@ public class ProblemTable extends JTable{
 		}		
 		
 		setRowHeight(ROW_HEIGHT); // 기본 행 높이 설정		
-		addMouseListener(new tableClickListener()); // 테이블 클릭에 대한 이벤트 리스너 등록
+		addMouseListener(new TableClickListener()); // 테이블 클릭에 대한 이벤트 리스너 등록
 
 		try { // 테이블 폰트 지정
 			Font font = FileManager.createFontFromFile("contentFont");
@@ -138,7 +138,7 @@ public class ProblemTable extends JTable{
 		}
 	}
 
-	class tableClickListener extends MouseAdapter{ // 테이블 클릭에 대한 이벤트 리스너		
+	class TableClickListener extends MouseAdapter{ // 테이블 클릭에 대한 이벤트 리스너		
 		public void mouseClicked(MouseEvent e) {
 			int row = getSelectedRow();
 			int col = getSelectedColumn();

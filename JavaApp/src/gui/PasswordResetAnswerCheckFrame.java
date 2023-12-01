@@ -25,7 +25,7 @@ public class PasswordResetAnswerCheckFrame extends DesignedJFrame {
 	private JTextField answerField;
 	private JButton nextButton;
 	private User user;
-
+	
 	// 현재 비밀번호를 초기화하려는 User 인스턴스를 인자로 받음
 	public PasswordResetAnswerCheckFrame(User user) {   
 		super(500, 500, "비밀번호 초기화");
@@ -105,18 +105,6 @@ public class PasswordResetAnswerCheckFrame extends DesignedJFrame {
 				JOptionPane.showMessageDialog(null, "답변이 틀립니다.", "인증 실패", JOptionPane.WARNING_MESSAGE);
 			}
 		}
-	}
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PasswordResetAnswerCheckFrame frame = new PasswordResetAnswerCheckFrame(new User("qwer", "hoh9170", "qwr@na.com", "d1dd", "1. 좋아하는 동물은?", "사자"));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 }
 

@@ -110,7 +110,7 @@ public class RateProblemFrame extends DesignedJFrame {
      * contentPane에 Label과 Component을 나란히 추가한 row 패널을 추가
      * @param  rowNum : 추가할 row 번호,   labelString : 라벨 텍스트, component : 추가할 컴포넌트(라벨 오른쪽에 배치됨)
      * */    
-    void addRowPanelToContentPane(int row, JLabel label, Component component) {
+    private void addRowPanelToContentPane(int row, JLabel label, Component component) {
     	// contentPane에 row로 추가할 패널 생성
         JPanel rowPanel = new JPanel();
         // 패널 배치(GridBagConstraints) 설정
@@ -154,6 +154,32 @@ public class RateProblemFrame extends DesignedJFrame {
     }
     
     
+    // 입력값 유효성 확인
+    private void inputCheck() throws IOException{
+    	String errMsg = "";
+    	int comboBoxIdx = rankComboBox.getSelectedIndex();
+		if(comboBoxIdx == -1) {
+			errMsg += "랭크 콤보박스를 선택해주세요.\n";
+		} 
+		if(rankPointField.getText().trim().isEmpty()) {
+			errMsg += "랭크 포인트를 입력해주세요.\n";
+		} else if(comboBoxIdx != -1){ // 랭크 포인트를 입력하였고 랭크 콤보박스가 선택된 경우
+			// 최소, 최대 입력 범위에서 벗어났는지 확인
+			int inputedRankPoint = Integer.valueOf(rankPointField.getText().trim());
+			if(inputedRankPoint < minRankPoint || inputedRankPoint > maxRankPoint) {
+				errMsg += String.format("랭크 포인트 입력 범위를 벗어났습니다. (입력값 = %d) \n 입력가능 범위 : (%d ~ %d)\n",
+						inputedRankPoint, minRankPoint, maxRankPoint);				
+			}
+		}
+		
+		if(commentField.getText().trim().isEmpty()) {
+			errMsg += "코멘트를 입력해주세요.\n";
+		}
+		if(!errMsg.isEmpty()) { // 입력값이 유효하지 않은 경우 저장된 에러메시지와 함께 에러 발생
+			throw new IOException(errMsg);
+		}		
+    }
+    
     class RankComboBoxListener implements ActionListener {    	
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -180,31 +206,6 @@ public class RateProblemFrame extends DesignedJFrame {
         }
     }
     
-    // 입력값 유효성 확인
-    void inputCheck() throws IOException{
-    	String errMsg = "";
-    	int comboBoxIdx = rankComboBox.getSelectedIndex();
-		if(comboBoxIdx == -1) {
-			errMsg += "랭크 콤보박스를 선택해주세요.\n";
-		} 
-		if(rankPointField.getText().trim().isEmpty()) {
-			errMsg += "랭크 포인트를 입력해주세요.\n";
-		} else if(comboBoxIdx != -1){ // 랭크 포인트를 입력하였고 랭크 콤보박스가 선택된 경우
-			// 최소, 최대 입력 범위에서 벗어났는지 확인
-			int inputedRankPoint = Integer.valueOf(rankPointField.getText().trim());
-			if(inputedRankPoint < minRankPoint || inputedRankPoint > maxRankPoint) {
-				errMsg += String.format("랭크 포인트 입력 범위를 벗어났습니다. (입력값 = %d) \n 입력가능 범위 : (%d ~ %d)\n",
-						inputedRankPoint, minRankPoint, maxRankPoint);				
-			}
-		}
-		
-		if(commentField.getText().trim().isEmpty()) {
-			errMsg += "코멘트를 입력해주세요.\n";
-		}
-		if(!errMsg.isEmpty()) { // 입력값이 유효하지 않은 경우 저장된 에러메시지와 함께 에러 발생
-			throw new IOException(errMsg);
-		}		
-    }
     
 	class SubmitButtonListener implements ActionListener{
 		@Override

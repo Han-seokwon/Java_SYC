@@ -32,10 +32,10 @@ public class JsonFetcher {
 	public static JsonObject fetchJsonElementFromUrl(String urlString) throws IOException{  // 호출한 쪽에서 예외를 처리하게 함
 		int httpResponseCode = 0;
 		try {
-
-			URL url = new URL(urlString);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
+			URL url = new URL(urlString); // URL 객체 생성
+			// 해당 URL에 대한 URLConnection 객체 생성
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection(); // throws IOException
+			conn.setRequestMethod("GET"); // 요청 메서드 설정
 
 			// 응답 상태 확인
 			httpResponseCode = conn.getResponseCode();
@@ -43,7 +43,7 @@ public class JsonFetcher {
 			System.out.println("Response status : " + httpResponseCode + ' ' + conn.getResponseMessage());
 
 			// 응답 JSON 데이터를 UTF-8 인코딩하여 하나의 Reader로 가져옴 
-			// 	1. InputStream을 통해 바이트 단위로 데이터를 입력 받음
+			// 	1. 서버와 연결 후, InputStream을 통해 바이트 단위로 데이터를 입력 받음
 			// 	2. InputStreamReader을 통해 바이트 단위의 데이터를 UTF-8형식의 문자단위(char)로 변환함
 			// 	3. BufferedReader 버퍼를 통해 각 문자들을 하나의 문자열로 만듦
 			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
@@ -57,6 +57,7 @@ public class JsonFetcher {
 
 			return jsonElement.getAsJsonObject(); // JsonObject로 변환하여 반환
 		}
+		
 		catch (MalformedURLException e) {
 			throw new IOException("fetching 실패 : " + urlString + " 은 유효하지 않은 주소입니다.");
 		}
@@ -110,7 +111,7 @@ public class JsonFetcher {
 
 
 	// 해당 유저가 SolvedAc에 등록되었는지 확인
-	public static boolean checkUserRegisteredInSolvedAc(String solvedacUsername) {
+	public static boolean checkUserRegistered_InSolvedAC(String solvedacUsername) {
 		String urlString = "https://solved.ac/api/v3/user/show?handle="; // 사용자 데이터 가져오는 api 주소
 		try {
 			// 유저 이름으로 api를 호출
@@ -193,9 +194,8 @@ public class JsonFetcher {
 				user.addSolvedProblem(problem); // 문제 추가
 			}
 		}
-
-
 	}
+	
 
 	/*
 	 * solved에 등록된 모든 문제 개수 가져와 이를 토대로 응답 문제리스트 페이지 개수를 계산해서 반환
