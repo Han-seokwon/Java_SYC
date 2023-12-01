@@ -11,30 +11,23 @@ import users.User;
 
 public class Problem implements Serializable {
 	
-	// 문제 이름, 문제 ID, 문제 URL, 문제 랭크, 문제 랭크 포인트
-	private String ProblemName;
-	private int ProblemID;
-	private String ProblemURL;
-	private RANK ProblemRank;
-	private int ProblemRankPoint;
+	private String ProblemName;  	// 문제 이름
+	private int ProblemID;		 	// 문제 ID
+	private String ProblemURL;	 	// 문제 URL
+	private RANK ProblemRank;	 	// 문제 랭크
+	private int ProblemRankPoint;	// 문제 랭크 포인트
+	private HashMap<String, HashMap<User, String>> ProblemHint = new HashMap<>();	// 문제 힌트
+	private List<String> ProblemReferences = new ArrayList<>();		// 문제 학습자료
+	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();	// 문제 알고리즘 분류
+	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();	// 해당 문제를 푼 사용자들의 실행 시간 
+	private ArrayList<Integer> ProblemMemory = new ArrayList<>();   // 해당 문제를 푼 사용자들의 메모리 사용량
+	private int ProblemSolvedPeople;								// 해당 문제를 해결한 유저 수
 	
-	/*
-	 * Step 1, Step 2, Step 3를 키 값으로 탐색
-	 * 키값에 해당하는 <User, String> 해시맵
-	 */
-	private HashMap<String, HashMap<User, String>> ProblemHint = new HashMap<>();		
+	private static final long serialVersionUID = 1L;				// 직렬화 버전 설정	
 	
-	// 학습자료, 문제 알고리즘 분류
-	private List<String> ProblemReferences = new ArrayList<>();
-	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();
-	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();
-	private ArrayList<Integer> ProblemMemory = new ArrayList<>();
-	// 해당 문제를 해결한 유저 수
-	private int ProblemSolvedPeople;
-	
-	private static final long serialVersionUID = 1L;	
-	// 생성자
+	// 기본 생성자
 	public Problem() {}
+	// 생성자
 	public Problem(String ProblemName, int ID, String URL, RANK Rank, int RankPoint, ArrayList<String> Algorithm) {
 		this.ProblemName = ProblemName;
 		this.ProblemID = ID;
@@ -112,7 +105,7 @@ public class Problem implements Serializable {
 	public int getProblemSolvedPeople() {
 		return this.ProblemSolvedPeople;
 	}
-	// 평균 런타임과 평균 메모리 사용량을 반환하는 함수
+	// 평균 런타임을 반환하는 함수
 	public double getProblemAvgRunTime() {
 		int sum = 0;
 	    
@@ -122,7 +115,7 @@ public class Problem implements Serializable {
 		
 		return sum / this.ProblemRunTime.size();
 	}
-	
+	// 평균 메모리 사용량을 반환하는 함수
 	public double getProblemAvgMemory() {
 		int sum = 0;
 	    
@@ -159,32 +152,10 @@ public class Problem implements Serializable {
 	}
 	
 	/*
-	 *  Problem에 사용자가 얻은 런타임 정보를 추가하는 함수
-	 *  RunTime : 사용자가 얻은 런타임 값
-	 *  매개변수로 받은 RunTime를 ProblemRunTime 리스트에 추가
-	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화 
-	 */
-	public void addProblemRunTime(int RunTime) {
-		this.ProblemRunTime.add(RunTime);
-		ProblemDBManager.changeProblem(this.getProblemID(), this);
-	}
-	
-	/*
-	 *  Problem에 사용자가 얻은 메모리 사용량 정보를 추가하는 함수
-	 *  Memory : 사용자가 얻은 메모리 사용량 값
-	 *  매개변수로 받은 Memory를 ProblemMemory 리스트에 추가
-	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화 
-	 */
-	public void addProblemMemory(int Memory) {
-		this.ProblemMemory.add(Memory);
-		ProblemDBManager.changeProblem(this.getProblemID(), this);
-	}
-	
-	/*
 	 *  Problem에 사용자가 얻은 메모리 사용량, 런타임 정보를 추가하는 함수
 	 *  Memory : 사용자가 얻은 메모리 사용량 값
 	 *  RunTime : 사용자가 얻은 런타임 값
-	 *  매개변수로 받은 Memory를 ProblemMemory 리스트에 추가
+	 *  매개변수로 받은 RunTime과 Memory를 해당하는 필드에 추가, ProblemSolvedPeople 1 증가
 	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화 
 	 */
 	public void addProblemefficiency(int RunTime, int Memory) {
@@ -220,11 +191,8 @@ public class Problem implements Serializable {
 	
 	// 유효한 Problem인지 확인하는 함수
 	public boolean isValid() {
-		if (this.ProblemID == 0 || 
-				this.ProblemName == null || 
-					this.ProblemRank == null ||
-						this.ProblemURL == null ||
-							this.ProblemAlgorithm == null) {
+		if (this.ProblemID == 0 ||this.ProblemName == null || 
+				this.ProblemRank == null ||this.ProblemURL == null || this.ProblemAlgorithm == null) {
 			return false;
 		}
 		else {
