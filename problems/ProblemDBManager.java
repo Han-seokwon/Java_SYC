@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 import users.RANK;
 import file.FileManager;
 
@@ -237,7 +238,6 @@ public class ProblemDBManager {
         });
         
         return new ArrayList<Problem>(list);
-		
 	}
 	
 	/*
@@ -370,15 +370,16 @@ public class ProblemDBManager {
 	 *  매개변수로 받은 리스트를 모두 포함하고 있는 문제만 반환
 	 *  algorithm : 문제 알고리즘이 저장된 ArrayList
 	 */
-	public static ArrayList<Problem> findProblemAlgorithm(ArrayList<String> algorithm){
+	public static ArrayList<Problem> findProblemAlgorithm(HashSet<String> algorithm){
 		 ArrayList<Problem> ProblemSearch = new ArrayList<>();
+		 ArrayList<String> problemAlgorithm = new ArrayList<String>(algorithm);
 		 
 		 /*
 		  *  ProblemDBMap에서 Problem 객체를 가져온다.
 		  *  이후, 문제 알고리즘에에 매개변수로 받은 알고리즘이 모두 있으면 ProblemSearch 리스트에 저장한다	  
 		  */ 
 		 for (Problem problem : ProblemDBMap.values()) {
-			 if (containsAll(problem.getProblemAlgorithm(), algorithm)) {
+			 if (containsAll(problem.getProblemAlgorithm(), problemAlgorithm)) {
 				 ProblemSearch.add(problem);
 			 }
 		 }
