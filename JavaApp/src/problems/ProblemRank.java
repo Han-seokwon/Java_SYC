@@ -9,7 +9,7 @@ public class ProblemRank implements Serializable {
 	
 	// 문제 아이디, 유저 이름, 선택한 문제 랭크, 선택한 문제 포인트, 코멘트
 	private int ID;
-	private String user;
+	private User user;
 	private RANK Rank;
 	private int RankPoint;
 	private String Comment;
@@ -18,14 +18,18 @@ public class ProblemRank implements Serializable {
 	
 	@Override
 	public String toString() {
-	    return "-" + user + " : ( " + Rank + " 선택 ) " + Comment + " " + RankPoint; 
+		StringBuilder sb = new StringBuilder();
+		sb.append(" - ").append(user.getUsername()).append(" : ");
+		sb.append(" (").append(Rank).append(" 선택 ) ").append(Comment);
+		
+	    return sb.toString();
 	}
 	
 	// 생성자
 	public ProblemRank() {}
 	public ProblemRank(int ID, User user, RANK Rank, int Point, String Comment) {
 		this.ID = ID;
-		this.user = user.getUsername();
+		this.user = user;
 		this.Rank = Rank;
 		this.RankPoint = Point;
 		this.Comment = Comment;
@@ -44,7 +48,7 @@ public class ProblemRank implements Serializable {
 	public int getRankPoint() {
 		return this.RankPoint;
 	}
-	public String getuser() {
+	public User getuser() {
 		return this.user;
 	}
 	

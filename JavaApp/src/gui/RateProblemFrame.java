@@ -39,11 +39,13 @@ public class RateProblemFrame extends DesignedJFrame {
 	private JTextField commentField; // 코멘트를 입력받는 필드
 	private User user; // 로그인된 유저
 	private Problem problem; // 난이도 기여를 할 문제
+	private ProblemInfoFrame problemInfoFrame;
 	
-    public RateProblemFrame(User user, Problem problem) {
+    public RateProblemFrame(User user, Problem problem, ProblemInfoFrame problemInfoFrame) {
     	super("문제 난이도 기여");
     	this.user = user; // 현재 로그인된 유저데이터 가져오기
     	this.problem = problem; // 현재 선택된 문제데이터 가져오기
+    	this.problemInfoFrame = problemInfoFrame; // 문제 정보 확인 프레임
     	
         // contentPane 생성
     	DesignedContentPane contentPane = new DesignedContentPane();
@@ -231,8 +233,12 @@ public class RateProblemFrame extends DesignedJFrame {
 			ProblemRankManager.createRank(problemRank); // 문제 랭크 데이터 생성
 			ProblemRankManager.PrintProblemRankMap();
 			
-			Dialog.showInfoDialog("난이도 기여 성공", "입력하신 내용이 정상적으로 반영되었습니다.");
+			Dialog.showInfoDialog("난이도 기여 성공", "입력하신 내용이 정상적으로 반영되었습니다.");			
 			dispose();
+			// 문제 조회 프레임 업데이트
+			problemInfoFrame.dispose();
+			new ProblemInfoFrame(problem, user);
+			
 		}
 	}
     

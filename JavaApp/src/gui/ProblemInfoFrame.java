@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 
 import java.net.*;
+import java.util.List;
+
 import javax.swing.border.LineBorder;
 
 
@@ -22,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 
 import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import problems.*;
 import users.*;
@@ -49,7 +52,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		ActionListener actionListener = new MyActionListener();
+		ActionListener actionListener = new MyActionListener(this);
 		
 
 		
@@ -131,8 +134,21 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		palgo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(palgo);
 		
-
-		JScrollPane commentScrollPane = new JScrollPane();
+		// 문제 난이도 코멘트
+		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		textArea.setEditable(false);
+		List<ProblemRank> getComment = ProblemRankManager.getComment(pproblem.getProblemID());
+		if (getComment != null) {
+		    for (ProblemRank comment : getComment) {
+		        textArea.append(comment.toString() + "\n");
+		    }
+		} else {
+		    textArea.append(" 작성된 코멘트가 없습니다. ");
+		}
+		
+		JScrollPane commentScrollPane = new JScrollPane(textArea);
 		commentScrollPane.setBounds(172, 602, 667, 146);
 		commentScrollPane.setOpaque(false);
 		commentScrollPane.setBackground(Color.black);
@@ -141,8 +157,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		JLabel comment = new JLabel("문제 난이도 코멘트");
 		comment.setHorizontalAlignment(SwingConstants.CENTER);
 		comment.setBounds(172, 549, 187, 65);
-		contentPane.add(comment);
-		
+		contentPane.add(comment);		
 		
 		//우측에 위치할 라벨 및 버튼 생성, 추가
 		JLabel hintlabel = new JLabel("힌트");
@@ -219,6 +234,11 @@ public class ProblemInfoFrame extends DesignedJFrame {
 	
 
 	class MyActionListener implements ActionListener{
+		private ProblemInfoFrame problemInfoFrame;
+		public MyActionListener() {}
+		public MyActionListener(ProblemInfoFrame problemInfoFrame) {
+			this.problemInfoFrame = problemInfoFrame;
+		}
 
 		public void actionPerformed(ActionEvent e) {
 			
@@ -241,7 +261,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 				}
 				if (e.getSource() == levelButton) { // 
 					System.out.println("levelButton 이벤트 추가");
-					new RateProblemFrame(user, pproblem);
+					new RateProblemFrame(user, pproblem, problemInfoFrame);
 				}
 				if (e.getSource() == mainButton) { // 
 					System.out.println("mainButton");
@@ -253,4 +273,3 @@ public class ProblemInfoFrame extends DesignedJFrame {
 }
 		
 	
-
