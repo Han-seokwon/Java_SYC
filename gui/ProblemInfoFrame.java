@@ -138,6 +138,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		JTextArea textArea = new JTextArea();
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
+		textArea.setEditable(false);
 		List<ProblemRank> getComment = ProblemRankManager.getComment(pproblem.getProblemID());
 		if (getComment != null) {
 		    for (ProblemRank comment : getComment) {
@@ -265,3 +266,6 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		}
 	}
 }
+		
+	
+
