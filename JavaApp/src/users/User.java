@@ -163,6 +163,11 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 			return true;
 		}
 	}
+	
+	// 선호하는 알고리즘타입리스트 초기화
+	public void clearPreferredAlgorithmType() {
+		preferredAlgorithmTypeSet = new HashSet<String>();
+	}
 
 	// 알고리즘 타입(분류)를 선호하는 알고리즘타입리스트에 추가
 	public void addPreferredAlgorithmType(String type) {

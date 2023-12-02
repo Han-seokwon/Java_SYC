@@ -13,8 +13,9 @@ public class RecommendProblems {
 
 	    // 사용자가 선호하는 알고리즘 타입 가져오기
 	    HashSet<String> preferredAlgorithms = user.getPreferredAlgorithmTypeSet();
+	    System.out.println(user);
+	    System.out.println(preferredAlgorithms);
 	    List<Problem> recommendedProblemList = ProblemDBManager.findProblemAlgorithm(preferredAlgorithms);
-	   
 	    // 사용자가 이미 해결한 문제는 추천에서 제외
 	    HashSet<Problem> solvedUserProblems = user.getSolvedProblemSet();
 	    for (Problem problem : recommendedProblemList) {
@@ -29,13 +30,12 @@ public class RecommendProblems {
     // 사용자의 랭크별로 문제를 추천하는 코드(정렬X, 사용자가 해결한 문제는 하지 않는다.)-- 오버로딩
     public static List<Problem> recommendProblemsByRank(User user) {
         List<Problem> recommendedProblems = new ArrayList<>();
-
-        // 사용자의 현재 랭크
-        RANK userRank = user.getRank();
+        
+        // 사용자가 해결한 문제
         HashSet<Problem> solvedUserProblems = user.getSolvedProblemSet();
 
-        // 랭크에 해당하는 문제 추천
-        List<Problem> rankProblems = ProblemDBManager.findProblemRank(userRank);
+        // 비슷한 랭크 포인트인 문제들 추천
+        List<Problem> rankProblems = ProblemDBManager.findProblemRankPoint(user.getRankPoint());
 
         // 사용자가 이미 해결한 문제는 추천에서 제외
         for (Problem problem : rankProblems) {

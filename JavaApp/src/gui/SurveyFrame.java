@@ -215,6 +215,7 @@ public class SurveyFrame extends DesignedJFrame {
     
 	
 	private void addPreferredAlgorithmType_ToUser(JCheckBox[] checkboxList){
+		user.clearPreferredAlgorithmType(); // 기존에 저장된 선호 알고리즘 분류 초기화
         for (int i = 0; i < checkboxList.length; i++) {
             if (checkboxList[i].isSelected()) { // 체크박스가 선택된 경우
             	System.out.println("선택 : " + checkboxList[i].getText());

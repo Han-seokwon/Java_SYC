@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import gui.MainFrame;
-import gui.ProblemViewerFrame;
+import gui.RecommendProblemFrame;
 import gui.SurveyFrame;
 import problems.ProblemDBManager;
 import problems.ProblemRankManager;
@@ -96,11 +96,12 @@ public class Main {
 		MainFrame main = new MainFrame();
 		User user1 = UserDBManager.findUserByEmail("han@naver.com");
 		main.logInComponents(user1);
-		new ProblemViewerFrame(user1);
+//		new ProblemViewerFrame(user1);
 		
 		// <  기타 프레임 테스트 >
 //		new SurveyFrame(null);
-//		new RecommendProblemFrame(null); // 문제 추천 프레임
+		new RecommendProblemFrame(user1); // 문제 추천 프레임
+		System.out.println(user1);
 //		new RateProblemFrame(null, null);		
 	
 							

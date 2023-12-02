@@ -366,26 +366,30 @@ public class ProblemDBManager {
 	}
 	
 	/*
-	 *  문제 알고리즘을 통해 문제를 반환하는 함수
-	 *  매개변수로 받은 리스트를 모두 포함하고 있는 문제만 반환
-	 *  algorithm : 문제 알고리즘이 저장된 ArrayList
-	 */
-	public static ArrayList<Problem> findProblemAlgorithm(HashSet<String> algorithm){
-		 ArrayList<Problem> ProblemSearch = new ArrayList<>();
-		 ArrayList<String> problemAlgorithm = new ArrayList<String>(algorithm);
-		 
-		 /*
-		  *  ProblemDBMap에서 Problem 객체를 가져온다.
-		  *  이후, 문제 알고리즘에에 매개변수로 받은 알고리즘이 모두 있으면 ProblemSearch 리스트에 저장한다	  
-		  */ 
-		 for (Problem problem : ProblemDBMap.values()) {
-			 if (containsAll(problem.getProblemAlgorithm(), problemAlgorithm)) {
-				 ProblemSearch.add(problem);
-			 }
-		 }
-		 
-		 return ProblemSearch;
-	}
+	    *  문제 알고리즘을 통해 문제를 반환하는 함수
+	    *  매개변수로 받은 리스트를 모두 포함하고 있는 문제만 반환
+	    *  algorithm : 문제 알고리즘이 저장된 ArrayList
+	    */
+	   public static ArrayList<Problem> findProblemAlgorithm(HashSet<String> algorithm){
+	       ArrayList<Problem> ProblemSearch = new ArrayList<>();
+	       ArrayList<String> problemAlgorithm = new ArrayList<String>(algorithm);
+	       
+	       /*
+	        *  ProblemDBMap에서 Problem 객체를 가져온다.
+	        *  이후, 문제 알고리즘에에 매개변수로 받은 알고리즘이 있으면 ProblemSearch 리스트에 저장한다     
+	        */ 
+	       for (Problem problem : ProblemDBMap.values()) {
+	          for (String algorithmItem : problemAlgorithm) {
+	             if (problem.getProblemAlgorithm().contains(algorithmItem)) {
+	                ProblemSearch.add(problem);
+	                break;
+	             }
+	          }
+	       }
+	       
+	       return ProblemSearch;
+	   }
+
 
 	public static <T> boolean containsAll(ArrayList<T> A, ArrayList<T> B) {
         return A.containsAll(B);

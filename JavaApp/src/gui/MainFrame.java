@@ -23,7 +23,7 @@ import users.User;
 public class MainFrame extends DesignedJFrame{
 	// 컴포넌트 선언
 	private JLabel usernameLabel; // 로그인한 경우 유저 이름을 표시하는 라벨
-	private JButton accountCreateButton, loginButton, problemListButton, problemRecommendButton, myPageButton;
+	private JButton accountCreateButton, loginButton, surveyButton, problemListButton, problemRecommendButton, myPageButton;
 	private User user = new User();
 	private boolean isLoggedin = false;
 
@@ -37,6 +37,7 @@ public class MainFrame extends DesignedJFrame{
 		usernameLabel.setText(user.getUsername());		
 		loginButton.setText("로그아웃");
 		accountCreateButton.setVisible(false); // 회원가입 불가능
+		surveyButton.setVisible(true); // 설문조사 가능
 	}
 
 	/* 
@@ -49,6 +50,7 @@ public class MainFrame extends DesignedJFrame{
 		usernameLabel.setText("");		
 		loginButton.setText("로그인");
 		accountCreateButton.setVisible(true); // 회원가입 가능
+		surveyButton.setVisible(false); // 설문조사 불가능
 	}
 
 	// 생성자
@@ -78,6 +80,10 @@ public class MainFrame extends DesignedJFrame{
 
 		loginButton = new DesignedButton("로그인");
 		loginButton.addActionListener(new ButtonActionListener(this));
+		
+		surveyButton = new DesignedButton("설문조사");
+		surveyButton.addActionListener(new ButtonActionListener(this));
+		surveyButton.setVisible(false); // 로그인 상태에서만 가능
 
 		problemListButton = new DesignedButton("문제 리스트 확인", COLOR.AQUA_ISLAND);
 		problemListButton.addActionListener(new ButtonActionListener());
@@ -95,6 +101,7 @@ public class MainFrame extends DesignedJFrame{
 		accountPanel.add(usernameLabel);
 		accountPanel.add(accountCreateButton);
 		accountPanel.add(loginButton);
+		accountPanel.add(surveyButton);
 
 		// 사이트 로고 및 소개글 담는 패널 (중앙 배치)
 		JPanel introPanel = new JPanel(new FlowLayout()); // 레이아웃
@@ -155,8 +162,10 @@ public class MainFrame extends DesignedJFrame{
 				}
 			} else { // 로그인 된 경우
 				if (e.getSource() == loginButton) { // 로그아웃 버튼 클릭
-					logOutComponents(); // 로그아웃
-					
+					logOutComponents(); // 로그아웃					
+				} else if (e.getSource() == surveyButton){ // 설문조사 버튼 클릭	
+					System.out.println("surveyButton clicked!");
+					new SurveyFrame(user);					
 				} else if (e.getSource() == problemListButton) { // 문제 리스트 조회 버튼 클릭
 					System.out.println("problemListButton clicked!");
 					new ProblemViewerFrame(user);
