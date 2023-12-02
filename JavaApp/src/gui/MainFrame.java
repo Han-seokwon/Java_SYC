@@ -167,7 +167,8 @@ public class MainFrame extends DesignedJFrame{
 					
 				} else if (e.getSource() == myPageButton) { // 마이 페이지 버튼 클릭
 					System.out.println("myPageButton clicked!");
-					new MyPage(mainFrame, user);
+					MyPage myPageFrame = new MyPage(mainFrame, user, true);
+					myPageFrame.setVisible(true);
 				}
 			}
 		}

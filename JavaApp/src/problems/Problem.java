@@ -105,24 +105,41 @@ public class Problem implements Serializable {
 	public int getProblemSolvedPeople() {
 		return this.ProblemSolvedPeople;
 	}
+	
+	
+
+	public ArrayList<Integer> getProblemRunTime() {
+		return ProblemRunTime;
+	}
+	public ArrayList<Integer> getProblemMemory() {
+		return ProblemMemory;
+	}
+	
 	// 평균 런타임을 반환하는 함수
 	public double getProblemAvgRunTime() {
+		if(ProblemRunTime.size() == 0) {
+			return 0;
+		}
 		int sum = 0;
 	    
 		for(int i = 0; i < this.ProblemRunTime.size(); i++) {
 	    	sum += this.ProblemRunTime.get(i);
 	    }
+		System.out.println("getProblemAvgRunTime : " +ProblemRunTime);
 		
-		return sum / this.ProblemRunTime.size();
+		return (double)sum / this.ProblemRunTime.size();
 	}
 	// 평균 메모리 사용량을 반환하는 함수
 	public double getProblemAvgMemory() {
+		if(ProblemMemory.size() == 0) {
+			return 0;
+		}
 		int sum = 0;
 	    
 		for(int i = 0; i < this.ProblemMemory.size(); i++) {
 	    	sum += this.ProblemMemory.get(i);
 	    }		
-		return sum / this.ProblemMemory.size();
+		return (double)sum / this.ProblemMemory.size();
 	}
 	
 	/*

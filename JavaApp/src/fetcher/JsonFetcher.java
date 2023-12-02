@@ -68,7 +68,7 @@ public class JsonFetcher {
 				int sleepMin = 15; // 쓰레드 정지할 시간(분) -> 평균적으로 429에러 발생시 15분 후에 다시 호출이 가능했음
 				System.out.println("429에러 발생 지정된 시간 동안 최대 api 호출 가능 횟수를 초과하였습니다. " + sleepMin + " 분 대기후 자동으로 api 호출이 다시 시작됩니다.");
 				try {
-					sleepForMin(sleepMin, 10); //  sleepMin분 동안 스레드 정지, 10초마다 타임 스탬프 출력
+					sleepForMin(sleepMin, 60); //  sleepMin분 동안 스레드 정지, 60초마다 타임 스탬프 출력
 				} catch (IOException ex) { // 인터럽트 발생한 경우
 					System.out.println(ex.getMessage()); // 에러 메시지 출력
 					throw new IOException("다음 api 호출을 위한 대기 과정이 취소 되었습니다.");

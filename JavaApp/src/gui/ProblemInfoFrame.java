@@ -34,9 +34,11 @@ public class ProblemInfoFrame extends DesignedJFrame {
 	private JButton STEP1Button, STEP2Button, STEP3Button, dataBButton, efficiencyButton, levelButton, mainButton;
 	private Problem pproblem;
 	private JLabel purl;
+	private User user;
 	
 
 	public ProblemInfoFrame(Problem problem, User user) {
+		this.user = user;
 		
 		pproblem = problem;
 		
@@ -107,12 +109,14 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		pname.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(pname);
 		
-		JLabel prank = new JLabel(String.valueOf(problem.getProblemRank()));
+		RANK rank = problem.getProblemRank(); // 랭크
+		int rankPoint = problem.getProblemRankPoint(); // 랭크 포인트
+		JLabel prank = new JLabel(String.format("%s(%d)", rank.getRankName(), rankPoint));
 		prank.setHorizontalAlignment(SwingConstants.CENTER);
 		prank.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(prank);
 		
-		JLabel ppoint = new JLabel(String.valueOf(problem.getProblemRankPoint()));
+		JLabel ppoint = new JLabel(String.valueOf(rank.getPointGain())); // 문제 해결 시 획득할 수 있는 포인트
 		ppoint.setHorizontalAlignment(SwingConstants.CENTER);
 		ppoint.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(ppoint);
@@ -232,9 +236,12 @@ public class ProblemInfoFrame extends DesignedJFrame {
 				}
 				if (e.getSource() == efficiencyButton) {  //
 					System.out.println("efficiencyButton");
+					CodeEficiency co = new CodeEficiency(pproblem);
+					co.setVisible(true);
 				}
 				if (e.getSource() == levelButton) { // 
 					System.out.println("levelButton 이벤트 추가");
+					new RateProblemFrame(user, pproblem);
 				}
 				if (e.getSource() == mainButton) { // 
 					System.out.println("mainButton");

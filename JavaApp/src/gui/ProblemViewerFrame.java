@@ -116,10 +116,10 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
         
         ActionListener actionListener = new MyActionListener();
         //검색 버튼 생성
-        button = new JButton("");
+        button = new JButton("검색");
         button.setForeground(new Color(130, 141, 226));
         button.setBackground(new Color(148, 212, 214));
-        button.setBounds(1022, 147, 50, 35);
+        button.setBounds(1022, 147, 70, 35);
         contentPane.add(button);
 
         //검색 텍스트 필드 생성

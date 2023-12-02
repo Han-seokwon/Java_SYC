@@ -23,10 +23,13 @@ import problems.Problem;
 public class CodeEficiency extends DesignedJFrame {
 
     private static final long serialVersionUID = 1L;
-    private JPanel contentPane;
+    private DesignedContentPane contentPane;
     private JTextField RunTime_textField;
     private JTextField Memory_textField;
     private JLabel ResultGuide;
+    
+    private JLabel Ave_Runtime;
+    private JLabel Ave_Memory;
 
     private int enteredRunTime;
     private int enteredMemory;
@@ -34,7 +37,7 @@ public class CodeEficiency extends DesignedJFrame {
     private int averageMemory = 2048;
     private Problem problem = new Problem();
 
-    public CodeEficiency(/*Problem problem*/) {
+    public CodeEficiency(Problem problem) {
         super();
         this.problem = problem;
         setBounds(100, 100, 1300, 900);
@@ -51,6 +54,8 @@ public class CodeEficiency extends DesignedJFrame {
 
         // 결과 패널
         ResultPanel();
+        
+        contentPane.applyFontAndBackgroundToAllComponents();
     }
 
     // 문제 이름 패널
@@ -128,17 +133,15 @@ public class CodeEficiency extends DesignedJFrame {
         Mainpanel.add(CmpButton);
 
         // 평균 런타임 레이블
-        JLabel Ave_Runtime = new JLabel();
+        Ave_Runtime = new JLabel("런타임 평균 : " + String.valueOf(Math.round(problem.getProblemAvgRunTime()))+ "ms");
         Ave_Runtime.setHorizontalAlignment(SwingConstants.CENTER);
-        Ave_Runtime.setFont(new Font("굴림", Font.PLAIN, 30));
         Ave_Runtime.setBorder(new LineBorder(UIManager.getColor("Black"), 2));
         Ave_Runtime.setBounds(96, 70, 305, 60);
         Mainpanel.add(Ave_Runtime);
 
         // 평균 메모리 레이블
-        JLabel Ave_Memory = new JLabel();
+        Ave_Memory = new JLabel("메모리 평균 : " + String.valueOf(Math.round(problem.getProblemAvgMemory())) + "KB");
         Ave_Memory.setHorizontalAlignment(SwingConstants.CENTER);
-        Ave_Memory.setFont(new Font("굴림", Font.PLAIN, 30));
         Ave_Memory.setBorder(new LineBorder(UIManager.getColor("Black"), 2));
         Ave_Memory.setBounds(413, 70, 305, 60);
         Mainpanel.add(Ave_Memory);
@@ -148,6 +151,7 @@ public class CodeEficiency extends DesignedJFrame {
         MainMenuButton.addActionListener(new MainMenuButtonActionListener());
         MainMenuButton.setBounds(12, 410, 169, 47);
         Mainpanel.add(MainMenuButton);
+        
     }
 
     // 결과 패널
@@ -169,17 +173,20 @@ public class CodeEficiency extends DesignedJFrame {
                 int runTime = Integer.parseInt(RunTime_textField.getText());
                 int memory = Integer.parseInt(Memory_textField.getText());
                 
-                double runTimePercentile = getRunTimePercentile(runTime);
-                double runTimeTopPercentage = getRunTimeTopPercentage(runTime);
-                double memoryPercentile = getMemoryPercentile(memory);
-                double memoryTopPercentage = getMemoryTopPercentage(memory);
+                //	입력된 값 문제 데이터에 추가
+                problem.addProblemefficiency(runTime, memory); 
+                
+                double runTimeTopPercentage = getRunTimePercentile(runTime);
+                double memoryTopPercentage = getMemoryPercentile(memory);
 
+                System.out.println("runTimeTopPercentage: " + runTimeTopPercentage);
+                System.out.println("memoryTopPercentage: " + memoryTopPercentage);
                 String resultMessage = String.format(
-                    "런타임 백분위: %.2f%% (상위 %.2f%%), 메모리 백분위: %.2f%% (상위 %.2f%%)",
-                    runTimePercentile, runTimeTopPercentage, memoryPercentile, memoryTopPercentage
+                    "런타임 상위 %.2f%%, 메모리 상위 %.2f%%",
+                    runTimeTopPercentage, memoryTopPercentage
                 );
-
                 ResultGuide.setText(resultMessage);
+                
             } catch (NumberFormatException ex) {
                 ResultGuide.setText("숫자를 입력해주세요.");
             }
@@ -193,31 +200,61 @@ public class CodeEficiency extends DesignedJFrame {
             dispose();
         }
     }
+    
  // 런타임 백분위 및 상위 퍼센트 계산
     public double getRunTimePercentile(int myRunTime){
         double meanRunTime = problem.getProblemAvgRunTime();
+        Ave_Runtime.setText("런타임 평균 : " + String.valueOf(Math.round(meanRunTime))+ "ms"); // 평균값 최신화
+        
         double stdDevRunTime = problem.getProblemStdDevRunTime();
-        int numPeople = problem.getProblemSolvedPeople();
+        if(stdDevRunTime == 0) { // 데이터값이 모두 동일한 경우
+        	return 0.0; // 백분위 0% -> 상위 100% 
+        }
         double zScoreRunTime = (myRunTime - meanRunTime) / stdDevRunTime;
-        int rankRunTime = (int)(zScoreRunTime * numPeople);
-        return (double)rankRunTime / numPeople * 100;
+        
+        System.out.println("meanRunTime : " + meanRunTime);
+        System.out.println("stdDevRunTime : " + stdDevRunTime);
+        System.out.println("zScoreRunTime : " + zScoreRunTime);        
+        
+        return calculatePercentileFromZScore(zScoreRunTime);
     }
 
-    public double getRunTimeTopPercentage(int myRunTime){
-        return 100 - getRunTimePercentile(myRunTime);
-    }
 
     // 메모리 사용량 백분위 및 상위 퍼센트 계산
     public double getMemoryPercentile(int myMemory){
         double meanMemory = problem.getProblemAvgMemory();
+        Ave_Memory.setText("메모리 평균 : " + String.valueOf(Math.round(meanMemory))+ "KB"); // 평균값 최신화
+        
         double stdDevMemory = problem.getProblemStdDevMemory();
-        int numPeople = problem.getProblemSolvedPeople();
+        if(stdDevMemory == 0) { // 데이터값이 모두 동일한 경우
+        	return 0.0; // 백분위 0% -> 상위 100% 
+        }
+        
         double zScoreMemory = (myMemory - meanMemory) / stdDevMemory;
-        int rankMemory = (int)(zScoreMemory * numPeople);
-        return (double)rankMemory / numPeople * 100;
+        return calculatePercentileFromZScore(zScoreMemory);
     }
 
-    public double getMemoryTopPercentage(int myMemory){
-        return 100 - getMemoryPercentile(myMemory);
+   
+    
+    // Z-점수를 이용하여 백분위 계산
+    private static double calculatePercentileFromZScore(double zScore) {
+        // 표준 정규 분포의 누적 분포 함수 (CDF)를 사용하여 백분위 계산
+        return (1 - 0.5 * (1 + erf(zScore / Math.sqrt(2)))) * 100;
     }
+
+    // 오차 함수 (Error Function)를 계산하는 함수
+    private static double erf(double x) {
+        // (erf)의 근사값을 사용
+        double t = 1.0 / (1.0 + 0.5 * Math.abs(x));
+
+        // 계수 및 상수
+        double tau = t * Math.exp(-x * x - 1.26551223 + 1.00002368 * t + 0.37409196 * Math.pow(t, 2) +
+                0.09678418 * Math.pow(t, 3) - 0.18628806 * Math.pow(t, 4) + 0.27886807 * Math.pow(t, 5) -
+                1.13520398 * Math.pow(t, 6) + 1.48851587 * Math.pow(t, 7) - 0.82215223 * Math.pow(t, 8) +
+                0.17087277 * Math.pow(t, 9));
+
+        return (x >= 0) ? 1 - tau : tau - 1;
+    }
+    
+    
 }

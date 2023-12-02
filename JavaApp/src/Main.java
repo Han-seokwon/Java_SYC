@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import gui.MainFrame;
+import gui.ProblemViewerFrame;
 import gui.SurveyFrame;
 import problems.ProblemDBManager;
+import problems.ProblemRankManager;
 import users.AccountManager;
 import users.EvaluationQuestion;
 import users.ResistrationFormat;
@@ -74,13 +76,16 @@ public class Main {
 		
 //		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
 		
+		ProblemRankManager.init(); // 문제 랭크 DB 초기화
+		ProblemRankManager.PrintProblemRankMap();
+		
 	}
 	
 	
 	public static void main(String[] args) {
 		
 		// < 1. 데이터 생성 >
-		createTestUserData(); // 테스트 유저 데이터 생성
+//		createTestUserData(); // 테스트 유저 데이터 생성
 		// SolvedAC에서 문제 데이터 가져와서 ProblemDB에 추가하기 (900개쯤 가져오면 429에러 발생)
 //		JsonFetcher.updateProblemDB_FromSolvedAC();	
 
@@ -88,8 +93,10 @@ public class Main {
 		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
 		// < 3. 메인 프레임 생성>
 		// 메인 프레임 
-		new MainFrame();		
-		
+		MainFrame main = new MainFrame();
+		User user1 = UserDBManager.findUserByEmail("han@naver.com");
+		main.logInComponents(user1);
+		new ProblemViewerFrame(user1);
 		
 		// <  기타 프레임 테스트 >
 //		new SurveyFrame(null);

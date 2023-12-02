@@ -182,9 +182,9 @@ public class ProblemTable extends JTable{
 				Problem selectedProblem = problemList.get(row); // 선택된 행의 문제 인스턴스를 가져옴
 				System.out.println("문제 선택됨\n" + selectedProblem); // 선택된 문제 정보 출력
 				// 해당 행에 맞는 문제 정보 조회 프레임 생성
-				new ProblemInfoFrame(selectedProblem, user); 
-		
+				new ProblemInfoFrame(selectedProblem, user); 		
 			}
+			Dialog.playEffectSound(Dialog.DEFALUT_POPUP_SOUND); // 사운드 재생
 		}
 	}
 
