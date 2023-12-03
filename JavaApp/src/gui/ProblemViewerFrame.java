@@ -2,56 +2,31 @@ package gui;
 
 /*
  * 
- * ÅØ½ºÆ® ÇÊµå¿¡ Á¦¸ñ ÀÔ·Â ÈÄ ¿£ÅÍ ¶Ç´Â ¹öÆ° Å¬¸¯½Ã ÀÔ·Â°ª¿¡ ÇØ´çµÇ´Â  
- * 
- * 
+ * ë¬¸ì œ ë¦¬ìŠ¤íŠ¸ë¥¼ ë‚˜íƒ€ë‚´ëŠ” í”„ë ˆì„ 
  * 
  */
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import problems.ProblemDBManager;
 import problems.Problem;
-import gui.MainFrame;
 import gui.ProblemViewerFrame;
-import problems.*;
-import users.AccountManager;
 import users.User;
-import users.UserDBManager;
-import java.net.*;
-import fetcher.JsonFetcher;
-import users.User;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-import java.util.regex.PatternSyntaxException;
 
 public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
 
-    private JPanel panel; // °Ë»ö °ü·Ã ÄÄÆ÷³ÍÆ®¸¦ ´ãÀ» ÆĞ³Î
+    private JPanel panel; // ê²€ìƒ‰ ê´€ë ¨ ì»´í¬ë„ŒíŠ¸ë¥¼ ë‹´ì„ íŒ¨ë„
 	private DesignedContentPane contentPane;
-    private JLabel label; // "¹®Á¦ °Ë»ö" ·¹ÀÌºí
-    private JTextField textField; // °Ë»ö¾î ÀÔ·ÂÀ» À§ÇÑ ÅØ½ºÆ® ÇÊµå
-    private JButton button; // °Ë»ö ¹öÆ°
-    private ProblemTable table;
-    private JTextField searchField;
+    private JButton button; // ê²€ìƒ‰ ë²„íŠ¼
+    private ProblemTable table; //ë¬¸ì œ í…Œì´ë¸”
+    private JTextField searchField; // ë¬¸ì œ ê²€ìƒ‰ í…ìŠ¤íŠ¸í•„ë“œ
     private JRadioButton number;
     private JRadioButton name;
     private JRadioButton rank;
@@ -63,14 +38,13 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
     private boolean id1;
     private boolean rank1;
     private boolean search1;
-	private User user;// ÇöÀç ·Î±×ÀÎµÈ À¯Àú
-	private ProblemTable recommendedProblemTable;// ÃßÃµµÈ ¹®Á¦¸¦ ´ã´Â Å×ÀÌºí
+	private User user;
 	private List<Problem> ProblemList;
 	private String text;
 
 
     public ProblemViewerFrame(User user) {
-        super("¹®Á¦ ¸®½ºÆ®"); // ÇÁ·¹ÀÓÀÇ Á¦¸ñ ¼³Á¤
+        super("ë¬¸ì œ ë¦¬ìŠ¤íŠ¸"); // í”„ë ˆì„ì˜ ì œëª© ì„¤ì •
         
 		contentPane = new DesignedContentPane();
 		contentPane.setBorder(new EmptyBorder(20, 5, 5, 5));
@@ -81,14 +55,13 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
         panel.setOpaque(false);
         
         
-        //¶óµğ¿À ¹öÆ° »ı¼º
+        //ë¼ë””ì˜¤ ë²„íŠ¼ ìƒì„±
         MakeRadioButton();
-
         sort = true;
         id1 = true;
         search1 = false;
 
-		//¹®Á¦ Å×ÀÌºí »ı¼º
+		//ë¬¸ì œ í…Œì´ë¸” ìƒì„±
         table = new ProblemTable(user);
         ProblemList = ProblemDBManager.findProblemToID(sort);
         table.updateProblemListToTable(ProblemList);
@@ -97,104 +70,98 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
         contentPane.add(scrollPane);
         
         
-	    // ¼¿ ´ÜÀ§ÀÇ ¼±ÅÃÀ» È°¼ºÈ­
-	    //table.setCellSelectionEnabled(false);
-	    // JTableÀÇ Çì´õ¸¦ ÅëÇØ ¿­ÀÇ Å©±â¸¦ Á¶ÀıÇÏ´Â °ÍÀ» ºñÈ°¼ºÈ­
+	    // JTableì˜ í—¤ë”ë¥¼ í†µí•´ ì—´ì˜ í¬ê¸°ë¥¼ ì¡°ì ˆí•˜ëŠ” ê²ƒì„ ë¹„í™œì„±í™”
 	    table.getTableHeader().setResizingAllowed(false);
-	    // ¿­ÀÇ ¼ø¼­¸¦ º¯°æÇÏ´Â °ÍÀ» ºñÈ°¼ºÈ­
+	    // ì—´ì˜ ìˆœì„œë¥¼ ë³€ê²½í•˜ëŠ” ê²ƒì„ ë¹„í™œì„±í™”
 	    table.getTableHeader().setReorderingAllowed(false);
-	    // ±âº» ÆíÁı±â¸¦ ¼³Á¤ÇÏ°í, null·Î ¼³Á¤ÇÏ¿© ¼¿À» ÆíÁıÇÒ ¼ö ¾ø°Ô ÇÔ
+	    // ê¸°ë³¸ í¸ì§‘ê¸°ë¥¼ ì„¤ì •í•˜ê³ , nullë¡œ ì„¤ì •í•˜ì—¬ ì…€ì„ í¸ì§‘í•  ìˆ˜ ì—†ê²Œ í•¨
 	    table.setDefaultEditor(Object.class, null);
 	    table.addMouseListener(new MyMouseListener());
         
-        //¹®Á¦ Á¤·Ä ¶óº§ »ı¼º
-        JLabel lblNewLabel = new JLabel("¹®Á¦ Á¤·Ä");
+        //ë¬¸ì œ ì •ë ¬ ë¼ë²¨ ìƒì„±
+        JLabel lblNewLabel = new JLabel("ë¬¸ì œ ì •ë ¬");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setBounds(273, 33, 117, 58);
         contentPane.add(lblNewLabel);
         
         
         ActionListener actionListener = new MyActionListener();
-        //°Ë»ö ¹öÆ° »ı¼º
-        button = new JButton("°Ë»ö");
+        //ê²€ìƒ‰ ë²„íŠ¼ ìƒì„±
+        button = new JButton("ê²€ìƒ‰");
         button.setForeground(new Color(130, 141, 226));
         button.setBackground(new Color(148, 212, 214));
         button.setBounds(1022, 147, 70, 35);
         contentPane.add(button);
 
-        //°Ë»ö ÅØ½ºÆ® ÇÊµå »ı¼º
+        //ê²€ìƒ‰ í…ìŠ¤íŠ¸ í•„ë“œ ìƒì„±
         searchField = new JTextField();
         searchField.setBounds(857, 148, 165, 34);
         contentPane.add(searchField);
         searchField.setColumns(10);
         
-        JLabel lblNewLabel_1 = new JLabel("Á¦¸ñ °Ë»ö");
+        //ì œëª© ê²€ìƒ‰ ë¼ë²¨ ì¶”ê°€
+        JLabel lblNewLabel_1 = new JLabel("ì œëª© ê²€ìƒ‰");
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel_1.setBounds(888, 56, 117, 58);
         contentPane.add(lblNewLabel_1);
         
-        //
+        //ê²€ìƒ‰ ë²„íŠ¼ ë° í…ìŠ¤íŠ¸ í•„ë“œì— ì•¡ì…˜ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
         button.addActionListener(actionListener);
         searchField.addActionListener(actionListener);
         
-    	contentPane.applyFontAndBackgroundToAllComponents(); // ÀüÃ¼ ÆùÆ® Àû¿ë ¹× ÆĞ³Î ¹è°æ»ö Åõ¸íÇÏ°Ô Àû¿ë
-        
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ÇÁ·¹ÀÓÀÌ ´İÈú ¶§ ÇÁ·Î±×·¥ Á¾·á
-        setVisible(true); // ÇÁ·¹ÀÓ Ç¥½Ã
+    	contentPane.applyFontAndBackgroundToAllComponents(); // ì „ì²´ í°íŠ¸ ì ìš© ë° íŒ¨ë„ ë°°ê²½ìƒ‰ íˆ¬ëª…í•˜ê²Œ ì ìš©
+        setVisible(true); // í”„ë ˆì„ í‘œì‹œ
     }
     
     public void MakeRadioButton() {
-        //¶óµğ¿À¹öÆ° »ı¼º
-
-        number = new JRadioButton("¹øÈ£");
-        name = new JRadioButton("Á¦¸ñ");
-        rank = new JRadioButton("³­ÀÌµµ");
-        sorted = new JRadioButton("¿À¸§Â÷¼ø");
-        resorted = new JRadioButton("³»¸²Â÷¼ø");
+    	
+        //ë¼ë””ì˜¤ë²„íŠ¼ ìƒì„±
+        number = new JRadioButton("ë²ˆí˜¸");
+        name = new JRadioButton("ì œëª©");
+        rank = new JRadioButton("ë‚œì´ë„");
+        sorted = new JRadioButton("ì˜¤ë¦„ì°¨ìˆœ");
+        resorted = new JRadioButton("ë‚´ë¦¼ì°¨ìˆœ");
         
-        
-        
-        number.setOpaque(false);
+        // íˆ¬ëª…í•˜ê²Œ ë³€ê²½
+        number.setOpaque(false); 
         name.setOpaque(false);
         rank.setOpaque(false);
         sorted.setOpaque(false);
         resorted.setOpaque(false);
         
-        number.setSelected(true);
+        //ì´ˆê¸° ì„ íƒê°’
+        number.setSelected(true); 
         sorted.setSelected(true);
         
-        //¶óµğ¿À¹öÆ° ¸®½º³Ê µî·Ï
+        //ë¼ë””ì˜¤ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
         number.addItemListener(this);
         name.addItemListener(this);
         rank.addItemListener(this);
         sorted.addItemListener(this);
         resorted.addItemListener(this);
         
-        //¶óµğ¿À¹öÆ° ±×·ë »ı¼º
+        //ë¼ë””ì˜¤ë²„íŠ¼ ê·¸ë£¸ ìƒì„±
         ButtonGroup aa = new ButtonGroup();
         ButtonGroup bb = new ButtonGroup();
 
-        //¶óµğ¿À¹öÆ° ±×·ì¿¡ Ãß°¡
+        //ë¼ë””ì˜¤ë²„íŠ¼ ê·¸ë£¹ì— ì¶”ê°€
         aa.add(number);
         aa.add(name);
         aa.add(rank);
         bb.add(sorted);
         bb.add(resorted);
 
-        //ÆĞ³Î¿¡ ¶óµğ¿À¹öÆ° Ãß°¡
+        //íŒ¨ë„ì— ë¼ë””ì˜¤ë²„íŠ¼ ì¶”ê°€
         panel.add(number);
         panel.add(sorted);
         panel.add(name);
         panel.add(resorted);
         panel.add(rank);
-        
-        //panel.applyFontAndBackgroundToAllComponents();
-        
         contentPane.setLayout(null);
-        contentPane.add(panel); // ÆĞ³ÎÀ» ÇÁ·¹ÀÓÀÇ »ó´Ü¿¡ Ãß°¡
+        contentPane.add(panel); // íŒ¨ë„ì„ í”„ë ˆì„ì˜ ìƒë‹¨ì— ì¶”ê°€
     }
 
-    public void itemStateChanged(ItemEvent e) { //Á¤·Ä ¶óµğ¿À ¹öÆ° ÀÌº¥Æ® Ã³¸®
+    public void itemStateChanged(ItemEvent e) { //ì •ë ¬ ë¼ë””ì˜¤ ë²„íŠ¼ ì´ë²¤íŠ¸ ì²˜ë¦¬
         
 
         if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -270,10 +237,10 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
         	}
         }
     
-    private class MyMouseListener extends MouseAdapter { //Å×ÀÌºí Å¬¸¯ ÀÌº¥Æ® Á¦¾î
+    private class MyMouseListener extends MouseAdapter { //í…Œì´ë¸” í´ë¦­ ì´ë²¤íŠ¸ ì œì–´
     	public void mouseClicked(MouseEvent e) {
 
-    	if (e.getClickCount() == 2) { //´õºíÅ¬¸¯½Ã ProblemInfoFrame »ı¼º
+    	if (e.getClickCount() == 2) { //ë”ë¸”í´ë¦­ì‹œ ProblemInfoFrame ìƒì„±
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 Object selectedID = table.getValueAt(selectedRow, 0);
@@ -286,23 +253,22 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
     	}
     }
     
-    private class MyActionListener implements ActionListener { // ÅØ½ºÆ® ÇÊµå, °Ë»ö ¹öÆ° ÀÌº¥Æ® Á¦¾î
+    private class MyActionListener implements ActionListener { // í…ìŠ¤íŠ¸ í•„ë“œ, ê²€ìƒ‰ ë²„íŠ¼ ì´ë²¤íŠ¸ ì œì–´
         @Override
         public void actionPerformed(ActionEvent e) {
         	
             JTextField source = null;
 
             if (e.getSource() == button) {
-                // °Ë»ö ¹öÆ° Å¬¸¯ ½Ã
+                // ê²€ìƒ‰ ë²„íŠ¼ í´ë¦­ ì‹œ
                 source = searchField;
             } else if (e.getSource() == searchField) {
-                // ¿£ÅÍÅ° ´­·¶À» ¶§
+                // ì—”í„°í‚¤ ëˆŒë €ì„ ë•Œ
                 source = (JTextField) e.getSource();
             }
-
-
             text = source.getText();
             
+            //ë¼ë””ì˜¤ë²„íŠ¼ ì´ˆê¸°ê°’ìœ¼ë¡œ ë˜ëŒë¦¬ê¸° ìœ„í•´ ì œê±° í›„ ë‹¤ì‹œ ìƒì„±
             contentPane.remove(panel);
             panel.remove(number);
             panel.remove(sorted);
@@ -310,7 +276,7 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
             panel.remove(resorted);
             panel.remove(rank);
 
-            
+            //ì…ë ¥ í…ìŠ¤íŠ¸ê°€ ì—†ìœ¼ë©´ id ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ í…Œì´ë¸” ì—…ë°ì´íŠ¸
             if (text.isEmpty()) {
                 ProblemList = ProblemDBManager.findProblemToID(sort);
                 table.updateProblemListToTable(ProblemList);
@@ -321,7 +287,7 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
             }
             
             
-            
+            //ë¼ë””ì˜¤ë²„íŠ¼ ì¬ìƒì„± ë° ì¶”ê°€
             MakeRadioButton();
             contentPane.applyFontAndBackgroundToAllComponents();
             contentPane.revalidate();
