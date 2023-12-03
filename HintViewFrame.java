@@ -8,8 +8,11 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import gui.HintAddFrame;
+import problems.*;
+import users.*;
 import gui.DesignedJFrame;
 import gui.DesignedButton;
 
@@ -17,9 +20,12 @@ public class HintViewFrame extends DesignedJFrame {
 	
 	JPanel infopanel, hintlistpanel, hintViewbuttonpanel;
 	JLabel problemName, title;
-	JTable hintlist;
+	JTable hintTable;
 	JButton hintAddbtn;
+	Problem problem;
+	User user;
 	private int step;
+	private String key;
 	
 	public HintViewFrame(int step) { 
 		setTitle("HintViewFrame");
@@ -28,21 +34,22 @@ public class HintViewFrame extends DesignedJFrame {
 		setContentPane(background);
 		background.setLayout(null);
 		this.step = step;
+		this.key = "Step "+ this.step;
 		
-		addinfopanel(); // ±âº»Á¤º¸
-		addhintListpanel(); // ÈùÆ® ¸®½ºÆ®
-		addHintViewButtonpanel(); //ÈùÆ®ÀÛ¼º¹öÆ°
+		addinfopanel(); // ê¸°ë³¸ì •ë³´
+		addhintListpanel(); // íŒíŠ¸ ë¦¬ìŠ¤íŠ¸
+		addHintViewButtonpanel(); //íŒíŠ¸ì‘ì„±ë²„íŠ¼
 		setVisible(true);
 	}
 	
-	public void addinfopanel() { // ±âº»Á¤º¸ 
+	public void addinfopanel() { // ê¸°ë³¸ì •ë³´ 
 		infopanel = new JPanel();
 		infopanel.setLayout(new GridLayout(2,1));
 		infopanel.setLocation(120, 50);
 		infopanel.setSize(750, 100); 
 		
-		JLabel problemName = new JLabel("(¹®Á¦ Á¦¸ñ)"); // ¼öÁ¤ÇÊ¿ä
-		JLabel title = new JLabel("   STEP"+step+" ÈùÆ® ¸®½ºÆ®");
+		JLabel problemName = new JLabel("(ë¬¸ì œ ì œëª©)"); // ìˆ˜ì •í•„ìš”
+		JLabel title = new JLabel("   STEP"+step+" íŒíŠ¸ ë¦¬ìŠ¤íŠ¸");
 		problemName.setFont(new Font("Sunflower Medium",Font.BOLD,35));
 		title.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
 	
@@ -54,94 +61,106 @@ public class HintViewFrame extends DesignedJFrame {
 	} 
 	
 	
-	public void addhintListpanel() { // ÈùÆ® ¸®½ºÆ®
+	public void addhintListpanel() { // íŒíŠ¸ ë¦¬ìŠ¤íŠ¸
 		hintlistpanel = new JPanel();
 		hintlistpanel.setBorder(new LineBorder(Color.black, 2));
 		hintlistpanel.setLayout(new GridLayout(1,1)); 
-		hintlistpanel.setLocation(120,150); // À§Ä¡
-		hintlistpanel.setSize(getDefalutWindowWidth() - 200, 500); // Å©±â
+		hintlistpanel.setLocation(120,150); // ìœ„ì¹˜
+		hintlistpanel.setSize(getDefalutWindowWidth() - 200, 500); // í¬ê¸°
 		
 		
-		String header[] = {"ÀÛ¼ºÀÚ", "STEP "+step+"  ÈùÆ® ³»¿ë"};
-		String contentlist[][] = { {"ÀÛ¼ºÀÚ1", "³»¿ë1"}, 
-				                   {"ÀÛ¼ºÀÚ2", "³»¿ë2"}, 
-								   {"ÀÛ¼ºÀÚ3", "³»¿ë3"}, 
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"}, 
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"},
-								   {"ÀÛ¼ºÀÚ1", "³»¿ë1"}}; //¼öÁ¤
+		String header[] = {"ì‘ì„±ì", "STEP "+step+"  íŒíŠ¸ ë‚´ìš©"};
+		String contentlist[][] = { {"ì‘ì„±ì1", "ë‚´ìš©1"}, 
+					   {"ì‘ì„±ì2", "ë‚´ìš©2"}, 
+					   {"ì‘ì„±ì3", "ë‚´ìš©3"}, 
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"}, 
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"},
+					   {"ì‘ì„±ì1", "ë‚´ìš©1"}}; //ìˆ˜ì •
+
+		  /*
+		   problem.problemList.size();
+		 * String contentlist[][];
+		 * 
+		 * for (int i = 0;i < hintsize;i++) {
+		 * 		contentlist[i][0] = problem.hintList.get(this.key).keySet(); // user ì‘ì„±ì 
+		 * 		contentlist[i][1] = problem.hintList.get(this.key).get(contentlist[i][0]); // íŒíŠ¸ ë‚´ìš©
+		
+		 * 
+		 * 
+		 */
 				
 		
-		DefaultTableModel dtm = new DefaultTableModel(contentlist, header) { //¼öÁ¤ºÒ°¡´ÉÇÏµµ·Ï
+		DefaultTableModel dtm = new DefaultTableModel(contentlist, header) { //ìˆ˜ì •ë¶ˆê°€ëŠ¥í•˜ë„ë¡
 			public boolean isCellEditable(int row, int  column) {
 		        return false;
 		      }
 		};
 		 
-		JTable hintlist = new JTable(dtm);
-		hintlist.getColumnModel().getColumn(0).setPreferredWidth(100); //Ã¹¹øÂ° ¿­ Å©±â Á¶Á¤
-		hintlist.getColumnModel().getColumn(1).setPreferredWidth(700); //µÎ¹øÂ° ¿­ Å©±â Á¶Á¤
-		hintlist.setRowHeight(50); // ³ôÀÌ º¯°æ  
-		hintlist.setFont(new Font("Sunflower Medium",Font.PLAIN,15)); // ÆùÆ® º¯°æ
-		// Å×ÀÌºí Çì´õ ¼³Á¤
-		JTableHeader hintlistHeader = hintlist.getTableHeader();
-		hintlistHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
-		hintlistHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
-		hintlistHeader.setFont(new Font("Sunflower Medium",Font.BOLD,18));
-		Dimension headerSize = hintlistHeader.getPreferredSize();
+		JTable hintTable = new JTable(dtm);
+		hintTable.getColumnModel().getColumn(0).setPreferredWidth(100); //ì²«ë²ˆì§¸ ì—´ í¬ê¸° ì¡°ì •
+		hintTable.getColumnModel().getColumn(1).setPreferredWidth(700); //ë‘ë²ˆì§¸ ì—´ í¬ê¸° ì¡°ì •
+		hintTable.setRowHeight(50); // ë†’ì´ ë³€ê²½  
+		hintTable.setFont(new Font("Sunflower Medium",Font.PLAIN,15)); // í°íŠ¸ ë³€ê²½
+		// í…Œì´ë¸” í—¤ë” ì„¤ì •
+		JTableHeader hintTableHeader = hintTable.getTableHeader();
+		hintTableHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
+		hintTableHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
+		hintTableHeader.setFont(new Font("Sunflower Medium",Font.BOLD,18));
+		Dimension headerSize = hintTableHeader.getPreferredSize();
 		headerSize.height = 40;
-		hintlistHeader.setPreferredSize(headerSize);
+		hintTableHeader.setPreferredSize(headerSize);
 		
-		// ÇÁ·¹ÀÓ¿¡ Ãß°¡
-		JScrollPane hintlistscrollPane = new JScrollPane(hintlist);
-		hintlist.setOpaque(false);
-		hintlistpanel.add(hintlistscrollPane);
+		// í”„ë ˆì„ì— ì¶”ê°€
+		JScrollPane hintTablescrollPane = new JScrollPane(hintTable);
+		hintTable.setOpaque(false);
+		hintlistpanel.add(hintTablescrollPane);
 		hintlistpanel.setOpaque(false);
 		getContentPane().add(hintlistpanel);
 		
 	}
  
-	public void addHintViewButtonpanel() { // ÈùÆ®º¸±âÇÁ·¹ÀÓ¹öÆ°ÆĞ³Î
-		// ÆĞ³Î »ı¼º
+	public void addHintViewButtonpanel() { // íŒíŠ¸ë³´ê¸°í”„ë ˆì„ë²„íŠ¼íŒ¨ë„
+		// íŒ¨ë„ ìƒì„±
 		hintViewbuttonpanel = new JPanel();
 		hintViewbuttonpanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 10)); 
-		hintViewbuttonpanel.setLocation(850, 670); // À§Ä¡
-		hintViewbuttonpanel.setSize(380, 70); // Å©±â
+		hintViewbuttonpanel.setLocation(850, 670); // ìœ„ì¹˜
+		hintViewbuttonpanel.setSize(380, 70); // í¬ê¸°
 		
-		// ÈùÆ® ÀÛ¼º¹öÆ° Ãß°¡
-		DesignedButton hintAddbtn = new DesignedButton("ÈùÆ® ÀÛ¼ºÇÏ±â", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
+		// íŒíŠ¸ ì‘ì„±ë²„íŠ¼ ì¶”ê°€
+		DesignedButton hintAddbtn = new DesignedButton("íŒíŠ¸ ì‘ì„±í•˜ê¸°", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
 		hintAddbtn.setLocation(getDefalutWindowWidth() - 230, 680);
 		hintAddbtn.setSize(150, 40);
 
-		hintAddbtn.addActionListener (new ActionListener() { //ÀÍ¸íÅ¬·¡½º ÈùÆ®ÀÛ¼º¹öÆ° ¸®½º³Ê
+		hintAddbtn.addActionListener (new ActionListener() { //ìµëª…í´ë˜ìŠ¤ íŒíŠ¸ì‘ì„±ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
 			public void actionPerformed(ActionEvent e) {
 				JButton hintadd = (JButton)e.getSource();
-					// ÈùÆ® ¸®½ºÆ®¿¡ Ãß°¡ ¸®½º³Ê
+					// íŒíŠ¸ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€ ë¦¬ìŠ¤ë„ˆ
 					new HintAddFrame();
 					setVisible(false);  
 			}
 		});
 		
-		// µÚ·Î°¡±â ¹öÆ°
-		DesignedButton hintbackBtn = new DesignedButton("µÚ·Î°¡±â", 150, 40, COLOR.AQUA_ISLAND);
+		// ë’¤ë¡œê°€ê¸° ë²„íŠ¼
+		DesignedButton hintbackBtn = new DesignedButton("ë’¤ë¡œê°€ê¸°", 150, 40, COLOR.AQUA_ISLAND);
 		hintbackBtn.setLocation(getDefalutWindowWidth() - 370, 680);
 		hintbackBtn.setSize(120, 40);
 		
-		hintbackBtn.addActionListener (new ActionListener() { //ÀÍ¸íÅ¬·¡½º ÇĞ½ÀÀÚ·á¸®½ºÆ® ´İ±â¹öÆ° ¸®½º³Ê
+		hintbackBtn.addActionListener (new ActionListener() { //ìµëª…í´ë˜ìŠ¤ í•™ìŠµìë£Œë¦¬ìŠ¤íŠ¸ ë‹«ê¸°ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}
 		});
 		
-		//ÇÁ·¹ÀÓ¿¡ Ãß°¡
+		//í”„ë ˆì„ì— ì¶”ê°€
 		hintViewbuttonpanel.add(hintAddbtn);
 		hintViewbuttonpanel.add(hintbackBtn);
 		hintViewbuttonpanel.setOpaque(false);
@@ -149,8 +168,8 @@ public class HintViewFrame extends DesignedJFrame {
 	}
 	
 	
-	public static void main(String[] args) { // ¸ŞÀÎÇÔ¼ö
-		new HintViewFrame(1); //¸Å°³º¯¼ö - step
+	public static void main(String[] args) { // ë©”ì¸í•¨ìˆ˜
+		new HintViewFrame(1); //ë§¤ê°œë³€ìˆ˜ - step
 		//new HintViewFrame(2);
 		//new HintViewFrame(3);
 	}
