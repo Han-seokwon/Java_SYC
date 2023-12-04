@@ -261,7 +261,7 @@ public class MyPage extends DesignedJFrame {
                 newPage.setVisible(true);
 
             } catch (NullPointerException ex) {
-            	Dialog.showAlertDialog("검색 실패", "등록되지 않는 사용자입니다.");
+            	Dialog.showAlertDialog("검색 실패", "등록되지 않은 사용자입니다.");
                 ex.printStackTrace();
             }
         }

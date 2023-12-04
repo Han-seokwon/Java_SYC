@@ -100,8 +100,8 @@ public class Main {
 		
 		// <  기타 프레임 테스트 >
 //		new SurveyFrame(null);
-		new RecommendProblemFrame(user1); // 문제 추천 프레임
-		System.out.println(user1);
+//		new RecommendProblemFrame(user1); // 문제 추천 프레임
+//		System.out.println(user1);
 //		new RateProblemFrame(null, null);		
 	
 							

@@ -8,8 +8,11 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import gui.HintAddFrame;
+import problems.*;
+import users.*;
 import gui.DesignedJFrame;
 import gui.DesignedButton;
 
@@ -17,9 +20,12 @@ public class HintViewFrame extends DesignedJFrame {
 	
 	JPanel infopanel, hintlistpanel, hintViewbuttonpanel;
 	JLabel problemName, title;
-	JTable hintlist;
+	JTable hintTable;
 	JButton hintAddbtn;
+	Problem problem;
+	User user;
 	private int step;
+	private String key;
 	
 	public HintViewFrame(int step) { 
 		setTitle("HintViewFrame");
@@ -28,6 +34,7 @@ public class HintViewFrame extends DesignedJFrame {
 		setContentPane(background);
 		background.setLayout(null);
 		this.step = step;
+		this.key = "Step "+ this.step;
 		
 		addinfopanel(); // 기본정보
 		addhintListpanel(); // 힌트 리스트
@@ -64,20 +71,32 @@ public class HintViewFrame extends DesignedJFrame {
 		
 		String header[] = {"작성자", "STEP "+step+"  힌트 내용"};
 		String contentlist[][] = { {"작성자1", "내용1"}, 
-				                   {"작성자2", "내용2"}, 
-								   {"작성자3", "내용3"}, 
-								   {"작성자1", "내용1"}, 
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"},
-								   {"작성자1", "내용1"}}; //수정
+					   {"작성자2", "내용2"}, 
+					   {"작성자3", "내용3"}, 
+					   {"작성자1", "내용1"}, 
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"},
+					   {"작성자1", "내용1"}}; //수정
+
+		  /*
+		   problem.problemList.size();
+		 * String contentlist[][];
+		 * 
+		 * for (int i = 0;i < hintsize;i++) {
+		 * 		contentlist[i][0] = problem.hintList.get(this.key).keySet(); // user 작성자 
+		 * 		contentlist[i][1] = problem.hintList.get(this.key).get(contentlist[i][0]); // 힌트 내용
+		
+		 * 
+		 * 
+		 */
 				
 		
 		DefaultTableModel dtm = new DefaultTableModel(contentlist, header) { //수정불가능하도록
@@ -86,24 +105,24 @@ public class HintViewFrame extends DesignedJFrame {
 		      }
 		};
 		 
-		JTable hintlist = new JTable(dtm);
-		hintlist.getColumnModel().getColumn(0).setPreferredWidth(100); //첫번째 열 크기 조정
-		hintlist.getColumnModel().getColumn(1).setPreferredWidth(700); //두번째 열 크기 조정
-		hintlist.setRowHeight(50); // 높이 변경  
-		hintlist.setFont(new Font("Sunflower Medium",Font.PLAIN,15)); // 폰트 변경
+		JTable hintTable = new JTable(dtm);
+		hintTable.getColumnModel().getColumn(0).setPreferredWidth(100); //첫번째 열 크기 조정
+		hintTable.getColumnModel().getColumn(1).setPreferredWidth(700); //두번째 열 크기 조정
+		hintTable.setRowHeight(50); // 높이 변경  
+		hintTable.setFont(new Font("Sunflower Medium",Font.PLAIN,15)); // 폰트 변경
 		// 테이블 헤더 설정
-		JTableHeader hintlistHeader = hintlist.getTableHeader();
-		hintlistHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
-		hintlistHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
-		hintlistHeader.setFont(new Font("Sunflower Medium",Font.BOLD,18));
-		Dimension headerSize = hintlistHeader.getPreferredSize();
+		JTableHeader hintTableHeader = hintTable.getTableHeader();
+		hintTableHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
+		hintTableHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
+		hintTableHeader.setFont(new Font("Sunflower Medium",Font.BOLD,18));
+		Dimension headerSize = hintTableHeader.getPreferredSize();
 		headerSize.height = 40;
-		hintlistHeader.setPreferredSize(headerSize);
+		hintTableHeader.setPreferredSize(headerSize);
 		
 		// 프레임에 추가
-		JScrollPane hintlistscrollPane = new JScrollPane(hintlist);
-		hintlist.setOpaque(false);
-		hintlistpanel.add(hintlistscrollPane);
+		JScrollPane hintTablescrollPane = new JScrollPane(hintTable);
+		hintTable.setOpaque(false);
+		hintlistpanel.add(hintTablescrollPane);
 		hintlistpanel.setOpaque(false);
 		getContentPane().add(hintlistpanel);
 		

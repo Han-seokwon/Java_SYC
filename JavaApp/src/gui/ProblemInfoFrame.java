@@ -1,7 +1,7 @@
 package gui;
 
 /*
- * ì„ íƒëœ ë¬¸ì œì˜ ìƒì„¸ ì •ë³´ë¥¼ ë³´ì—¬ì£¼ëŠ” í”„ë ˆì„
+ * ¼±ÅÃµÈ ¹®Á¦ÀÇ »ó¼¼ Á¤º¸¸¦ º¸¿©ÁÖ´Â ÇÁ·¹ÀÓ
  */
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -49,7 +49,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		
 
 		
-		//ë¬¸ì œ íŒ¨ë„
+		//¹®Á¦ ÆĞ³Î
 		JPanel Problem1 = new JPanel();
 		Problem1.setBounds(172, 158, 158, 363);
 		contentPane.add(Problem1);
@@ -58,14 +58,14 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		Problem1.setBackground(new Color(125, 184, 242));
 		Problem1.setOpaque(true);
 
-		JLabel id = new JLabel("ë¬¸ì œ ë²ˆí˜¸");
-		JLabel name = new JLabel("ì œëª©");
-		JLabel hard = new JLabel("ë‚œì´ë„");
-		JLabel point = new JLabel("íšë“ í¬ì¸íŠ¸");
+		JLabel id = new JLabel("¹®Á¦ ¹øÈ£");
+		JLabel name = new JLabel("Á¦¸ñ");
+		JLabel hard = new JLabel("³­ÀÌµµ");
+		JLabel point = new JLabel("È¹µæ Æ÷ÀÎÆ®");
 		JLabel url = new JLabel("URL");
-		JLabel algo = new JLabel("ì•Œê³ ë¦¬ì¦˜");
+		JLabel algo = new JLabel("¾Ë°í¸®Áò");
 		
-		id.setHorizontalAlignment(SwingConstants.CENTER); //ë¼ë²¨ ë¬¸ì ìœ„ì¹˜(ì¤‘ì•™)
+		id.setHorizontalAlignment(SwingConstants.CENTER); //¶óº§ ¹®ÀÚ À§Ä¡(Áß¾Ó)
 		id.setBorder(new LineBorder(new Color(0, 0, 0)));
 		Problem1.add(id);
 		
@@ -89,53 +89,53 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		algo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		Problem1.add(algo);
 		
-		//ë¬¸ì œ íŒ¨ë„
+		//¹®Á¦ ÆĞ³Î
 		JPanel ProblemData = new JPanel();
 		ProblemData.setBounds(330, 158, 509, 363);
 		contentPane.add(ProblemData);
 		ProblemData.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		// ë¬¸ì œ id
+		// ¹®Á¦ id
 		JLabel pID = new JLabel(String.valueOf(problem.getProblemID())); 
 		pID.setHorizontalAlignment(SwingConstants.CENTER);
 		pID.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(pID);
 		
-		// ë¬¸ì œ ì œëª©
+		// ¹®Á¦ Á¦¸ñ
 		JLabel pname = new JLabel(problem.getProblemName()); 
 		pname.setHorizontalAlignment(SwingConstants.CENTER);
 		pname.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(pname);
 		
-		RANK rank = problem.getProblemRank(); // ë­í¬
+		RANK rank = problem.getProblemRank(); // ·©Å©
 		
-		// ë­í¬ í¬ì¸íŠ¸
+		// ·©Å© Æ÷ÀÎÆ®
 		int rankPoint = problem.getProblemRankPoint(); 
 		JLabel prank = new JLabel(String.format("%s(%d)", rank.getRankName(), rankPoint));
 		prank.setHorizontalAlignment(SwingConstants.CENTER);
 		prank.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(prank);
 		
-		// ë¬¸ì œ í•´ê²° ì‹œ íšë“í•  ìˆ˜ ìˆëŠ” í¬ì¸íŠ¸
+		// ¹®Á¦ ÇØ°á ½Ã È¹µæÇÒ ¼ö ÀÖ´Â Æ÷ÀÎÆ®
 		JLabel ppoint = new JLabel(String.valueOf(rank.getPointGain())); 
 		ppoint.setHorizontalAlignment(SwingConstants.CENTER);
 		ppoint.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(ppoint);
 		
-		//ë¬¸ì œ url
+		//¹®Á¦ url
 		purl = new JLabel(problem.getProblemURL());
 		purl.setHorizontalAlignment(SwingConstants.CENTER);
 		purl.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(purl);
 		
-		//ë¬¸ì œ ì•Œê³ ë¦¬ì¦˜
+		//¹®Á¦ ¾Ë°í¸®Áò
 		JLabel palgo = new JLabel(String.valueOf(problem.getProblemAlgorithm())); 
 		palgo.setHorizontalAlignment(SwingConstants.CENTER);
 		palgo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(palgo);
 		
 		
-		// ë¬¸ì œ ë‚œì´ë„ ì½”ë©˜íŠ¸
+		// ¹®Á¦ ³­ÀÌµµ ÄÚ¸àÆ®
 		JTextArea textArea = new JTextArea();
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
@@ -146,41 +146,41 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		        textArea.append(comment.toString() + "\n");
 		    }
 		} else {
-		    textArea.append(" ì‘ì„±ëœ ì½”ë©˜íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤. ");
+		    textArea.append(" ÀÛ¼ºµÈ ÄÚ¸àÆ®°¡ ¾ø½À´Ï´Ù. ");
 		}
 		
-		//ì½”ë©˜íŠ¸ ìŠ¤í¬ë¡¤íŒ¨ë„ ìƒì„± ë° ì¶”ê°€
+		//ÄÚ¸àÆ® ½ºÅ©·ÑÆĞ³Î »ı¼º ¹× Ãß°¡
 		JScrollPane commentScrollPane = new JScrollPane(textArea);
 		commentScrollPane.setBounds(172, 602, 667, 146);
 		commentScrollPane.setOpaque(false);
 		commentScrollPane.setBackground(Color.black);
 		contentPane.add(commentScrollPane);
 		
-		//ë¬¸ì œ ë‚œì´ë„ ì½”ë©˜íŠ¸ ë¼ë²¨ ìƒì„±
-		JLabel comment = new JLabel("ë¬¸ì œ ë‚œì´ë„ ì½”ë©˜íŠ¸");
+		//¹®Á¦ ³­ÀÌµµ ÄÚ¸àÆ® ¶óº§ »ı¼º
+		JLabel comment = new JLabel("¹®Á¦ ³­ÀÌµµ ÄÚ¸àÆ®");
 		comment.setHorizontalAlignment(SwingConstants.CENTER);
 		comment.setBounds(172, 549, 187, 65);
 		contentPane.add(comment);		
 		
-		//íŒíŠ¸ ë¼ë²¨ ë° ë²„íŠ¼ ìƒì„±, ì¶”ê°€
-		JLabel hintlabel = new JLabel("íŒíŠ¸");
+		//ÈùÆ® ¶óº§ ¹× ¹öÆ° »ı¼º, Ãß°¡
+		JLabel hintlabel = new JLabel("ÈùÆ®");
 		hintlabel.setBounds(954, 108, 195, 46);
 		contentPane.add(hintlabel);
 		hintlabel.setForeground(new Color(130, 141, 226));
 		hintlabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		
-		//íŒíŠ¸ í™•ì¸ ë° ì‘í•™ìŠµìë£Œ, íš¨ìœ¨ì„± ë¹„êµ, ë‚œì´ë„ ê¸°ì—¬ ë²„íŠ¼ ìƒìƒ, ì¶”ê°€
-		dataBButton = new DesignedButton("í•™ìŠµìë£Œ", COLOR.JORDY_BLUE);
+		//ÈùÆ® È®ÀÎ ¹× ÀÛÇĞ½ÀÀÚ·á, È¿À²¼º ºñ±³, ³­ÀÌµµ ±â¿© ¹öÆ° »ı»ó, Ãß°¡
+		dataBButton = new DesignedButton("ÇĞ½ÀÀÚ·á", COLOR.JORDY_BLUE);
 		dataBButton.setBounds(954, 611, 195, 77);
 		contentPane.add(dataBButton);
-		efficiencyButton = new DesignedButton("íš¨ìœ¨ì„± ë¹„êµ", COLOR.JORDY_BLUE);
+		efficiencyButton = new DesignedButton("È¿À²¼º ºñ±³", COLOR.JORDY_BLUE);
 		efficiencyButton.setBounds(954, 524, 195, 77);
 		contentPane.add(efficiencyButton);
-		levelButton = new DesignedButton("ë‚œì´ë„ ê¸°ì—¬", COLOR.JORDY_BLUE);
+		levelButton = new DesignedButton("³­ÀÌµµ ±â¿©", COLOR.JORDY_BLUE);
 		levelButton.setBounds(954, 437, 195, 77);
 		contentPane.add(levelButton);
-		mainButton = new DesignedButton("ë¬¸ì œ ëª©ë¡ í™•ì¸", COLOR.JORDY_BLUE);
+		mainButton = new DesignedButton("¹®Á¦ ¸ñ·Ï È®ÀÎ", COLOR.JORDY_BLUE);
 		mainButton.setBounds(954, 697, 195, 77);
 		contentPane.add(mainButton);
 		STEP3Button = new DesignedButton("STEP 3", COLOR.CHET_WODE_BLUE);
@@ -193,7 +193,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		STEP1Button.setBounds(954, 164, 195, 77);
 		contentPane.add(STEP1Button);
 		
-		// ë²„íŠ¼ë³„ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
+		// ¹öÆ°º° ¸®½º³Ê µî·Ï
 		STEP1Button.addActionListener(actionListener);
 		STEP2Button.addActionListener(actionListener);
 		STEP3Button.addActionListener(actionListener);
@@ -202,18 +202,18 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		efficiencyButton.addActionListener(actionListener);
 		dataBButton.addActionListener(actionListener);
 		
-		setVisible(true); // í”„ë ˆì„ í‘œì‹œ
+		setVisible(true); // ÇÁ·¹ÀÓ Ç¥½Ã
 		
 		purl.addMouseListener(new MyMouseListener());
 		
-		contentPane.applyFontAndBackgroundToAllComponents(); // ì „ì²´ í°íŠ¸ ì ìš© ë° íŒ¨ë„ ë°°ê²½ìƒ‰ íˆ¬ëª…í•˜ê²Œ ì ìš©
+		contentPane.applyFontAndBackgroundToAllComponents(); // ÀüÃ¼ ÆùÆ® Àû¿ë ¹× ÆĞ³Î ¹è°æ»ö Åõ¸íÇÏ°Ô Àû¿ë
 		
 
 		
 			
 	}
 	
-    private class MyMouseListener extends MouseAdapter { //url(purl ë¼ë²¨) í´ë¦­ ì´ë²¤íŠ¸ ì œì–´
+    private class MyMouseListener extends MouseAdapter { //url(purl ¶óº§) Å¬¸¯ ÀÌº¥Æ® Á¦¾î
     	public void mouseClicked(MouseEvent e) {
             try {
                 String url = pproblem.getProblemURL();
@@ -238,7 +238,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 	
 	
 
-	class MyActionListener implements ActionListener{ //ë²„íŠ¼ë³„ ì´ë²¤íŠ¸ ì²˜ë¦¬
+	class MyActionListener implements ActionListener{ //¹öÆ°º° ÀÌº¥Æ® Ã³¸®
 		private ProblemInfoFrame problemInfoFrame;
 		public MyActionListener() {}
 		public MyActionListener(ProblemInfoFrame problemInfoFrame) {
@@ -265,7 +265,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 					co.setVisible(true);
 				}
 				if (e.getSource() == levelButton) { // 
-					System.out.println("levelButton ì´ë²¤íŠ¸ ì¶”ê°€");
+					System.out.println("levelButton ÀÌº¥Æ® Ãß°¡");
 					new RateProblemFrame(user, pproblem, problemInfoFrame);
 				}
 				if (e.getSource() == mainButton) { // 
@@ -276,5 +276,3 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		}
 	}
 }
-		
-	
