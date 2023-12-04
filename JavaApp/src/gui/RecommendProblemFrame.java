@@ -219,7 +219,7 @@ public class RecommendProblemFrame extends DesignedJFrame {
 				seletedButtonGuideString =  getRankRecommendGuideString(selectedButton.getText(), user.getRank(), user.getRankPoint());	
 			}
 			seletedBtnDisplayArea.setText(seletedButtonGuideString); // 클릭된 버튼에 맞게 안내문 내용을 변경
-			System.out.println(recommendedProblemList.toString());
+			System.out.println("추천된 문제 리스트 : " + recommendedProblemList.toString());
 			recommendedProblemTable.updateProblemListToTable(recommendedProblemList); // 추천된 문제리스트를 테이블에 추가
 		}
 	}

@@ -23,7 +23,6 @@ public class RecommendProblems {
 	            recommendedProblems.add(problem);
 	        }
 	    }
-
 	    return recommendedProblems;
 	}
 
