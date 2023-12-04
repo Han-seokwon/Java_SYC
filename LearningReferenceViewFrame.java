@@ -5,6 +5,7 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 
 import gui.HintViewFrame;
+import problems.Problem;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,85 +15,87 @@ import java.awt.event.ActionListener;
 public class LearningReferenceViewFrame  extends DesignedJFrame{
 	
 	private JPanel infopanel, referencetitlepanel, referencecontentpanel, referenceViewButtonpanel; 
-	private JLabel problemName;
+	private String referenceTitle, referenceContent;
+	private JLabel problemName, writer, title;
 	private JButton referenceclosebtn;
 	
-	public LearningReferenceViewFrame(String referenceTitle) {
+	public LearningReferenceViewFrame(Problem problem, int row, String user) {
 		setTitle("LearningReferenceViewFrame");
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
+		this.referenceTitle = problem.getProblemReferences().get(row)[1]; // í•™ìŠµìë£Œ ì œëª©
+		this.referenceContent = problem.getProblemReferences().get(row)[2]; // í•™ìŠµìë£Œ ë‚´ìš©
 		
-		addinfopanel(referenceTitle); // ±âº»Á¤º¸
-		addlearningreferencecontentpanel(); // ÇĞ½ÀÀÚ·á
-		addreferenceViewButtonpanel(); // ÇĞ½ÀÀÚ·á´İ±â¹öÆ°
+		addinfopanel(user, problem); // ê¸°ë³¸ì •ë³´
+		addlearningreferencecontentpanel(); // í•™ìŠµìë£Œ
+		addreferenceViewButtonpanel(); // í•™ìŠµìë£Œë‹«ê¸°ë²„íŠ¼
 		
 		setVisible(true); 
 	}
 	
-	public void addinfopanel(String referenceTitle) { // ±âº»Á¤º¸ 
+	public void addinfopanel(String user, Problem problem) { // ê¸°ë³¸ì •ë³´ 
 		infopanel = new JPanel();
 		infopanel.setBackground(new Color(255, 255, 255));
-		infopanel.setLayout(new GridLayout(2,1));
+		infopanel.setLayout(new GridLayout(3,1));
 		infopanel.setLocation(120, 50);
 		infopanel.setSize(1070, 100); 
 		
-		JLabel problemName = new JLabel("(¹®Á¦ Á¦¸ñ)"); // ¼öÁ¤ÇÊ¿ä
-		JLabel title = new JLabel("   ÇĞ½ÀÀÚ·á - "+referenceTitle); 
+		problemName = new JLabel(problem.getProblemName());
+		writer = new JLabel("ì‘ì„±ì : " + user); 
+		title = new JLabel("ì œ ëª©: "+referenceTitle);
 		problemName.setFont(new Font("Sunflower Medium",Font.BOLD,35));
-		title.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
+		title.setFont(new Font("Sunflower Medium",Font.PLAIN,25));
+		writer.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
 	
 		infopanel.add(problemName);
 		infopanel.add(title);
+		infopanel.add(writer);
 		getContentPane().add(infopanel);
 	} 
 	
 	
-	public void addlearningreferencecontentpanel() { // ÇĞ½ÀÀÚ·á
+	public void addlearningreferencecontentpanel() { // í•™ìŠµìë£Œ
+		// íŒ¨ë„ìƒì„±
 		referencecontentpanel = new JPanel();
 		referencecontentpanel.setBackground(new Color(255, 255, 255));
 		referencecontentpanel.setLayout(new GridLayout(1,1)); 
 		referencecontentpanel.setBounds(120, 160, 1070, 493);
-		referencecontentpanel.setBorder(new TitledBorder(new LineBorder(Color.black, 3), "³» ¿ë"));
-		
-		String referenceContent = "(ÇĞ½ÀÀÚ·á ³»¿ë)"; //¼öÁ¤
+		referencecontentpanel.setBorder(new TitledBorder(new LineBorder(Color.black, 3), "ë‚´ ìš©"));
+	
 		getContentPane().add(referencecontentpanel);
 		JScrollPane scrollPane = new JScrollPane();
 		
-		JTextArea referenceContentField = new JTextArea(referenceContent);
+		JTextArea referenceContentField = new JTextArea(this.referenceContent);
 		referencecontentpanel.add(referenceContentField);
-		referenceContentField.add(scrollPane); // ½ºÅ©·ÑÆÒ
+		referenceContentField.add(scrollPane); // ìŠ¤í¬ë¡¤íŒ¬
 		referenceContentField.setWrapStyleWord(true);
 		referenceContentField.setLineWrap(true);
 		referenceContentField.setEditable(false);
 		 
 	}
 
-public void addreferenceViewButtonpanel() { // ÇĞ½ÀÀÚ·áº¸±â¹öÆ°ÆĞ³Î
-		// ÆĞ³Î »ı¼º
+public void addreferenceViewButtonpanel() { // í•™ìŠµìë£Œë³´ê¸°ë²„íŠ¼íŒ¨ë„
+		// íŒ¨ë„ ìƒì„±
 		referenceViewButtonpanel = new JPanel();
 		referenceViewButtonpanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10)); 
-		referenceViewButtonpanel.setLocation(770, 670); // À§Ä¡
-		referenceViewButtonpanel.setSize(420, 70); // Å©±â
-		// ÇĞ½ÀÀÚ·á ´İ±â¹öÆ°
-		DesignedButton referenceViewClosebtn = new DesignedButton("´İ    ±â", 150, 40, COLOR.AQUA_ISLAND);
+		referenceViewButtonpanel.setLocation(770, 670); // ìœ„ì¹˜
+		referenceViewButtonpanel.setSize(420, 70); // í¬ê¸°
+		// í•™ìŠµìë£Œ ë‹«ê¸°ë²„íŠ¼
+		DesignedButton referenceViewClosebtn = new DesignedButton("ë‹«    ê¸°", 150, 40, COLOR.AQUA_ISLAND);
 		referenceViewClosebtn.setLocation(getDefalutWindowWidth() - 370, 680);
 		referenceViewClosebtn.setSize(120, 40);
 		
-		referenceViewClosebtn.addActionListener (new ActionListener() { //ÀÍ¸íÅ¬·¡½º ÇĞ½ÀÀÚ·á´İ±â¹öÆ° ¸®½º³Ê
+		referenceViewClosebtn.addActionListener (new ActionListener() { //ìµëª…í´ë˜ìŠ¤ í•™ìŠµìë£Œë‹«ê¸°ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}
 		});
 	
-		//ÇÁ·¹ÀÓ¿¡ Ãß°¡
+		//í”„ë ˆì„ì— ì¶”ê°€
 		referenceViewButtonpanel.add(referenceViewClosebtn);
 		referenceViewButtonpanel.setOpaque(false);
 		getContentPane().add(referenceViewButtonpanel);
 		
-	}
-	
-	public static void main(String[] args) { // ¸ŞÀÎÇÔ¼ö
-		new LearningReferenceViewFrame("(¹®Á¦Á¦¸ñ)");
 	}
 }
