@@ -126,10 +126,9 @@ public class HintViewFrame extends DesignedJFrame {
 
 		hintAddbtn.addActionListener (new ActionListener() { //익명클래스 힌트작성버튼 리스너
 			public void actionPerformed(ActionEvent e) {
-				JButton hintadd = (JButton)e.getSource();
-					// 힌트 리스트에 추가 리스너
-					new HintAddFrame(problem, user);
-					setVisible(false);  
+				// 힌트 리스트에 추가 리스너
+				new HintAddFrame(problem, user);
+				dispose();  
 			}
 		});
 		
@@ -140,7 +139,7 @@ public class HintViewFrame extends DesignedJFrame {
 		
 		hintbackBtn.addActionListener (new ActionListener() { //익명클래스 학습자료리스트 닫기버튼 리스너
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				dispose(); 
 			}
 		});
 		

@@ -84,7 +84,8 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 				
 				//등록버튼 기능 작성
 				String referenceContent = referencewritefield.getText();
-				new LearningMaterialsHintAdd(referenceContent, problem, user);
+				problem.addProblemReferences(referenceContent, user);
+//				new LearningMaterialsHintAdd(referenceContent, problem, user); // 추가로 처리하는 작업이 없으면 굳이 객체 생성 필요 없음
 				
 				//창전환
 				dispose();
@@ -98,7 +99,7 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 		
 		referenceCancelBtn.addActionListener (new ActionListener() { //익명클래스 학습자료닫기버튼 리스너
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				dispose();
 				LearningReferenceListFrame LRLF= new LearningReferenceListFrame(problem, user);
 				LRLF.setVisible(true);
 			}

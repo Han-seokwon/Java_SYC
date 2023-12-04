@@ -161,9 +161,8 @@ public class HintAddFrame extends DesignedJFrame{
 					new LearningMaterialsHintAdd(hintstep, user, referenceContent, problem);
 					
 					// 힌트 리스트에 작성한 힌트내용 추가
-					setVisible(false);
-					HintViewFrame hintViewFrame = new HintViewFrame(step, problem, user);
-					hintViewFrame.setVisible(true);
+					dispose();
+					new HintViewFrame(step, problem, user);
 				}
 			});
 			
@@ -175,9 +174,8 @@ public class HintAddFrame extends DesignedJFrame{
 			
 			hintCancelBtn.addActionListener (new ActionListener() { //익명클래스 학습자료닫기버튼 리스너
 				public void actionPerformed(ActionEvent e) {
-					setVisible(false);
-					HintViewFrame hintViewFrame = new HintViewFrame(step, problem, user);
-					hintViewFrame.setVisible(true);					
+					dispose();
+					new HintViewFrame(step, problem, user);				
 				}
 			});
 			

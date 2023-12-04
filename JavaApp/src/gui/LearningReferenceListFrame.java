@@ -115,7 +115,7 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 	                String user = (String) referencelist.getValueAt(row, 0);
 	
 	                // 창 전환
-	                LearningReferenceViewFrame LRVF = new LearningReferenceViewFrame(problem, value, user);
+	                new LearningReferenceViewFrame(problem, value, user);
             	}
                 
             }
@@ -141,7 +141,7 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 		
 		referenceAddbtn.addActionListener (new ActionListener() { // 익명클래스 학습자료작성버튼 리스너
 			public void actionPerformed(ActionEvent e) {					
-				setVisible(false);
+				dispose();
 				new LearningReferenceAddFrame(problem, user);
 			}
 		});
@@ -153,7 +153,7 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 		
 		referencebackBtn.addActionListener (new ActionListener() { //익명클래스 학습자료리스트 닫기버튼 리스너
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				dispose();
 			}
 		});
 		

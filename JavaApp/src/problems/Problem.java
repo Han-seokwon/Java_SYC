@@ -161,6 +161,8 @@ public class Problem implements Serializable {
 	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화
 	 */
 	public void addProblemReferences(String plbmReferences, User user) {
+		System.out.println(user );
+		System.out.println(plbmReferences);
 		this.ProblemReferences.put(user, plbmReferences);
 		ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}

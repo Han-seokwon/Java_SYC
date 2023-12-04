@@ -82,7 +82,7 @@ public void addreferenceViewButtonpanel() { // 학습자료보기버튼패널
 		
 		referenceViewClosebtn.addActionListener (new ActionListener() { //익명클래스 학습자료닫기버튼 리스너
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				dispose();
 			}
 		});
 	

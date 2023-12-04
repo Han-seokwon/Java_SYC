@@ -3,8 +3,8 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import fetcher.JsonFetcher;
 import gui.MainFrame;
-import gui.RecommendProblemFrame;
 import gui.SurveyFrame;
 import problems.ProblemDBManager;
 import problems.ProblemRankManager;
