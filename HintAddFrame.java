@@ -8,6 +8,7 @@ import gui.HintViewFrame;
 import gui.DesignedJFrame;
 import gui.DesignedContentPane;
 import gui.DesignedButton;
+import problems.LearningMaterialsHintAdd;
 import problems.Problem;
 import users.User;
 
@@ -30,32 +31,32 @@ public class HintAddFrame extends DesignedJFrame{
 	
 	User user = new User();
 	Problem problem = new Problem();
-	
-	public HintAddFrame() {
+
+	public HintAddFrame(Problem problem, User user) {
 		setTitle("HintAddFrame");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
 		
-		addinfopanel(); // ±âº»Á¤º¸
-		addhintguidepanel(); // ÈùÆ®ÀÛ¼º°¡ÀÌµå
-		addselectsteppanel(); // step ¼±ÅÃ
-		addhintwritepanel(); // ÈùÆ® ÀÛ¼ºÇÊµå
-		addHintViewButtonpanel(); //¹öÆ° ÆĞ³Î
+		addinfopanel(problem); // ê¸°ë³¸ì •ë³´
+		addhintguidepanel(); // íŒíŠ¸ì‘ì„±ê°€ì´ë“œ
+		addselectsteppanel(); // step ì„ íƒ
+		addhintwritepanel(); // íŒíŠ¸ ì‘ì„±í•„ë“œ
+		addHintViewButtonpanel(problem, user); //ë²„íŠ¼ íŒ¨ë„
 		
 		
 		setVisible(true); 
 	}
 	
-	public void addinfopanel() { // ±âº»Á¤º¸ 
+	public void addinfopanel(Problem problem) { // ê¸°ë³¸ì •ë³´ 
 		infopanel = new JPanel();
 		infopanel.setLayout(new GridLayout(2,1));
 		infopanel.setLocation(120, 50);
 		infopanel.setSize(750, 100); 
 		
-		JLabel problemName = new JLabel("(¹®Á¦ Á¦¸ñ)"); // ¼öÁ¤ÇÊ¿ä(problem.getProblemName())
-		JLabel title = new JLabel("   ÈùÆ® ÀÛ¼ºÇÏ±â"); 
+		JLabel problemName = new JLabel(problem.getProblemName());
+		JLabel title = new JLabel("   íŒíŠ¸ ì‘ì„±í•˜ê¸°"); 
 		problemName.setFont(new Font("Sunflower Medium",Font.BOLD,35));
 		title.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
 		
@@ -66,53 +67,52 @@ public class HintAddFrame extends DesignedJFrame{
 	} 
 	
 	
-	public void addhintguidepanel() { // ÈùÆ® ÀÛ¼º °¡ÀÌµå
+	public void addhintguidepanel() { // íŒíŠ¸ ì‘ì„± ê°€ì´ë“œ
 		hintguidepanel = new JPanel();
-		hintguidepanel.setBorder(new TitledBorder(new LineBorder(Color.black, 3), "ÈùÆ® ÀÛ¼º °¡ÀÌµå"));
+		hintguidepanel.setBorder(new TitledBorder(new LineBorder(Color.black, 3), "íŒíŠ¸ ì‘ì„± ê°€ì´ë“œ"));
 		hintguidepanel.setLayout(new GridLayout(1,1)); 
-		hintguidepanel.setLocation(150,150); // À§Ä¡
-		hintguidepanel.setSize(450, 170); // Å©±â
+		hintguidepanel.setLocation(150,150); // ìœ„ì¹˜
+		hintguidepanel.setSize(450, 170); // í¬ê¸°
 		
 		
-		String step1guide = " ¹®Á¦ Á¢±Ù ¹æ¹ı Á¦½Ã";
-		String step2guide = " »ç¿ëµÇ´Â ÇÙ½É ¾Ë°í¸®Áò ¹× ÀÏºÎ ·ÎÁ÷ °ø°³";
-		String step3guide = " ÀüÃ¼ ÇØ°á ¹æ¹ı °ø°³";
-		String header[] = {"STEP", "ÈùÆ® ÀÛ¼º °¡ÀÌµå"};
-		String content[][] = { {" STEP 1", step1guide},{" STEP 2", step2guide}, {" STEP 3", step3guide}}; //ÈùÆ® °¡ÀÌµå ³»¿ë
-		DefaultTableModel dtm = new DefaultTableModel(content, header) { //¼öÁ¤ºÒ°¡´ÉÇÏµµ·Ï
+		String step1guide = " ë¬¸ì œ ì ‘ê·¼ ë°©ë²• ì œì‹œ";
+		String step2guide = " ì‚¬ìš©ë˜ëŠ” í•µì‹¬ ì•Œê³ ë¦¬ì¦˜ ë° ì¼ë¶€ ë¡œì§ ê³µê°œ";
+		String step3guide = " ì „ì²´ í•´ê²° ë°©ë²• ê³µê°œ";
+		String header[] = {"STEP", "íŒíŠ¸ ì‘ì„± ê°€ì´ë“œ"};
+		String content[][] = { {" STEP 1", step1guide},{" STEP 2", step2guide}, {" STEP 3", step3guide}}; //íŒíŠ¸ ê°€ì´ë“œ ë‚´ìš©
+		DefaultTableModel dtm = new DefaultTableModel(content, header) { //ìˆ˜ì •ë¶ˆê°€ëŠ¥í•˜ë„ë¡
 			public boolean isCellEditable(int row, int  column) {
 		        return false;
 		      } 
 		};
 		 
 		JTable hintguide = new JTable(dtm);
-		hintguide.setFont(new Font("Sunflower Medium",Font.PLAIN,15)); // ÆùÆ® º¯°æ
-		hintguide.getColumnModel().getColumn(0).setPreferredWidth(100); //Ã¹¹øÂ° ¿­ Å©±â Á¶Á¤
-		hintguide.getColumnModel().getColumn(1).setPreferredWidth(500); //µÎ¹øÂ° ¿­ Å©±â Á¶Á¤
-		hintguide.setRowHeight(50); // ³ôÀÌ º¯°æ  
+		hintguide.setFont(new Font("Sunflower Medium",Font.PLAIN,15)); // í°íŠ¸ ë³€ê²½
+		hintguide.getColumnModel().getColumn(0).setPreferredWidth(100); //ì²«ë²ˆì§¸ ì—´ í¬ê¸° ì¡°ì •
+		hintguide.getColumnModel().getColumn(1).setPreferredWidth(500); //ë‘ë²ˆì§¸ ì—´ í¬ê¸° ì¡°ì •
+		hintguide.setRowHeight(50); // ë†’ì´ ë³€ê²½  
 		
 		hintguidepanel.add(hintguide);
 		hintguidepanel.setOpaque(false);
 		getContentPane().add(hintguidepanel);
 	}
 	
-	public void addselectsteppanel() { // ÈùÆ® step ¼±ÅÃ
+	public void addselectsteppanel() { // íŒíŠ¸ step ì„ íƒ
 		selectsteppanel = new JPanel();
-		selectsteppanel.setBorder(new TitledBorder(new LineBorder(Color.black, 3), "STEP ¼±ÅÃ"));
+		selectsteppanel.setBorder(new TitledBorder(new LineBorder(Color.black, 3), "STEP ì„ íƒ"));
 		selectsteppanel.setLayout(new GridLayout(1,1)); 
-		selectsteppanel.setLocation(620,150); // À§Ä¡
-		selectsteppanel.setSize(350, 60); // Å©±â
+		selectsteppanel.setLocation(620,150); // ìœ„ì¹˜
+		selectsteppanel.setSize(350, 60); // í¬ê¸°
 		
 		String[] steplist = {"Step 1", "Step 2", "Step 3"};
 		JComboBox<String> selectstep = new JComboBox<String>(steplist);
 		
-		
-		// ¾×¼Ç ¸®½º³Ê
+		// ì•¡ì…˜ ë¦¬ìŠ¤ë„ˆ
 		selectstep.addActionListener(new ActionListener() {
 			public void actionPerformed (ActionEvent e) {
-				JComboBox<String> stp = (JComboBox<String>)e.getSource(); //ActionÀÌº¥Æ®°¡ ¹ß»ıÇÑ ÄŞº¸¹Ú½º ¾Ë¾Æ³»±â
-				int idx = stp.getSelectedIndex(); // ¼±ÅÃµÈ ¾ÆÀÌÅÛÀÇ ÀÎµ¦½º ¹øÈ£ ¾Ë¾Æ³»±â
-				step = idx + 1; //ÈùÆ® ´Ü°è
+				JComboBox<String> stp = (JComboBox<String>)e.getSource(); //Actionì´ë²¤íŠ¸ê°€ ë°œìƒí•œ ì½¤ë³´ë°•ìŠ¤ ì•Œì•„ë‚´ê¸°
+				int idx = stp.getSelectedIndex(); // ì„ íƒëœ ì•„ì´í…œì˜ ì¸ë±ìŠ¤ ë²ˆí˜¸ ì•Œì•„ë‚´ê¸°
+				step = idx + 1; //íŒíŠ¸ ë‹¨ê³„
 			}
 		});
 		
@@ -123,74 +123,70 @@ public class HintAddFrame extends DesignedJFrame{
 		
 	}
 	
-	public void addhintwritepanel() { // ÈùÆ® ÀÛ¼ºÇÊµå
+	public void addhintwritepanel() { // íŒíŠ¸ ì‘ì„±í•„ë“œ
 		hintwritepanel = new JPanel();
 		hintwritepanel.setLayout(new GridLayout(1,1)); 
-		hintwritepanel.setLocation(140,350); // À§Ä¡
-		hintwritepanel.setSize(getDefalutWindowWidth() - 230, 300); // Å©±â
+		hintwritepanel.setLocation(140,350); // ìœ„ì¹˜
+		hintwritepanel.setSize(getDefalutWindowWidth() - 230, 300); // í¬ê¸°
 		
-		JTextArea hintwritefield = new JTextArea("³»¿ëÀ» ÀÔ·ÂÇØ ÁÖ¼¼¿ä."); // ÈùÆ® ÀÛ¼º
-		hintwritefield.setLineWrap(true); // ÀÚµ¿ÁÙ¹Ù²Ş
-		hintwritefield.setWrapStyleWord(true); //´Ü¾î ´ÜÀ§ÀÇ ÁÙ¹Ù²Ş(¿µ¾î)
+		hintwritefield = new JTextArea("ë‚´ìš©ì„ ì…ë ¥í•´ ì£¼ì„¸ìš”."); // íŒíŠ¸ ì‘ì„±
+		hintwritefield.setLineWrap(true); // ìë™ì¤„ë°”ê¿ˆ
+		hintwritefield.setWrapStyleWord(true); //ë‹¨ì–´ ë‹¨ìœ„ì˜ ì¤„ë°”ê¿ˆ(ì˜ì–´)
 
-		hintwritepanel.add(new JScrollPane(hintwritefield)); // ½ºÅ©·ÑÆÒ
+		hintwritepanel.add(new JScrollPane(hintwritefield)); // ìŠ¤í¬ë¡¤íŒ¬
 		hintwritepanel.setOpaque(false);
 		getContentPane().add(hintwritepanel);
 		
 	}
 	 
-		public void addHintViewButtonpanel() { // ÈùÆ®º¸±âÇÁ·¹ÀÓ¹öÆ°ÆĞ³Î
-			// ÆĞ³Î »ı¼º
+		public void addHintViewButtonpanel(Problem problem, User user) { // íŒíŠ¸ë³´ê¸°í”„ë ˆì„ë²„íŠ¼íŒ¨ë„
+			// íŒ¨ë„ ìƒì„±
 			hintAddbuttonpanel = new JPanel();
 			hintAddbuttonpanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 10)); 
-			hintAddbuttonpanel.setLocation(850, 670); // À§Ä¡
-			hintAddbuttonpanel.setSize(380, 70); // Å©±â
+			hintAddbuttonpanel.setLocation(850, 670); // ìœ„ì¹˜
+			hintAddbuttonpanel.setSize(380, 70); // í¬ê¸°
 			
-			// ÈùÆ® ÀÛ¼º¹öÆ° Ãß°¡
-			DesignedButton hintRegistbtn = new DesignedButton("ÈùÆ® µî·ÏÇÏ±â", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
+			// íŒíŠ¸ ì‘ì„±ë²„íŠ¼ ì¶”ê°€
+			DesignedButton hintRegistbtn = new DesignedButton("ë“±ë¡í•˜ê¸°", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
 			hintRegistbtn.setLocation(getDefalutWindowWidth() - 230, 680);
 			hintRegistbtn.setSize(150, 40);
 
-			hintRegistbtn.addActionListener (new ActionListener() { //ÀÍ¸íÅ¬·¡½º ÈùÆ®ÀÛ¼º¹öÆ° ¸®½º³Ê
+			hintRegistbtn.addActionListener (new ActionListener() { //ìµëª…í´ë˜ìŠ¤ íŒíŠ¸ì‘ì„±ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
 				public void actionPerformed(ActionEvent e) {
-					// ÈùÆ® ¸®½ºÆ®¿¡ Ãß°¡ ¸®½º³Ê
-
-					//µî·Ï¹öÆ° ±â´É ÀÛ¼º
-					/*
-					String hint = hintwritefield.getText();
-					String key = "Step "+ step;
-					problem.addProblemHint(key, user, hint);*/
 					
-					// ÈùÆ® ¸®½ºÆ®¿¡ ÀÛ¼ºÇÑ ÈùÆ®³»¿ë Ãß°¡
+					// íŒíŠ¸ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€ ë¦¬ìŠ¤ë„ˆ
+					String hintContent = hintwritefield.getText();
+					String hintstep = "Step " + String.valueOf(step);
+					
+					// íŒíŠ¸ ë¦¬ìŠ¤íŠ¸ì— ì‘ì„±í•œ íŒíŠ¸ë‚´ìš© ì¶”ê°€
+					new LearningMaterialsHintAdd(hintstep, user, hintContent, problem);
+					
+					// ì°½ì „í™˜
 					setVisible(false);
-					HintViewFrame hintViewFrame = new HintViewFrame(step);
+					HintViewFrame hintViewFrame = new HintViewFrame(step, problem, user);
 					hintViewFrame.setVisible(true);
 				}
 			});
 			
 						
-			// ´İ±â ¹öÆ°
-			DesignedButton hintCancelBtn = new DesignedButton("´İ  ±â", 150, 40, COLOR.AQUA_ISLAND);
+			// ë’¤ë¡œê°€ê¸° ë²„íŠ¼
+			DesignedButton hintCancelBtn = new DesignedButton("ë’¤ë¡œê°€ê¸°", 150, 40, COLOR.AQUA_ISLAND);
 			hintCancelBtn.setLocation(getDefalutWindowWidth() - 370, 680);
 			hintCancelBtn.setSize(120, 40);
 			
-			hintCancelBtn.addActionListener (new ActionListener() { //ÀÍ¸íÅ¬·¡½º ÇĞ½ÀÀÚ·á´İ±â¹öÆ° ¸®½º³Ê
+			hintCancelBtn.addActionListener (new ActionListener() { //ìµëª…í´ë˜ìŠ¤ í•™ìŠµìë£Œë‹«ê¸°ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
-					HintViewFrame hintViewFrame = new HintViewFrame(step);
+					HintViewFrame hintViewFrame = new HintViewFrame(step, problem, user);
 					hintViewFrame.setVisible(true);					
 				}
 			});
 			
 			
-			//ÇÁ·¹ÀÓ¿¡ Ãß°¡
+			//í”„ë ˆì„ì— ì¶”ê°€
 			hintAddbuttonpanel.add(hintRegistbtn);
 			hintAddbuttonpanel.add(hintCancelBtn);
 			hintAddbuttonpanel.setOpaque(false);
 			getContentPane().add(hintAddbuttonpanel);
 		}
-		
-	public static void main(String[] args) { // ¸ŞÀÎÇÔ¼ö
-		new HintAddFrame();
-	}
 }
