@@ -5,6 +5,8 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 
 import gui.HintViewFrame;
+import problems.*;
+import users.User;
 import gui.DesignedButton;
 import gui.DesignedJFrame;
 
@@ -18,30 +20,31 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 	JPanel infopanel, referencetitlepanel, referencewritepanel, ReferenceRegistButtonpanel; 
 	JLabel problemName;
 	DesignedButton referenceRegistbtn, referenceCancelBtn;
+	JTextField referencetitlefield;
 	JTextArea referencewritefield;
 	
-	public LearningReferenceAddFrame() {
-		setTitle("LearningReferenceAddFrame");
+	public LearningReferenceAddFrame(Problem problem, User user) {
+		setTitle("í•™ìŠµ ìë£Œ ì‘ì„±");
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
 		
-		addinfopanel(); // ±âº»Á¤º¸
-		addreferencetitlepanel(); // ÇĞ½ÀÀÚ·á Á¦¸ñ ÀÛ¼º ÇÊµå
-		addlearningreferencewritepanel(); // ÇĞ½ÀÀÚ·á ÀÛ¼ºÇÊµå
-		addReferenceRegistButton(); // ÇĞ½ÀÀÚ·áµî·Ï¹öÆ°
+		addinfopanel(problem); // ê¸°ë³¸ì •ë³´
+		addlearningreferencewritepanel(); // í•™ìŠµìë£Œ ë‚´ìš©ì‘ì„±í•„ë“œ
+		addreferencetitlepanel(); // í•™ìŠµìë£Œ ì œëª©ì‘ì„±í•„ë“œ
+		addReferenceRegistButton(problem, user); // í•™ìŠµìë£Œë“±ë¡ë²„íŠ¼
 		
 		setVisible(true); 
 	}
 	
-	public void addinfopanel() { // ±âº»Á¤º¸ 
+	public void addinfopanel(Problem problem) { // ê¸°ë³¸ì •ë³´ 
 		infopanel = new JPanel();
 		infopanel.setLayout(new GridLayout(2,1));
 		infopanel.setLocation(120, 50);
 		infopanel.setSize(1000, 100); 
 		
-		JLabel problemName = new JLabel("(¹®Á¦ Á¦¸ñ)"); // ¼öÁ¤ÇÊ¿ä
-		JLabel title = new JLabel("   ÇĞ½ÀÀÚ·á ÀÛ¼ºÇÏ±â"); 
+		JLabel problemName = new JLabel(problem.getProblemName()); // ë¬¸ì œ ì œëª©
+		JLabel title = new JLabel("ë¬¸ì œ í•™ìŠµ ìë£Œ ì‘ì„±í•˜ê¸°."); 
 		problemName.setFont(new Font("Sunflower Medium",Font.BOLD,35));
 		title.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
 	
@@ -49,82 +52,79 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 		infopanel.add(title);
 		infopanel.setOpaque(false);
 		getContentPane().add(infopanel);
-	} 
+	}
 	
-	public void addreferencetitlepanel() { // ÇĞ½ÀÀÚ·á Á¦¸ñ ÀÛ¼º
+	public void addreferencetitlepanel() { // í•™ìŠµìë£Œ ì œëª© ì‘ì„±
 		referencetitlepanel = new JPanel();
 		referencetitlepanel.setLayout(new GridLayout(1,1)); 
-		referencetitlepanel.setLocation(150,170); // À§Ä¡
-		referencetitlepanel.setSize(1020, 50); // Å©±â
+		referencetitlepanel.setLocation(150,170); // ìœ„ì¹˜
+		referencetitlepanel.setSize(1000, 50); // í¬ê¸°
 		
-		JTextField referencetitle = new JTextField(" Á¦¸ñÀ» ÀÔ·ÂÇÏ¼¼¿ä.");
+		JTextField referencetitle = new JTextField(" ì œëª©ì„ ì…ë ¥í•˜ì„¸ìš”.");
 		
 		referencetitlepanel.add(referencetitle);
 		getContentPane().add(referencetitlepanel);
 
 	}
-	 
-	public void addlearningreferencewritepanel() { // ÇĞ½ÀÀÚ·á ÀÛ¼ºÇÊµå
+	public void addlearningreferencewritepanel() { // í•™ìŠµìë£Œ ì‘ì„±í•„ë“œ
 		referencewritepanel = new JPanel();
 		referencewritepanel.setLayout(new GridLayout(1,1)); 
-		referencewritepanel.setLocation(150,250); // À§Ä¡
-		referencewritepanel.setSize(1020, 400); // Å©±â
+		referencewritepanel.setLocation(150,250); // ìœ„ì¹˜
+		referencewritepanel.setSize(1000, 400); // í¬ê¸°
 		
-		JTextArea referencewritefield = new JTextArea(" ³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä."); // ÇĞ½ÀÀÚ·á ÀÛ¼º
-		referencewritefield.setLineWrap(true); // ÀÚµ¿ÁÙ¹Ù²Ş
-		referencewritefield.setWrapStyleWord(true); //´Ü¾î ´ÜÀ§ÀÇ ÁÙ¹Ù²Ş(¿µ¾î)
+		referencewritefield = new JTextArea(" ë‚´ìš©ì„ ì…ë ¥í•˜ì„¸ìš”."); // í•™ìŠµìë£Œ ì‘ì„±
+		referencewritefield.setLineWrap(true); // ìë™ì¤„ë°”ê¿ˆ
+		referencewritefield.setWrapStyleWord(true); //ë‹¨ì–´ ë‹¨ìœ„ì˜ ì¤„ë°”ê¿ˆ(ì˜ì–´)
 
-		referencewritepanel.add(new JScrollPane(referencewritefield)); // ½ºÅ©·ÑÆÒ
+		referencewritepanel.add(new JScrollPane(referencewritefield)); // ìŠ¤í¬ë¡¤íŒ¬
 		getContentPane().add(referencewritepanel);
 		
 	}
 
-	public void addReferenceRegistButton() { // ÇĞ½ÀÀÚ·áµî·Ï¹öÆ°
-		// ÆĞ³Î »ı¼º
+	public void addReferenceRegistButton(Problem problem, User user) { // í•™ìŠµìë£Œë“±ë¡ë²„íŠ¼
+		// íŒ¨ë„ ìƒì„±
 		ReferenceRegistButtonpanel = new JPanel();
 		ReferenceRegistButtonpanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 10)); 
-		ReferenceRegistButtonpanel.setLocation(850, 670); // À§Ä¡
-		ReferenceRegistButtonpanel.setSize(380, 70); // Å©±â
-		// ÇĞ½ÀÀÚ·á µî·Ï¹öÆ° Ãß°¡
-		DesignedButton referenceRegistbtn = new DesignedButton("ÇĞ½ÀÀÚ·á µî·ÏÇÏ±â", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
+		ReferenceRegistButtonpanel.setLocation(850, 670); // ìœ„ì¹˜
+		ReferenceRegistButtonpanel.setSize(380, 70); // í¬ê¸°
+		// í•™ìŠµìë£Œ ë“±ë¡ë²„íŠ¼ ì¶”ê°€
+		DesignedButton referenceRegistbtn = new DesignedButton("ë“±ë¡í•˜ê¸°", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
 		referenceRegistbtn.setLocation(getDefalutWindowWidth() - 230, 680);
 		referenceRegistbtn.setSize(150, 40);
 		
-		referenceRegistbtn.addActionListener (new ActionListener() { //ÀÍ¸íÅ¬·¡½º ÇĞ½ÀÀÚ·áÀÛ¼º¹öÆ° ¸®½º³Ê
+		referenceRegistbtn.addActionListener (new ActionListener() { //ìµëª…í´ë˜ìŠ¤ í•™ìŠµìë£Œì‘ì„±ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
 			public void actionPerformed(ActionEvent e) {
 				JButton referenceRegist = (JButton)e.getSource();
-				//µî·Ï¹öÆ° ±â´É ÀÛ¼º
 				
-				// ÇĞ½ÀÀÚ·á ¸®½ºÆ®¿¡ ÀÛ¼ºÇÑ ÇĞ½ÀÀÚ·á Á¦¸ñ Ãß°¡
+				//ë“±ë¡ë²„íŠ¼ ê¸°ëŠ¥ ì‘ì„±
+				String addreferenceTitle = referencetitlefield.getText();
+				String addreferenceContent = referencewritefield.getText(); 
+				new LearningMaterialsHintAdd(addreferenceTitle, addreferenceContent, problem, user);
 				
-				//Ã¢ÀüÈ¯
+				//ì°½ì „í™˜
 				setVisible(false);
-				LearningReferenceListFrame LRLF= new LearningReferenceListFrame();
+				LearningReferenceListFrame LRLF= new LearningReferenceListFrame(problem, user);
 				LRLF.setVisible(true);
 				
 			}
 		});
-		// ´İ±â ¹öÆ°
-		DesignedButton referenceCancelBtn = new DesignedButton("´İ    ±â", 150, 40, COLOR.AQUA_ISLAND);
+		// ë‹«ê¸° ë²„íŠ¼
+		DesignedButton referenceCancelBtn = new DesignedButton("ë‹«    ê¸°", 150, 40, COLOR.AQUA_ISLAND);
 		referenceCancelBtn.setLocation(getDefalutWindowWidth() - 370, 680);
 		referenceCancelBtn.setSize(120, 40);
 		
-		referenceCancelBtn.addActionListener (new ActionListener() { //ÀÍ¸íÅ¬·¡½º ÇĞ½ÀÀÚ·á´İ±â¹öÆ° ¸®½º³Ê
+		referenceCancelBtn.addActionListener (new ActionListener() { //ìµëª…í´ë˜ìŠ¤ í•™ìŠµìë£Œë‹«ê¸°ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				LearningReferenceListFrame LRLF= new LearningReferenceListFrame();
+				LearningReferenceListFrame LRLF= new LearningReferenceListFrame(problem, user);
 				LRLF.setVisible(true);
 			}
 		});
 		
-		//ÇÁ·¹ÀÓ¿¡ Ãß°¡
+		//í”„ë ˆì„ì— ì¶”ê°€
 		ReferenceRegistButtonpanel.add(referenceRegistbtn);
 		ReferenceRegistButtonpanel.add(referenceCancelBtn);
 		ReferenceRegistButtonpanel.setOpaque(false);
 		getContentPane().add(ReferenceRegistButtonpanel);
-	}
-	
-	public static void main(String[] args) { // ¸ŞÀÎÇÔ¼ö
-		new LearningReferenceAddFrame();
 	}
 }
