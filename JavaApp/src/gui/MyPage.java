@@ -119,7 +119,11 @@ public class MyPage extends DesignedJFrame {
             i++;
         }
 
-        DefaultTableModel model = new DefaultTableModel(data, columnNames); 
+        DefaultTableModel model = new DefaultTableModel(data, columnNames){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column) { return false; } // 셀 내용 수정할 수 없게 오버라이딩
+		}; 
         JTable table = new JTable(model);
         table.setBounds(147, 38, 455, 196);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

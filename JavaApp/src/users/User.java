@@ -138,16 +138,16 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	@Override
 	public String toString() {
 		return "User [username=" + username + 
-//				",\n solvedName=" + solvedName + 
-//				",\n email=" + email + 
-//				",\n password_hashed=" + password_hashed +
-//				",\n rank="	+ rank + 
-//				",\n rankPoint=" + rankPoint + 
-//				",\nconsecutiveActivityDate = " + consecutiveActivityDate 
-//				+ ",\n pwResetQuestion=" + pwResetQuestion +
-//				",\n pwResetAnswer=" + pwResetAnswer + 
-//				",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet +
-////				",\n solvedProblemSet="	+ solvedProblemSet +
+				",\n solvedName=" + solvedName + 
+				",\n email=" + email + 
+				",\n password_hashed=" + password_hashed +
+				",\n rank="	+ rank + 
+				",\n rankPoint=" + rankPoint + 
+				",\nconsecutiveActivityDate = " + consecutiveActivityDate 
+				+ ",\n pwResetQuestion=" + pwResetQuestion +
+				",\n pwResetAnswer=" + pwResetAnswer + 
+				",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet +
+//				",\n solvedProblemSet="	+ solvedProblemSet + // 내용이 많아 주석 처리
 				",\n activityDateList=" + activityDateList + "]\n";
 	}
 
