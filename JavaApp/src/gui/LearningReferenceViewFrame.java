@@ -5,6 +5,7 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 
 import gui.HintViewFrame;
+import problems.Problem;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,28 +18,28 @@ public class LearningReferenceViewFrame  extends DesignedJFrame{
 	private JLabel problemName;
 	private JButton referenceclosebtn;
 	
-	public LearningReferenceViewFrame(String referenceTitle) {
+	public LearningReferenceViewFrame(Problem problem, String referenceTitle, String user) {
 		setTitle("LearningReferenceViewFrame");
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
 		
-		addinfopanel(referenceTitle); // 기본정보
-		addlearningreferencecontentpanel(); // 학습자료
+		addinfopanel(user, problem); // 기본정보
+		addlearningreferencecontentpanel(referenceTitle); // 학습자료
 		addreferenceViewButtonpanel(); // 학습자료닫기버튼
 		
 		setVisible(true); 
 	}
 	
-	public void addinfopanel(String referenceTitle) { // 기본정보 
+	public void addinfopanel(String user, Problem problem) { // 기본정보 
 		infopanel = new JPanel();
 		infopanel.setBackground(new Color(255, 255, 255));
 		infopanel.setLayout(new GridLayout(2,1));
 		infopanel.setLocation(120, 50);
 		infopanel.setSize(1070, 100); 
 		
-		JLabel problemName = new JLabel("(문제 제목)"); // 수정필요
-		JLabel title = new JLabel("   학습자료 - "+referenceTitle); 
+		JLabel problemName = new JLabel(problem.getProblemName()); // 수정필요
+		JLabel title = new JLabel("작성자 : " + user); 
 		problemName.setFont(new Font("Sunflower Medium",Font.BOLD,35));
 		title.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
 	
@@ -48,14 +49,14 @@ public class LearningReferenceViewFrame  extends DesignedJFrame{
 	} 
 	
 	
-	public void addlearningreferencecontentpanel() { // 학습자료
+	public void addlearningreferencecontentpanel(String referenceTitle) { // 학습자료
 		referencecontentpanel = new JPanel();
 		referencecontentpanel.setBackground(new Color(255, 255, 255));
 		referencecontentpanel.setLayout(new GridLayout(1,1)); 
 		referencecontentpanel.setBounds(120, 160, 1070, 493);
 		referencecontentpanel.setBorder(new TitledBorder(new LineBorder(Color.black, 3), "내 용"));
 		
-		String referenceContent = "(학습자료 내용)"; //수정
+		String referenceContent = referenceTitle; //수정
 		getContentPane().add(referencecontentpanel);
 		JScrollPane scrollPane = new JScrollPane();
 		
@@ -90,9 +91,5 @@ public void addreferenceViewButtonpanel() { // 학습자료보기버튼패널
 		referenceViewButtonpanel.setOpaque(false);
 		getContentPane().add(referenceViewButtonpanel);
 		
-	}
-	
-	public static void main(String[] args) { // 메인함수
-		new LearningReferenceViewFrame("(문제제목)");
 	}
 }

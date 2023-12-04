@@ -8,6 +8,7 @@ import gui.HintViewFrame;
 import gui.DesignedJFrame;
 import gui.DesignedContentPane;
 import gui.DesignedButton;
+import problems.LearningMaterialsHintAdd;
 import problems.Problem;
 import users.User;
 
@@ -30,31 +31,31 @@ public class HintAddFrame extends DesignedJFrame{
 	
 	User user = new User();
 	Problem problem = new Problem();
-	
-	public HintAddFrame() {
+
+	public HintAddFrame(Problem problem, User user) {
 		setTitle("HintAddFrame");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
 		
-		addinfopanel(); // 기본정보
+		addinfopanel(problem); // 기본정보
 		addhintguidepanel(); // 힌트작성가이드
 		addselectsteppanel(); // step 선택
 		addhintwritepanel(); // 힌트 작성필드
-		addHintViewButtonpanel(); //버튼 패널
+		addHintViewButtonpanel(problem, user); //버튼 패널
 		
 		
 		setVisible(true); 
 	}
 	
-	public void addinfopanel() { // 기본정보 
+	public void addinfopanel(Problem problem) { // 기본정보 
 		infopanel = new JPanel();
 		infopanel.setLayout(new GridLayout(2,1));
 		infopanel.setLocation(120, 50);
 		infopanel.setSize(750, 100); 
 		
-		JLabel problemName = new JLabel("(문제 제목)"); // 수정필요(problem.getProblemName())
+		JLabel problemName = new JLabel(problem.getProblemName());
 		JLabel title = new JLabel("   힌트 작성하기"); 
 		problemName.setFont(new Font("Sunflower Medium",Font.BOLD,35));
 		title.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
@@ -106,7 +107,6 @@ public class HintAddFrame extends DesignedJFrame{
 		String[] steplist = {"Step 1", "Step 2", "Step 3"};
 		JComboBox<String> selectstep = new JComboBox<String>(steplist);
 		
-		
 		// 액션 리스너
 		selectstep.addActionListener(new ActionListener() {
 			public void actionPerformed (ActionEvent e) {
@@ -129,7 +129,7 @@ public class HintAddFrame extends DesignedJFrame{
 		hintwritepanel.setLocation(140,350); // 위치
 		hintwritepanel.setSize(getDefalutWindowWidth() - 230, 300); // 크기
 		
-		JTextArea hintwritefield = new JTextArea("내용을 입력해 주세요."); // 힌트 작성
+		hintwritefield = new JTextArea("내용을 입력해 주세요."); // 힌트 작성
 		hintwritefield.setLineWrap(true); // 자동줄바꿈
 		hintwritefield.setWrapStyleWord(true); //단어 단위의 줄바꿈(영어)
 
@@ -139,7 +139,7 @@ public class HintAddFrame extends DesignedJFrame{
 		
 	}
 	 
-		public void addHintViewButtonpanel() { // 힌트보기프레임버튼패널
+		public void addHintViewButtonpanel(Problem problem, User user) { // 힌트보기프레임버튼패널
 			// 패널 생성
 			hintAddbuttonpanel = new JPanel();
 			hintAddbuttonpanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 10)); 
@@ -147,23 +147,22 @@ public class HintAddFrame extends DesignedJFrame{
 			hintAddbuttonpanel.setSize(380, 70); // 크기
 			
 			// 힌트 작성버튼 추가
-			DesignedButton hintRegistbtn = new DesignedButton("힌트 등록하기", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
+			DesignedButton hintRegistbtn = new DesignedButton("등록하기", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
 			hintRegistbtn.setLocation(getDefalutWindowWidth() - 230, 680);
 			hintRegistbtn.setSize(150, 40);
 
 			hintRegistbtn.addActionListener (new ActionListener() { //익명클래스 힌트작성버튼 리스너
 				public void actionPerformed(ActionEvent e) {
+					
 					// 힌트 리스트에 추가 리스너
-
-					//등록버튼 기능 작성
-					/*
-					String hint = hintwritefield.getText();
-					String key = "Step "+ step;
-					problem.addProblemHint(key, user, hint);*/
+					String referenceContent = hintwritefield.getText();
+					String hintstep = "Step " + String.valueOf(step);
+					
+					new LearningMaterialsHintAdd(hintstep, user, referenceContent, problem);
 					
 					// 힌트 리스트에 작성한 힌트내용 추가
 					setVisible(false);
-					HintViewFrame hintViewFrame = new HintViewFrame(step);
+					HintViewFrame hintViewFrame = new HintViewFrame(step, problem, user);
 					hintViewFrame.setVisible(true);
 				}
 			});
@@ -177,7 +176,7 @@ public class HintAddFrame extends DesignedJFrame{
 			hintCancelBtn.addActionListener (new ActionListener() { //익명클래스 학습자료닫기버튼 리스너
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
-					HintViewFrame hintViewFrame = new HintViewFrame(step);
+					HintViewFrame hintViewFrame = new HintViewFrame(step, problem, user);
 					hintViewFrame.setVisible(true);					
 				}
 			});
@@ -189,8 +188,4 @@ public class HintAddFrame extends DesignedJFrame{
 			hintAddbuttonpanel.setOpaque(false);
 			getContentPane().add(hintAddbuttonpanel);
 		}
-		
-	public static void main(String[] args) { // 메인함수
-		new HintAddFrame();
-	}
 }

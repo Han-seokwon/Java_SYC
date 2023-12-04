@@ -10,11 +10,11 @@ public class LearningMaterialsHintAdd {
     private Problem problem;  // 특정 문제 객체를 저장할 변수
 
     // 생성자(학습자료 추가용)
-    public LearningMaterialsHintAdd(String material, Problem problem) {
+    public LearningMaterialsHintAdd(String material, Problem problem, User name) {
         this.Material = material;
         this.problem = problem;
         // 학습자료 추가
-        problem.addProblemReferences(Material);
+        problem.addProblemReferences(Material, name);
     }
 
     // 생성자(힌트 추가용)

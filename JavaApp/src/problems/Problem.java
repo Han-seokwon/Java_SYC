@@ -17,7 +17,7 @@ public class Problem implements Serializable {
 	private RANK ProblemRank;	 	// 문제 랭크
 	private int ProblemRankPoint;	// 문제 랭크 포인트
 	private HashMap<String, HashMap<User, String>> ProblemHint = new HashMap<>();	// 문제 힌트
-	private List<String> ProblemReferences = new ArrayList<>();		// 문제 학습자료
+	private HashMap<User, String> ProblemReferences = new HashMap<>();	// 문제 학습자료
 	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();	// 문제 알고리즘 분류
 	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();	// 해당 문제를 푼 사용자들의 실행 시간 
 	private ArrayList<Integer> ProblemMemory = new ArrayList<>();   // 해당 문제를 푼 사용자들의 메모리 사용량
@@ -96,7 +96,7 @@ public class Problem implements Serializable {
 	public HashMap<User, String> getProblemHint(String key){
 		return this.ProblemHint.get(key);
 	}
-	public List<String> getProblemReferences(){
+	public HashMap<User, String> getProblemReferences(){
 		return this.ProblemReferences;
 	}
 	public ArrayList<String> getProblemAlgorithm(){
@@ -105,9 +105,6 @@ public class Problem implements Serializable {
 	public int getProblemSolvedPeople() {
 		return this.ProblemSolvedPeople;
 	}
-	
-	
-
 	public ArrayList<Integer> getProblemRunTime() {
 		return ProblemRunTime;
 	}
@@ -163,8 +160,8 @@ public class Problem implements Serializable {
 	 *  매개변수로 받은 객체 변수를 ProblemReferences 리스트에 추가
 	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화
 	 */
-	public void addProblemReferences(String plbmReferences) {
-		this.ProblemReferences.add(plbmReferences);
+	public void addProblemReferences(String plbmReferences, User user) {
+		this.ProblemReferences.put(user, plbmReferences);
 		ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}
 	

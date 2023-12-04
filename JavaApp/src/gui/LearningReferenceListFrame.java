@@ -11,10 +11,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import gui.HintAddFrame;
 import gui.LearningReferenceAddFrame;
 import gui.LearningReferenceViewFrame;
+
+import problems.Problem;
+import problems.ProblemDBManager;
+import users.User;
 
 public class LearningReferenceListFrame extends DesignedJFrame {
 	
@@ -23,28 +28,28 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 	JTable Referencelist;
 	JButton ReferenceAddbtn;
 	
-	public LearningReferenceListFrame() { 
+	public LearningReferenceListFrame(Problem problem, User user) { 
 		setTitle("LearningReferenceViewFrame");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
 		
-		addinfopanel(); // 기본정보
-		addlearningreferenceListpanel(); // 학습자료 리스트
-		addLearningReferenceButtonpanel();
+		addinfopanel(problem); // 기본정보
+		addlearningreferenceListpanel(problem); // 학습자료 리스트
+		addLearningReferenceButtonpanel(problem, user);
 		
 		setVisible(true);
 	}
 	
-	public void addinfopanel() { // 기본정보 
+	public void addinfopanel(Problem problem) { // 기본정보 
 		infopanel = new JPanel(); 
 		infopanel.setLayout(new GridLayout(2,1));
 		infopanel.setLocation(120, 50);
 		infopanel.setSize(750, 100); 
 		
-		JLabel problemName = new JLabel("(문제 제목)"); // 수정필요
-		JLabel title = new JLabel("   학습 자료 리스트");
+		JLabel problemName = new JLabel(problem.getProblemName()); // 수정필요
+		JLabel title = new JLabel("학습 자료 리스트");
 		problemName.setFont(new Font("Sunflower Medium", Font.BOLD,35));
 		title.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
 	
@@ -56,17 +61,24 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 	} 
 	
 	
-	public void addlearningreferenceListpanel() { // 학습자료 리스트
+	public void addlearningreferenceListpanel(Problem problem) { // 학습자료 리스트
 		referencelistpanel = new JPanel();
 		referencelistpanel.setBorder(new LineBorder(Color.black, 2));
 		referencelistpanel.setLayout(new GridLayout(1,1)); 
 		referencelistpanel.setLocation(120,150); // 위치
 		referencelistpanel.setSize(getDefalutWindowWidth() - 200, 500); // 크기
 		
-		// 수정 필요
-		String header[] = {"작성자", "학습자료 제목"};
-		String contentlist[][] = { {"작성자1", "내용1"},{"작성자2", "내용2"}, {"작성자3", "내용3"}}; //수정
-				
+		// 학습자료 내용
+		String header[] = {"작성자", "학습자료 내용"};
+		String contentlist[][] = new String[problem.getProblemReferences().size()][2];
+		
+		int row = 0;
+		System.out.println(problem.getProblemReferences().entrySet());
+		for (Entry<User, String> entry : problem.getProblemReferences().entrySet()) {
+	         contentlist[row][0] = entry.getKey().getUsername();
+	         contentlist[row][1] = entry.getValue();
+	          row++;
+	    }
 		
 		DefaultTableModel dtm = new DefaultTableModel(contentlist, header) { //수정불가능하도록
 			public boolean isCellEditable(int row, int  column) {
@@ -100,9 +112,10 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 	
 	                // 선택된 셀의 값 가져오기
 	                String value = (String) referencelist.getValueAt(row, col);
+	                String user = (String) referencelist.getValueAt(row, 0);
 	
 	                // 창 전환
-	                LearningReferenceViewFrame LRVF = new LearningReferenceViewFrame(value);
+	                LearningReferenceViewFrame LRVF = new LearningReferenceViewFrame(problem, value, user);
             	}
                 
             }
@@ -115,22 +128,21 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 		
 	}
  
-	public void addLearningReferenceButtonpanel() { // 학습자료작성버튼
+	public void addLearningReferenceButtonpanel(Problem problem, User user) { // 학습자료작성버튼
 		// 패널 생성
 		referencebuttonpanel = new JPanel();
 		referencebuttonpanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 10)); 
 		referencebuttonpanel.setLocation(850, 670); // 위치
 		referencebuttonpanel.setSize(380, 70); // 크기
 		// 학습자료 작성버튼 추가
-		DesignedButton referenceAddbtn = new DesignedButton("학습자료 작성하기", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
+		DesignedButton referenceAddbtn = new DesignedButton("작성하기", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
 		referenceAddbtn.setLocation(getDefalutWindowWidth() - 230, 680);
 		referenceAddbtn.setSize(150, 40);
 		
-		referenceAddbtn.addActionListener (new ActionListener() { //익명클래스 학습자료작성버튼 리스너
-			public void actionPerformed(ActionEvent e) {
-					
+		referenceAddbtn.addActionListener (new ActionListener() { // 익명클래스 학습자료작성버튼 리스너
+			public void actionPerformed(ActionEvent e) {					
 				setVisible(false);
-				new LearningReferenceAddFrame();
+				new LearningReferenceAddFrame(problem, user);
 			}
 		});
 		
@@ -150,10 +162,5 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 		referencebuttonpanel.add(referencebackBtn);
 		referencebuttonpanel.setOpaque(false);
 		getContentPane().add(referencebuttonpanel);
-	}
-	
-	
-	public static void main(String[] args) { // 메인함수(테스트용)
-		new LearningReferenceListFrame();
 	}
 }

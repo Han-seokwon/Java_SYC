@@ -41,6 +41,7 @@ public class CodeEficiency extends DesignedJFrame {
         super();
         this.problem = problem;
         setBounds(100, 100, 1300, 900);
+        setLocationRelativeTo(null); // 창 가운데 위치
         contentPane = new DesignedContentPane();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);

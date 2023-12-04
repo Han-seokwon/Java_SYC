@@ -1,25 +1,31 @@
 package gui;
 
-/*
- * 선택된 문제의 상세 정보를 보여주는 프레임
- */
+
 import java.awt.Color;
+
 import java.awt.GridLayout;
+
 import java.net.*;
 import java.util.List;
+
 import javax.swing.border.LineBorder;
+
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+
 import javax.swing.JScrollPane;
 import javax.swing.*;
+
 import problems.*;
 import users.*;
 
@@ -36,10 +42,8 @@ public class ProblemInfoFrame extends DesignedJFrame {
 
 	public ProblemInfoFrame(Problem problem, User user) {
 		this.user = user;
-		
 		pproblem = problem;
-		
-		
+				
 		contentPane = new DesignedContentPane();
 		contentPane.setBorder(new EmptyBorder(20, 5, 5, 5));
 		setContentPane(contentPane);
@@ -95,45 +99,37 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		contentPane.add(ProblemData);
 		ProblemData.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		// 문제 id
-		JLabel pID = new JLabel(String.valueOf(problem.getProblemID())); 
+		JLabel pID = new JLabel(String.valueOf(problem.getProblemID()));
 		pID.setHorizontalAlignment(SwingConstants.CENTER);
 		pID.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(pID);
 		
-		// 문제 제목
-		JLabel pname = new JLabel(problem.getProblemName()); 
+		JLabel pname = new JLabel(problem.getProblemName());
 		pname.setHorizontalAlignment(SwingConstants.CENTER);
 		pname.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(pname);
 		
 		RANK rank = problem.getProblemRank(); // 랭크
-		
-		// 랭크 포인트
-		int rankPoint = problem.getProblemRankPoint(); 
+		int rankPoint = problem.getProblemRankPoint(); // 랭크 포인트
 		JLabel prank = new JLabel(String.format("%s(%d)", rank.getRankName(), rankPoint));
 		prank.setHorizontalAlignment(SwingConstants.CENTER);
 		prank.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(prank);
 		
-		// 문제 해결 시 획득할 수 있는 포인트
-		JLabel ppoint = new JLabel(String.valueOf(rank.getPointGain())); 
+		JLabel ppoint = new JLabel(String.valueOf(rank.getPointGain())); // 문제 해결 시 획득할 수 있는 포인트
 		ppoint.setHorizontalAlignment(SwingConstants.CENTER);
 		ppoint.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(ppoint);
 		
-		//문제 url
 		purl = new JLabel(problem.getProblemURL());
 		purl.setHorizontalAlignment(SwingConstants.CENTER);
 		purl.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(purl);
 		
-		//문제 알고리즘
-		JLabel palgo = new JLabel(String.valueOf(problem.getProblemAlgorithm())); 
+		JLabel palgo = new JLabel(String.valueOf(problem.getProblemAlgorithm()));
 		palgo.setHorizontalAlignment(SwingConstants.CENTER);
 		palgo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ProblemData.add(palgo);
-		
 		
 		// 문제 난이도 코멘트
 		JTextArea textArea = new JTextArea();
@@ -149,28 +145,24 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		    textArea.append(" 작성된 코멘트가 없습니다. ");
 		}
 		
-		//코멘트 스크롤패널 생성 및 추가
 		JScrollPane commentScrollPane = new JScrollPane(textArea);
 		commentScrollPane.setBounds(172, 602, 667, 146);
 		commentScrollPane.setOpaque(false);
 		commentScrollPane.setBackground(Color.black);
 		contentPane.add(commentScrollPane);
 		
-		//문제 난이도 코멘트 라벨 생성
 		JLabel comment = new JLabel("문제 난이도 코멘트");
 		comment.setHorizontalAlignment(SwingConstants.CENTER);
 		comment.setBounds(172, 549, 187, 65);
 		contentPane.add(comment);		
 		
-		//힌트 라벨 및 버튼 생성, 추가
+		//우측에 위치할 라벨 및 버튼 생성, 추가
 		JLabel hintlabel = new JLabel("힌트");
 		hintlabel.setBounds(954, 108, 195, 46);
 		contentPane.add(hintlabel);
 		hintlabel.setForeground(new Color(130, 141, 226));
 		hintlabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		
-		//힌트 확인 및 작학습자료, 효율성 비교, 난이도 기여 버튼 생상, 추가
 		dataBButton = new DesignedButton("학습자료", COLOR.JORDY_BLUE);
 		dataBButton.setBounds(954, 611, 195, 77);
 		contentPane.add(dataBButton);
@@ -193,7 +185,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		STEP1Button.setBounds(954, 164, 195, 77);
 		contentPane.add(STEP1Button);
 		
-		// 버튼별 리스너 등록
+		
 		STEP1Button.addActionListener(actionListener);
 		STEP2Button.addActionListener(actionListener);
 		STEP3Button.addActionListener(actionListener);
@@ -238,7 +230,7 @@ public class ProblemInfoFrame extends DesignedJFrame {
 	
 	
 
-	class MyActionListener implements ActionListener{ //버튼별 이벤트 처리
+	class MyActionListener implements ActionListener{
 		private ProblemInfoFrame problemInfoFrame;
 		public MyActionListener() {}
 		public MyActionListener(ProblemInfoFrame problemInfoFrame) {
@@ -249,15 +241,19 @@ public class ProblemInfoFrame extends DesignedJFrame {
 			
 				if(e.getSource() == STEP1Button) { // 
 					System.out.println("STEP1Button");
+					new HintViewFrame(1, pproblem, user);
 				}
 				if (e.getSource() == STEP2Button) { // 
 					System.out.println("STEP2Button");
+					new HintViewFrame(2, pproblem, user);
 				}	
 				if (e.getSource() == STEP3Button) { //
 					System.out.println("STEP3Button");
+					new HintViewFrame(3, pproblem, user);
 				}
 				if (e.getSource() == dataBButton) { // 
 					System.out.println("dataBButton");
+					new LearningReferenceListFrame(pproblem, user);
 				}
 				if (e.getSource() == efficiencyButton) {  //
 					System.out.println("efficiencyButton");
