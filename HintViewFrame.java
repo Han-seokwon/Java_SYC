@@ -9,46 +9,46 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import gui.HintAddFrame;
-import problems.*;
-import users.*;
 import gui.DesignedJFrame;
 import gui.DesignedButton;
 
+import problems.*;
+import users.User;
+
 public class HintViewFrame extends DesignedJFrame {
 	
-	JPanel infopanel, hintlistpanel, hintViewbuttonpanel;
-	JLabel problemName, title;
-	JTable hintTable;
-	JButton hintAddbtn;
-	Problem problem;
-	User user;
+	private JPanel infopanel, hintlistpanel, hintViewbuttonpanel;
+	private JLabel problemName, title;
+	private HashMap<User, String> hintList;
+	private JTable hintTable;
+	private JButton hintAddbtn;
 	private int step;
-	private String key;
 	
-	public HintViewFrame(int step) { 
+	// type : 보여줄 힌트 스텝 번호
+	public HintViewFrame(int type, Problem problem, User user) { 
 		setTitle("HintViewFrame");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
-		this.step = step;
-		this.key = "Step "+ this.step;
+		this.step = type;
 		
-		addinfopanel(); // 기본정보
-		addhintListpanel(); // 힌트 리스트
-		addHintViewButtonpanel(); //힌트작성버튼
+		addinfopanel(problem); // 기본정보
+		addhintListpanel(problem, step); // 힌트 리스트
+		addHintViewButtonpanel(step, problem, user); //힌트작성버튼
 		setVisible(true);
 	}
 	
-	public void addinfopanel() { // 기본정보 
+	public void addinfopanel(Problem problem) { // 기본정보 
 		infopanel = new JPanel();
 		infopanel.setLayout(new GridLayout(2,1));
 		infopanel.setLocation(120, 50);
 		infopanel.setSize(750, 100); 
 		
-		JLabel problemName = new JLabel("(문제 제목)"); // 수정필요
+		JLabel problemName = new JLabel(problem.getProblemName());
 		JLabel title = new JLabel("   STEP"+step+" 힌트 리스트");
 		problemName.setFont(new Font("Sunflower Medium",Font.BOLD,35));
 		title.setFont(new Font("Sunflower Medium",Font.PLAIN,18));
@@ -61,43 +61,28 @@ public class HintViewFrame extends DesignedJFrame {
 	} 
 	
 	
-	public void addhintListpanel() { // 힌트 리스트
+	public void addhintListpanel(Problem problem, int step) { // 힌트 리스트
 		hintlistpanel = new JPanel();
 		hintlistpanel.setBorder(new LineBorder(Color.black, 2));
 		hintlistpanel.setLayout(new GridLayout(1,1)); 
 		hintlistpanel.setLocation(120,150); // 위치
 		hintlistpanel.setSize(getDefalutWindowWidth() - 200, 500); // 크기
 		
+		// 힌트 출력
+		String hintstep = "Step " + String.valueOf(step);
+		HashMap<User, String> hintList = problem.getProblemHint(hintstep);
+		// null 값일 경우 리스트 초기화
+		hintList = (hintList != null) ? hintList : new HashMap<>();
 		
 		String header[] = {"작성자", "STEP "+step+"  힌트 내용"};
-		String contentlist[][] = { {"작성자1", "내용1"}, 
-					   {"작성자2", "내용2"}, 
-					   {"작성자3", "내용3"}, 
-					   {"작성자1", "내용1"}, 
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"},
-					   {"작성자1", "내용1"}}; //수정
-
-		  /*
-		   problem.problemList.size();
-		 * String contentlist[][];
-		 * 
-		 * for (int i = 0;i < hintsize;i++) {
-		 * 		contentlist[i][0] = problem.hintList.get(this.key).keySet(); // user 작성자 
-		 * 		contentlist[i][1] = problem.hintList.get(this.key).get(contentlist[i][0]); // 힌트 내용
+		String contentlist[][] = new String[hintList.size()][2];
 		
-		 * 
-		 * 
-		 */
-				
+		int row = 0;
+		for (Entry<User, String> entry : hintList.entrySet()) {
+	         contentlist[row][0] = entry.getKey().getUsername();
+	         contentlist[row][1] = entry.getValue();
+	          row++;
+	    }
 		
 		DefaultTableModel dtm = new DefaultTableModel(contentlist, header) { //수정불가능하도록
 			public boolean isCellEditable(int row, int  column) {
@@ -111,24 +96,24 @@ public class HintViewFrame extends DesignedJFrame {
 		hintTable.setRowHeight(50); // 높이 변경  
 		hintTable.setFont(new Font("Sunflower Medium",Font.PLAIN,15)); // 폰트 변경
 		// 테이블 헤더 설정
-		JTableHeader hintTableHeader = hintTable.getTableHeader();
-		hintTableHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
-		hintTableHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
-		hintTableHeader.setFont(new Font("Sunflower Medium",Font.BOLD,18));
-		Dimension headerSize = hintTableHeader.getPreferredSize();
+		JTableHeader hintlistHeader = hintTable.getTableHeader();
+		hintlistHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
+		hintlistHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
+		hintlistHeader.setFont(new Font("Sunflower Medium",Font.BOLD,18));
+		Dimension headerSize = hintlistHeader.getPreferredSize();
 		headerSize.height = 40;
-		hintTableHeader.setPreferredSize(headerSize);
+		hintlistHeader.setPreferredSize(headerSize);
 		
 		// 프레임에 추가
-		JScrollPane hintTablescrollPane = new JScrollPane(hintTable);
+		JScrollPane hintlistscrollPane = new JScrollPane(hintTable);
 		hintTable.setOpaque(false);
-		hintlistpanel.add(hintTablescrollPane);
+		hintlistpanel.add(hintlistscrollPane);
 		hintlistpanel.setOpaque(false);
 		getContentPane().add(hintlistpanel);
 		
 	}
  
-	public void addHintViewButtonpanel() { // 힌트보기프레임버튼패널
+	public void addHintViewButtonpanel(int step, Problem problem, User user) { // 힌트보기프레임버튼패널
 		// 패널 생성
 		hintViewbuttonpanel = new JPanel();
 		hintViewbuttonpanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 10)); 
@@ -136,7 +121,7 @@ public class HintViewFrame extends DesignedJFrame {
 		hintViewbuttonpanel.setSize(380, 70); // 크기
 		
 		// 힌트 작성버튼 추가
-		DesignedButton hintAddbtn = new DesignedButton("힌트 작성하기", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
+		DesignedButton hintAddbtn = new DesignedButton("작성하기", 150, 40, COLOR.MEDIUM_SLATE_BLUE);
 		hintAddbtn.setLocation(getDefalutWindowWidth() - 230, 680);
 		hintAddbtn.setSize(150, 40);
 
@@ -144,19 +129,20 @@ public class HintViewFrame extends DesignedJFrame {
 			public void actionPerformed(ActionEvent e) {
 				JButton hintadd = (JButton)e.getSource();
 					// 힌트 리스트에 추가 리스너
-					new HintAddFrame();
+					new HintAddFrame(problem, user);
 					setVisible(false);  
 			}
 		});
 		
-		// 뒤로가기 버튼
-		DesignedButton hintbackBtn = new DesignedButton("뒤로가기", 150, 40, COLOR.AQUA_ISLAND);
+		// 닫기 버튼
+		DesignedButton hintbackBtn = new DesignedButton("닫  기", 150, 40, COLOR.AQUA_ISLAND);
 		hintbackBtn.setLocation(getDefalutWindowWidth() - 370, 680);
 		hintbackBtn.setSize(120, 40);
 		
 		hintbackBtn.addActionListener (new ActionListener() { //익명클래스 학습자료리스트 닫기버튼 리스너
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
+				ProblemInfoFrame info = new ProblemInfoFrame(problem, user);
 			}
 		});
 		
@@ -165,12 +151,5 @@ public class HintViewFrame extends DesignedJFrame {
 		hintViewbuttonpanel.add(hintbackBtn);
 		hintViewbuttonpanel.setOpaque(false);
 		getContentPane().add(hintViewbuttonpanel);
-	}
-	
-	
-	public static void main(String[] args) { // 메인함수
-		new HintViewFrame(1); //매개변수 - step
-		//new HintViewFrame(2);
-		//new HintViewFrame(3);
 	}
 }
