@@ -76,7 +76,7 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
 	    table.getTableHeader().setReorderingAllowed(false);
 	    // 기본 편집기를 설정하고, null로 설정하여 셀을 편집할 수 없게 함
 	    table.setDefaultEditor(Object.class, null);
-	    table.addMouseListener(new MyMouseListener());
+//	    table.addMouseListener(new MyMouseListener());
         
         //문제 정렬 라벨 생성
         JLabel lblNewLabel = new JLabel("문제 정렬");
@@ -237,21 +237,21 @@ public class ProblemViewerFrame extends DesignedJFrame implements ItemListener {
         	}
         }
     
-    private class MyMouseListener extends MouseAdapter { //테이블 클릭 이벤트 제어
-    	public void mouseClicked(MouseEvent e) {
-
-    	if (e.getClickCount() == 2) { //더블클릭시 ProblemInfoFrame 생성
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow != -1) {
-                Object selectedID = table.getValueAt(selectedRow, 0);
-            	System.out.println(selectedID);
-            	new ProblemInfoFrame(ProblemDBManager.findProblem(Integer.parseInt(String.valueOf(selectedID))), user);
-            	} 
-            
-
-    		}
-    	}
-    }
+//    private class MyMouseListener extends MouseAdapter { //테이블 클릭 이벤트 제어
+//    	public void mouseClicked(MouseEvent e) {
+//
+//    	if (e.getClickCount() == 2) { //더블클릭시 ProblemInfoFrame 생성
+//            int selectedRow = table.getSelectedRow();
+//            if (selectedRow != -1) {
+//                Object selectedID = table.getValueAt(selectedRow, 0);
+//            	System.out.println(selectedID);
+//            	new ProblemInfoFrame(ProblemDBManager.findProblem(Integer.parseInt(String.valueOf(selectedID))), user);
+//            	} 
+//            
+//
+//    		}
+//    	}
+//    }
     
     private class MyActionListener implements ActionListener { // 텍스트 필드, 검색 버튼 이벤트 제어
         @Override

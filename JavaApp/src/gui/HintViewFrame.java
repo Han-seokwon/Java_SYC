@@ -29,7 +29,6 @@ public class HintViewFrame extends DesignedJFrame {
 	// type : 보여줄 힌트 스텝 번호
 	public HintViewFrame(int type, Problem problem, User user) { 
 		setTitle("HintViewFrame");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
@@ -39,6 +38,8 @@ public class HintViewFrame extends DesignedJFrame {
 		addhintListpanel(problem, step); // 힌트 리스트
 		addHintViewButtonpanel(step, problem, user); //힌트작성버튼
 		setVisible(true);
+		
+		System.out.println("HintViewFrame : " + user);
 	}
 	
 	public void addinfopanel(Problem problem) { // 기본정보 

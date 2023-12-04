@@ -30,7 +30,6 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 	
 	public LearningReferenceListFrame(Problem problem, User user) { 
 		setTitle("LearningReferenceViewFrame");
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);

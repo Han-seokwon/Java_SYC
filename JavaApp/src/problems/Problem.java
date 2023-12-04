@@ -94,6 +94,7 @@ public class Problem implements Serializable {
 		return this.ProblemRankPoint;
 	}
 	public HashMap<User, String> getProblemHint(String key){
+		System.out.println(ProblemHint);
 		return this.ProblemHint.get(key);
 	}
 	public ArrayList<String[]> getProblemReferences(){

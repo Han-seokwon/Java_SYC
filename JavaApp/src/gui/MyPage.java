@@ -227,6 +227,7 @@ public class MyPage extends DesignedJFrame {
         public void actionPerformed(ActionEvent e) {
             String selfIntroduction = textArea.getText();
             user.setSelfIntroduction(selfIntroduction);
+            Dialog.showInfoDialog("저장 완료", "작성한 내용이 저장되었습니다.");
         }
     }
 

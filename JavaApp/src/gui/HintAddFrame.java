@@ -40,7 +40,6 @@ public class HintAddFrame extends DesignedJFrame{
 
 	public HintAddFrame(Problem problem, User user) {
 		setTitle("HintAddFrame");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
