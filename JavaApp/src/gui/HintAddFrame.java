@@ -6,21 +6,23 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import problems.Problem;
+import users.RANK;
 import users.User;
 
 
@@ -130,19 +132,39 @@ public class HintAddFrame extends DesignedJFrame{
 	}
 	
 	public void addhintwritepanel() { // 힌트 작성필드
+		int textCntLimit = 60; // 글자 수 제한
 		hintwritepanel = new JPanel();
 		hintwritepanel.setLayout(new GridLayout(1,1)); 
 		hintwritepanel.setLocation(140,350); // 위치
 		hintwritepanel.setSize(getDefalutWindowWidth() - 230, 300); // 크기
 		
-		hintwritefield = new JTextArea("내용을 입력해 주세요."); // 힌트 작성
+		hintwritefield = new JTextArea("내용을 입력해 주세요." + "(글자 수 제한 " + textCntLimit + "자)"); // 힌트 작성
 		hintwritefield.setLineWrap(true); // 자동줄바꿈
 		hintwritefield.setWrapStyleWord(true); //단어 단위의 줄바꿈(영어)
-
+		hintwritefield.addKeyListener(new TextCntLimitListener(textCntLimit));
 		hintwritepanel.add(new JScrollPane(hintwritefield)); // 스크롤팬
 		hintwritepanel.setOpaque(false);
 		getContentPane().add(hintwritepanel);
 		
+	}
+	// 최대 글자수 제한
+	class TextCntLimitListener extends KeyAdapter{
+		private int maxTextCnt;
+		public TextCntLimitListener() {
+			this(60);
+		}
+		public TextCntLimitListener(int maxTextCnt) {
+			this.maxTextCnt = maxTextCnt;
+		}
+		
+		@Override
+        public void keyTyped(KeyEvent ke) {
+			//글자 수 초과시 글자 초과되는 글자 자동 삭제
+			if(hintwritefield.getText().length() > maxTextCnt) { 
+				ke.consume();
+				hintwritefield.setText(hintwritefield.getText().substring(0, maxTextCnt));
+			}
+        }
 	}
 	 
 		public void addHintViewButtonpanel(Problem problem, User user) { // 힌트보기프레임버튼패널

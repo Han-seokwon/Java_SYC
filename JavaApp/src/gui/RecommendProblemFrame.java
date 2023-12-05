@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -108,10 +109,11 @@ public class RecommendProblemFrame extends DesignedJFrame {
 		gbc_arrowImgLabel.gridy = 0;
 		recommendMenuPanel.add(arrowImgLabel, gbc_arrowImgLabel);
 
-		// 선택된 추천방식 버튼 결과를 보여주는 라벨
+		// 선택된 추천방식 버튼 결과를 보여주는 textPane
 		seletedBtnDisplayArea = new JTextPane();
 		seletedBtnDisplayArea.setText("\n\n문제 추천방식을 선택해주세요.");
 		alignCenter(seletedBtnDisplayArea); // 가운데 정렬
+		seletedBtnDisplayArea.setPreferredSize(new Dimension(MENU_PANEL_WIDTH, MENU_PANEL_WIDTH));
 		seletedBtnDisplayArea.setBorder(createCompoundBorder(5, 20)); // 경계선 설정
 		GridBagConstraints gbc_seletedBtnDisplayLabel = new GridBagConstraints();
 		gbc_seletedBtnDisplayLabel.fill = GridBagConstraints.BOTH;
