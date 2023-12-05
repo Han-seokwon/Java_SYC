@@ -90,27 +90,23 @@ public class ProblemRankManager {
 			// ProblemDBManager에서 번호에 해당하는 문제를 가져옴
 			Problem plbm = ProblemDBManager.findProblem(ID);
 			// 문제 랭크 및 문제 랭크 포인트 계산
-			int sum = 0;
 			int point = 0;
 		    
 			for(int i = 0; i < RankList.size(); i++) {
-		    	sum += RankList.get(i).getRANK().getRequireRankPoint();
 		    	point += RankList.get(i).getRankPoint();
 		    }
-		     
-	        int avg = sum / RankList.size();
 	        int pointavg = point / RankList.size();
 		    
-		    if (avg == 0) {
+		    if (pointavg <= 100) {
 		    	plbm.setProblemRank(RANK.RANK1);
 		    }
-		    else if(avg == 1) {
+		    else if(pointavg <= 200) {
 		    	plbm.setProblemRank(RANK.RANK2);
 		    }
-		    else if(avg == 2) {
+		    else if(pointavg <= 300) {
 		    	plbm.setProblemRank(RANK.RANK3);
 		    }
-		    else if(avg == 3) {
+		    else if(pointavg <= 400) {
 		    	plbm.setProblemRank(RANK.RANK4);
 		    }
 		    else {
