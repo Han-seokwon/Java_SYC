@@ -8,6 +8,7 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -69,20 +70,19 @@ public class HintViewFrame extends DesignedJFrame {
 		hintlistpanel.setSize(getDefalutWindowWidth() - 200, 500); // 크기
 		
 		// 힌트 출력
-		String hintstep = "Step " + String.valueOf(step);
-		HashMap<User, String> hintList = problem.getProblemHint(hintstep);
+		ArrayList<Hint> hintList = problem.getProblemHint(step);
 		// null 값일 경우 리스트 초기화
-		hintList = (hintList != null) ? hintList : new HashMap<>();
+		hintList = (hintList != null) ? hintList : new ArrayList<>();
 		
 		String header[] = {"작성자", "STEP "+step+"  힌트 내용"};
 		String contentlist[][] = new String[hintList.size()][2];
 		
 		int row = 0;
-		for (Entry<User, String> entry : hintList.entrySet()) {
-	         contentlist[row][0] = entry.getKey().getUsername();
-	         contentlist[row][1] = entry.getValue();
-	          row++;
-	    }
+		for(Hint hint : hintList) {
+			contentlist[row][0] = hint.getWriter().getUsername();
+			contentlist[row][1] = hint.getContent();
+			row++;
+		}
 		
 		DefaultTableModel dtm = new DefaultTableModel(contentlist, header) { //수정불가능하도록
 			public boolean isCellEditable(int row, int  column) {

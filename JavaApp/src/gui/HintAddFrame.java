@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -161,9 +162,8 @@ public class HintAddFrame extends DesignedJFrame{
 					
 					// 힌트 리스트에 추가 리스너
 					String referenceContent = hintwritefield.getText();
-					String hintstep = "Step " + String.valueOf(step);
 					
-					problem.addProblemHint(hintstep, user, referenceContent);
+					problem.addProblemHint(step, user, referenceContent);
 					
 					// 힌트 리스트에 작성한 힌트내용 추가
 					new HintViewFrame(step, problem, user);

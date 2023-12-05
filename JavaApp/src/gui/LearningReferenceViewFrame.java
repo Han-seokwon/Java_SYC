@@ -24,8 +24,8 @@ public class LearningReferenceViewFrame  extends DesignedJFrame{
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
-		this.referenceTitle = problem.getProblemReferences().get(row)[1]; // 학습자료 제목
-		this.referenceContent = problem.getProblemReferences().get(row)[2]; // 학습자료 내용
+		this.referenceTitle = problem.getProblemReferences().get(row).getTitle(); // 학습자료 제목
+		this.referenceContent = problem.getProblemReferences().get(row).getContent(); // 학습자료 내용
 
 		addinfopanel(userName, problem); // 기본정보
 		addlearningreferencecontentpanel(); // 학습자료

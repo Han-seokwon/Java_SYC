@@ -3,7 +3,6 @@ package problems;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 import users.RANK;
@@ -16,8 +15,8 @@ public class Problem implements Serializable {
 	private String ProblemURL;	 	// 문제 URL
 	private RANK ProblemRank;	 	// 문제 랭크
 	private int ProblemRankPoint;	// 문제 랭크 포인트
-	private HashMap<String, HashMap<User, String>> ProblemHint = new HashMap<>();	// 문제 힌트
-	private ArrayList<String[]> ProblemReferences = new ArrayList<String []>();		// 문제 학습자료
+	private HashMap<Integer, ArrayList<Hint>> ProblemHint = new HashMap<>();	// 문제 힌트
+	private ArrayList<LearningReference> ProblemReferences = new ArrayList<>();  // 문제 학습자료
 	private ArrayList<String> ProblemAlgorithm = new ArrayList<>();	// 문제 알고리즘 분류
 	private ArrayList<Integer> ProblemRunTime = new ArrayList<>();	// 해당 문제를 푼 사용자들의 실행 시간 
 	private ArrayList<Integer> ProblemMemory = new ArrayList<>();   // 해당 문제를 푼 사용자들의 메모리 사용량
@@ -93,11 +92,10 @@ public class Problem implements Serializable {
 	public int getProblemRankPoint() {
 		return this.ProblemRankPoint;
 	}
-	public HashMap<User, String> getProblemHint(String key){
-		System.out.println(ProblemHint);
+	public ArrayList<Hint> getProblemHint(int key){
 		return this.ProblemHint.get(key);
 	}
-	public ArrayList<String[]> getProblemReferences(){
+	public ArrayList<LearningReference> getProblemReferences(){
 		return this.ProblemReferences;
 	}
 	public ArrayList<String> getProblemAlgorithm(){
@@ -142,31 +140,27 @@ public class Problem implements Serializable {
 	
 	/*
 	 *  Problem에 힌트를 추가하는 함수
-	 *  key : 'Step 1', 'Step 2', 'Step 3' / user : 유저 정보 / hint : 문제 힌트
-	 *  key 값에 해당하는 해시맵을 ProblemHint 해시맵에서 가져옴
-	 *  가져온 해시맵(hintList)에 user를 키값으로, hint를 값으로 저장
-	 *  이후, 해당 키값과 해시맵(hintList)를 ProblemHint 해시맵에 추가
+	 *  key : 힌트 난이도 1, 2, 3 / user : 유저 정보 / hint : 문제 힌트
+	 *  key 값에 해당하는 ArrayList<Hint>을 ProblemHint 해시맵에서 가져옴
+	 *  가져온 ArrayList<Hint>에 Hink 추가
 	 *  changProblem 함수를 이용하여 힌트가 추가된 문제로 최신화
 	 */
-	public void addProblemHint(String key, User user, String hint) {
-	    HashMap<User, String> hintList = ProblemHint.getOrDefault(key, new HashMap<User, String>());
-        hintList.put(user, hint);
-        ProblemHint.put(key, hintList);
+	public void addProblemHint(int key, User user, String hint) {
+		if(!ProblemHint.containsKey(key)) { // 해당 힌트 자료가 없는 경우
+			ProblemHint.put(key, new ArrayList<Hint>()); // 힌트 저장 리스트 추가
+		}
+		ProblemHint.get(key).add(new Hint(key, user, hint)); // 힌트 추가
         ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}
 	
 	/*
 	 *  Problem에 학습 자료를 추가하는 함수
-	 *  plbmReferences : 학습자료 문자열
+	 *  LearningReference : 학습 참고 자료 데이터
 	 *  매개변수로 받은 객체 변수를 ProblemReferences 리스트에 추가
 	 *  이후, changProblem 함수를 이용하여 학습 자료가 추가된 문제로 최신화
 	 */
-	public void addProblemReferences(User user, String ReferenceTitle, String plbmReferences) {
-		String[] reference = new String[3];
-		reference[0] = user.getUsername();
-		reference[1] = ReferenceTitle;
-		reference[2] = plbmReferences;
-		this.ProblemReferences.add(reference);
+	public void addProblemReferences(User user, String referenceTitle, String plbmReferences) {
+		this.ProblemReferences.add(new LearningReference(user, referenceTitle, plbmReferences));
 		ProblemDBManager.changeProblem(this.getProblemID(), this);
 	}
 	
