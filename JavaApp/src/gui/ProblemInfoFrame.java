@@ -51,8 +51,6 @@ public class ProblemInfoFrame extends DesignedJFrame {
 		
 		ActionListener actionListener = new MyActionListener(this);
 		
-		System.out.println("ProblemInfoFrame : " + user);
-		
 		//문제 패널
 		JPanel Problem1 = new JPanel();
 		Problem1.setBounds(172, 158, 158, 363);
