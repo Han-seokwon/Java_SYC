@@ -78,7 +78,6 @@ public class Main {
 		
 		ProblemRankManager.init(); // 문제 랭크 DB 초기화
 		ProblemRankManager.PrintProblemRankMap();
-		
 	}
 	
 	

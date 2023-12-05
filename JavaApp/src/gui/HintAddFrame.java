@@ -1,20 +1,26 @@
 package gui;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.DefaultTableModel;
-
-import gui.HintViewFrame;
-import gui.DesignedJFrame;
-import gui.DesignedContentPane;
-import gui.DesignedButton;
-import problems.LearningMaterialsHintAdd;
-import problems.Problem;
-import users.User;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+
+import problems.Problem;
+import users.User;
 
 
 public class HintAddFrame extends DesignedJFrame{
@@ -34,7 +40,6 @@ public class HintAddFrame extends DesignedJFrame{
 
 	public HintAddFrame(Problem problem, User user) {
 		setTitle("HintAddFrame");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
@@ -158,11 +163,11 @@ public class HintAddFrame extends DesignedJFrame{
 					String referenceContent = hintwritefield.getText();
 					String hintstep = "Step " + String.valueOf(step);
 					
-					new LearningMaterialsHintAdd(hintstep, user, referenceContent, problem);
+					problem.addProblemHint(hintstep, user, referenceContent);
 					
 					// 힌트 리스트에 작성한 힌트내용 추가
-					dispose();
 					new HintViewFrame(step, problem, user);
+					dispose();
 				}
 			});
 			
@@ -174,8 +179,8 @@ public class HintAddFrame extends DesignedJFrame{
 			
 			hintCancelBtn.addActionListener (new ActionListener() { //익명클래스 학습자료닫기버튼 리스너
 				public void actionPerformed(ActionEvent e) {
-					dispose();
 					new HintViewFrame(step, problem, user);				
+					dispose();
 				}
 			});
 			

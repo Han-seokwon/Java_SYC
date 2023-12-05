@@ -20,6 +20,7 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 	JPanel infopanel, referencetitlepanel, referencewritepanel, ReferenceRegistButtonpanel; 
 	JLabel problemName;
 	DesignedButton referenceRegistbtn, referenceCancelBtn;
+	JTextField referencetitlefield;
 	JTextArea referencewritefield;
 	
 	public LearningReferenceAddFrame(Problem problem, User user) {
@@ -29,6 +30,7 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 		background.setLayout(null);
 		
 		addinfopanel(problem); // 기본정보
+		addreferencetitlepanel(); // 학습자료 제목작성필드
 		addlearningreferencewritepanel(); // 학습자료 작성필드
 		addReferenceRegistButton(problem, user); // 학습자료등록버튼
 		
@@ -50,6 +52,18 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 		infopanel.add(title);
 		infopanel.setOpaque(false);
 		getContentPane().add(infopanel);
+	}
+	public void addreferencetitlepanel() { // 학습자료 제목 작성
+		referencetitlepanel = new JPanel();
+		referencetitlepanel.setLayout(new GridLayout(1,1)); 
+		referencetitlepanel.setLocation(150,170); // 위치
+		referencetitlepanel.setSize(1000, 50); // 크기
+		
+		referencetitlefield = new JTextField(" 제목을 입력하세요.");
+		
+		referencetitlepanel.add(referencetitlefield);
+		getContentPane().add(referencetitlepanel);
+
 	}
 	 
 	public void addlearningreferencewritepanel() { // 학습자료 작성필드
@@ -79,17 +93,14 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 		referenceRegistbtn.setSize(150, 40);
 		
 		referenceRegistbtn.addActionListener (new ActionListener() { //익명클래스 학습자료작성버튼 리스너
-			public void actionPerformed(ActionEvent e) {
-				JButton referenceRegist = (JButton)e.getSource();
-				
+			public void actionPerformed(ActionEvent e) {				
 				//등록버튼 기능 작성
-				String referenceContent = referencewritefield.getText();
-				problem.addProblemReferences(referenceContent, user);
-//				new LearningMaterialsHintAdd(referenceContent, problem, user); // 추가로 처리하는 작업이 없으면 굳이 객체 생성 필요 없음
-				
+				String addreferenceTitle = referencetitlefield.getText();
+				String addreferenceContent = referencewritefield.getText(); 
+				problem.addProblemReferences(user, addreferenceTitle, addreferenceContent);				
 				//창전환
+				new LearningReferenceListFrame(problem, user);				
 				dispose();
-				LearningReferenceListFrame LRLF= new LearningReferenceListFrame(problem, user);				
 			}
 		});
 		// 닫기 버튼
@@ -99,9 +110,8 @@ public class LearningReferenceAddFrame  extends DesignedJFrame{
 		
 		referenceCancelBtn.addActionListener (new ActionListener() { //익명클래스 학습자료닫기버튼 리스너
 			public void actionPerformed(ActionEvent e) {
+				new LearningReferenceListFrame(problem, user);
 				dispose();
-				LearningReferenceListFrame LRLF= new LearningReferenceListFrame(problem, user);
-				LRLF.setVisible(true);
 			}
 		});
 		

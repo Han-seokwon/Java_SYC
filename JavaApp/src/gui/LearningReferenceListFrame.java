@@ -30,7 +30,6 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 	
 	public LearningReferenceListFrame(Problem problem, User user) { 
 		setTitle("LearningReferenceViewFrame");
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		DesignedContentPane background = new DesignedContentPane(this);
 		setContentPane(background);
 		background.setLayout(null);
@@ -68,60 +67,64 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 		referencelistpanel.setLocation(120,150); // 위치
 		referencelistpanel.setSize(getDefalutWindowWidth() - 200, 500); // 크기
 		
+		// null 값일 경우 리스트 초기화
+		ArrayList<String[]> referenceList = problem.getProblemReferences();
+		referenceList = (referenceList != null) ? referenceList : new ArrayList<String[]>();
+
 		// 학습자료 내용
-		String header[] = {"작성자", "학습자료 내용"};
-		String contentlist[][] = new String[problem.getProblemReferences().size()][2];
+		int row = problem.getProblemReferences().size();
+		String header[] = {"작성자", "학습자료 제목"};
+		String contentlist[][] = new String[row][2];
 		
-		int row = 0;
-		System.out.println(problem.getProblemReferences().entrySet());
-		for (Entry<User, String> entry : problem.getProblemReferences().entrySet()) {
-	         contentlist[row][0] = entry.getKey().getUsername();
-	         contentlist[row][1] = entry.getValue();
-	          row++;
+		
+		for (int i = 0; i < row; i++) {
+	         contentlist[i][0] = referenceList.get(i)[0]; // 작성자
+	         contentlist[i][1] = referenceList.get(i)[1]; // 제목
 	    }
 		
+		// 학습자료 표
 		DefaultTableModel dtm = new DefaultTableModel(contentlist, header) { //수정불가능하도록
 			public boolean isCellEditable(int row, int  column) {
 		        return false; 
 		      }
 		}; 
 		 
-		JTable referencelist = new JTable(dtm);
-		referencelist.getColumnModel().getColumn(0).setPreferredWidth(120); //첫번째 열 크기 조정
-		referencelist.getColumnModel().getColumn(1).setPreferredWidth(referencelistpanel.getWidth()-120); //두번째 열 크기 조정
-		referencelist.setRowHeight(50); // 높이 변경  
-		referencelist.setFont(new Font("Sunflower Medium",Font.PLAIN,15));
+		JTable referencetable = new JTable(dtm);
+		referencetable.getColumnModel().getColumn(0).setPreferredWidth(120); //첫번째 열 크기 조정
+		referencetable.getColumnModel().getColumn(1).setPreferredWidth(referencelistpanel.getWidth()-120); //두번째 열 크기 조정
+		referencetable.setRowHeight(50); // 높이 변경  
+		referencetable.setFont(new Font("Sunflower Medium",Font.PLAIN,15));
 		// 테이블 헤더 설정
-		JTableHeader referenceHeader = referencelist.getTableHeader();
+		JTableHeader referenceHeader = referencetable.getTableHeader();
 		referenceHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
 		referenceHeader.setBackground(COLOR.AQUA_ISLAND.getColor());
 		referenceHeader.setFont(new Font("Sunflower Medium",Font.BOLD,18));
-		Dimension headerSize = referencelist.getTableHeader().getPreferredSize();
+		Dimension headerSize = referencetable.getTableHeader().getPreferredSize();
 		headerSize.height = 40;
-		referencelist.getTableHeader().setPreferredSize(headerSize);
+		referencetable.getTableHeader().setPreferredSize(headerSize);
 		
 		// 마우스 클릭 이벤트 처리를 위한 MouseAdapter 추가
-		referencelist.addMouseListener(new MouseAdapter() {
-            @Override
+		referencetable.addMouseListener(new MouseAdapter() {
+			
+			@Override
             public void mouseClicked(MouseEvent e) {
             	if(e.getClickCount() == 2) {
             		//더블클릭 처리
             		// 마우스 클릭된 행과 열 인덱스 가져오기
-	                int row = referencelist.rowAtPoint(e.getPoint());
-	                int col = referencelist.columnAtPoint(e.getPoint());
+	                int row = referencetable.rowAtPoint(e.getPoint());
+	                int col = referencetable.columnAtPoint(e.getPoint());
 	
-	                // 선택된 셀의 값 가져오기
-	                String value = (String) referencelist.getValueAt(row, col);
-	                String user = (String) referencelist.getValueAt(row, 0);
-	
-	                // 창 전환
-	                new LearningReferenceViewFrame(problem, value, user);
+	                // 선택된 셀의 값 가져오기	                
+	                String userName = (String) referencetable.getValueAt(row, 0);
+	                
+	                // 창 띄우기
+	                new LearningReferenceViewFrame(problem, row, userName);
             	}
                 
             }
         });
 		
-		JScrollPane referencelistscrollPane = new JScrollPane(referencelist); // 스크롤팬
+		JScrollPane referencelistscrollPane = new JScrollPane(referencetable); // 스크롤팬
 		referencelistpanel.add(referencelistscrollPane);
 		referencelistpanel.setOpaque(false);
 		getContentPane().add(referencelistpanel);
@@ -141,8 +144,8 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 		
 		referenceAddbtn.addActionListener (new ActionListener() { // 익명클래스 학습자료작성버튼 리스너
 			public void actionPerformed(ActionEvent e) {					
-				dispose();
 				new LearningReferenceAddFrame(problem, user);
+				dispose();
 			}
 		});
 		

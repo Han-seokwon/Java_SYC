@@ -179,8 +179,7 @@ public class ProblemTable extends JTable{
 					ex.printStackTrace();
 				}
 			} else if(col != -1 && row != -1 ){ // url 열이 아니고 클릭된 열과 행값이 유효한 경우				
-				Problem selectedProblem = problemList.get(row); // 선택된 행의 문제 인스턴스를 가져옴
-				System.out.println("문제 선택됨\n" + selectedProblem); // 선택된 문제 정보 출력
+				Problem selectedProblem = problemList.get(row); // 선택된 행의 문제 인스턴스를 가져옴				
 				// 해당 행에 맞는 문제 정보 조회 프레임 생성
 				new ProblemInfoFrame(selectedProblem, user); 		
 			}
