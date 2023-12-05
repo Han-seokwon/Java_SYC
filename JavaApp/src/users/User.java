@@ -136,20 +136,19 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 	}
 
 	@Override
-	public String toString() {
-		return "User [username=" + username;  
-//		return "User [username=" + username + 
-//				",\n solvedName=" + solvedName + 
-//				",\n email=" + email + 
-//				",\n password_hashed=" + password_hashed +
-//				",\n rank="	+ rank + 
-//				",\n rankPoint=" + rankPoint + 
-//				",\nconsecutiveActivityDate = " + consecutiveActivityDate 
-//				+ ",\n pwResetQuestion=" + pwResetQuestion +
-//				",\n pwResetAnswer=" + pwResetAnswer + 
-//				",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet +
-////				",\n solvedProblemSet="	+ solvedProblemSet + // 내용이 많아 주석 처리
-//				",\n activityDateList=" + activityDateList + "]\n";
+	public String toString() { 
+		return "User [username=" + username + 
+				",\n solvedName=" + solvedName + 
+				",\n email=" + email + 
+				",\n password_hashed=" + password_hashed +
+				",\n rank="	+ rank + 
+				",\n rankPoint=" + rankPoint + 
+				",\nconsecutiveActivityDate = " + consecutiveActivityDate 
+				+ ",\n pwResetQuestion=" + pwResetQuestion +
+				",\n pwResetAnswer=" + pwResetAnswer + 
+				",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet +
+//				",\n solvedProblemSet="	+ solvedProblemSet + // 내용이 많아 주석 처리
+				",\n activityDateList=" + activityDateList + "]\n";
 	}
 
 	// 유저 인스턴스가 유효한지 확인
@@ -228,16 +227,13 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 			updateConsecutiveDate(today); // 연속 출석일 업데이트
 			activityDateList.add(today); // 오늘 날짜 리스트에 추가    		
 		}
-	}
-
-	// (테스트용) 활동날짜리스트에 해당 날짜 추가
-	// 특정 일자를 입력하게 하면 리스트 내에서 날짜 순서가 바뀔 수 있음, 
-	public void addActivityDate(Date date) { 
-		if(!activityDateList.contains(date)) {
-			updateConsecutiveDate(date); // 연속 출석일 업데이트
-			activityDateList.add(date); // 오늘 날짜 리스트에 추가    		  	
+		try {
+			createUpdateUserFile(); // DB 폴더에 저장된 유저 파일 업데이트 
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
 		}
 	}
+
 
 	// solved.ac에서 해결한 문제를 가져와 업데이트, 만약 해결한 문제가 늘었다면 출석 반영 ( 회원 가입, 로그인시에 실행 )
 	// return : 해결한 문제 개수

@@ -83,10 +83,9 @@ public class MyPage extends DesignedJFrame {
         
         
     }
+    
     private void UserSolvedPromlemCnt() {
         int SolvedCnt = user.getSolvedProblemSet().size();
-
-        
 		try { 
             Font font = FileManager.createFontFromFile("contentFont");
             JLabel UserSolvedCnt = new JLabel(String.valueOf(SolvedCnt));
@@ -105,6 +104,7 @@ public class MyPage extends DesignedJFrame {
             System.out.println(e.getMessage());             
         }
     }
+    
     private void initializeTable() {
         String[] columnNames = {"문제 번호", "문제 제목", "난이도"}; 
 

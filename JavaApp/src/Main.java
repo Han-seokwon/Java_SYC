@@ -27,71 +27,38 @@ public class Main {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		
 	}
 	
-	private static void testSurveyData() { // 설문조사 테스트
-//		설문조사 데이터 로드 확인
-		SurveyQuestion.loadQuestionList();
-		EvaluationQuestion.loadEvaluationQuestionList();
-		User user = UserDBManager.findUserByEmail("han@naver.com");
-//		설문조사 프레임
-		new SurveyFrame(user);
-		System.out.println(user.toString());
-	}
-	
-	private static void testActivityDate() { // 유저 활동 날짜 갱신 확인
-		User user1 = UserDBManager.findUserByEmail("han@naver.com");
-		System.out.println("\n<<< User Data >>>\n");
-		System.out.println(user1);
-		
-		// 오늘 날짜 생성
-        long currentTimeMillis = System.currentTimeMillis();
-        Date today = new Date(currentTimeMillis);
-
-        // 데이터 포멧 생성
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        // 오늘부터 10일 전까지 Date를 유저 ActivityDate 필드에 추가
-        Calendar calendar = Calendar.getInstance();
-        for (int i = -10; i <= 0; i++) {
-            calendar.setTimeInMillis(currentTimeMillis);
-            calendar.add(Calendar.DAY_OF_YEAR, i);
-            user1.addActivityDate(new Date(calendar.getTimeInMillis()));
-        }
-
-	}
 	
 	static void initDBs() { // 프로그램 실행에 필요한 모든 DB 초기화
 		// UserDB 초기화
 		UserDBManager.init();
-		UserDBManager.printUserDBMap(); // 출력
 		
         long startTime = System.currentTimeMillis();        
 		// ProblemDB 초기화
 		ProblemDBManager.init();		
+		// ProblemDB는 초기화 시간이 비교적 오래 소요되므로 시간 측정 결과 콘솔에 출력
 		System.out.println("ProblemDB 초기화 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");   
 		
 		ProblemRankManager.init(); // 문제 랭크 DB 초기화
-		ProblemRankManager.PrintProblemRankMap();
-	}
-	
+	}	
 	
 	public static void main(String[] args) {
 		
 		// < 1. 데이터 생성 >
 //		createTestUserData(); // 테스트 유저 데이터 생성
 		// SolvedAC에서 문제 데이터 가져와서 ProblemDB에 추가하기 (900개쯤 가져오면 429에러 발생)
-//		JsonFetcher.updateProblemDB_FromSolvedAC();	
+		JsonFetcher.updateProblemDB_FromSolvedAC();	
 
 		// < 2. DB 초기화 >
 		initDBs(); // 프로그램 실행에 필요한 모든 DB 초기화
+		
 		// < 3. 메인 프레임 생성>
 		// 메인 프레임 
 		MainFrame main = new MainFrame();
-		User user1 = UserDBManager.findUserByEmail("han@naver.com");
+		// 테스트를 위해 로그인한 상태로 시작
+		User user1 = UserDBManager.findUserByEmail("han@naver.com"); 
 		main.logInComponents(user1);
-//		new ProblemViewerFrame(user1);
 		
 
 	
