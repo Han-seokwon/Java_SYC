@@ -1,24 +1,27 @@
 package gui;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Map.Entry;
 
-import gui.HintAddFrame;
-import gui.LearningReferenceAddFrame;
-import gui.LearningReferenceViewFrame;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
+import problems.LearningReference;
 import problems.Problem;
-import problems.ProblemDBManager;
 import users.User;
 
 public class LearningReferenceListFrame extends DesignedJFrame {
@@ -68,8 +71,8 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 		referencelistpanel.setSize(getDefalutWindowWidth() - 200, 500); // 크기
 		
 		// null 값일 경우 리스트 초기화
-		ArrayList<String[]> referenceList = problem.getProblemReferences();
-		referenceList = (referenceList != null) ? referenceList : new ArrayList<String[]>();
+		ArrayList<LearningReference> referenceList = problem.getProblemReferences();
+		referenceList = (referenceList != null) ? referenceList : new ArrayList<LearningReference>();
 
 		// 학습자료 내용
 		int row = problem.getProblemReferences().size();
@@ -78,8 +81,8 @@ public class LearningReferenceListFrame extends DesignedJFrame {
 		
 		
 		for (int i = 0; i < row; i++) {
-	         contentlist[i][0] = referenceList.get(i)[0]; // 작성자
-	         contentlist[i][1] = referenceList.get(i)[1]; // 제목
+	         contentlist[i][0] = referenceList.get(i).getWriter().getUsername(); // 작성자
+	         contentlist[i][1] = referenceList.get(i).getTitle(); // 제목
 	    }
 		
 		// 학습자료 표

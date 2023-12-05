@@ -60,8 +60,6 @@ public class Main {
             user1.addActivityDate(new Date(calendar.getTimeInMillis()));
         }
 
-		System.out.println("\n<<< User Data >>>\n");
-		System.out.println(user1);
 	}
 	
 	static void initDBs() { // 프로그램 실행에 필요한 모든 DB 초기화
@@ -73,8 +71,6 @@ public class Main {
 		// ProblemDB 초기화
 		ProblemDBManager.init();		
 		System.out.println("ProblemDB 초기화 소요 시간 : " + (System.currentTimeMillis() - startTime) + "ms");   
-		
-//		ProblemDBManager.PrintProblemDBMap(); // ProblemDB 출력
 		
 		ProblemRankManager.init(); // 문제 랭크 DB 초기화
 		ProblemRankManager.PrintProblemRankMap();
@@ -97,11 +93,7 @@ public class Main {
 		main.logInComponents(user1);
 //		new ProblemViewerFrame(user1);
 		
-		// <  기타 프레임 테스트 >
-//		new SurveyFrame(null);
-//		new RecommendProblemFrame(user1); // 문제 추천 프레임
-//		System.out.println(user1);
-//		new RateProblemFrame(null, null);		
+
 	
 							
 
