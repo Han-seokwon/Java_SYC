@@ -148,7 +148,8 @@ public class User implements Serializable{ // 객체를 바이트형태로 변환할 수 있도
 				",\n pwResetAnswer=" + pwResetAnswer + 
 				",\n preferredAlgorithmTypeSet=" + preferredAlgorithmTypeSet +
 //				",\n solvedProblemSet="	+ solvedProblemSet + // 내용이 많아 주석 처리
-				",\n activityDateList=" + activityDateList + "]\n";
+//				",\n activityDateList=" + activityDateList +  
+				"]\n";
 	}
 
 	// 유저 인스턴스가 유효한지 확인
