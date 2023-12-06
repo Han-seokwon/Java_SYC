@@ -42,7 +42,6 @@ public class HintViewFrame extends DesignedJFrame {
 		addHintViewButtonPanel(step, problem, user); // 버튼 패널 추가
 		setVisible(true);
 		
-		System.out.println("HintViewFrame : " + user);
 	}
 	
 	public void addInfoPanel(Problem problem) { // 기본정보 
