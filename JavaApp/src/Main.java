@@ -57,8 +57,8 @@ public class Main {
 		// 메인 프레임 
 		MainFrame main = new MainFrame();
 		// 테스트를 위해 로그인한 상태로 시작
-		User user1 = UserDBManager.findUserByEmail("han@naver.com"); 
-		main.logInComponents(user1);
+//		User user1 = UserDBManager.findUserByEmail("han@naver.com"); 
+//		main.logInComponents(user1);
 		
 
 	
